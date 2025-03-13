@@ -11,6 +11,14 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { ShoppingCart, Heart } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 
+// Helper function to ensure translation returns a string
+const ensureString = (value: string | Record<string, unknown>): string => {
+  if (typeof value === 'string') {
+    return value;
+  }
+  return String(value) || '';
+};
+
 interface ProductCardProps {
   book: Book;
   className?: string;
@@ -25,7 +33,7 @@ export function ProductCard({ book, className }: ProductCardProps) {
         <div className="absolute right-2 top-2 z-10">
           {book.featured && (
             <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200 text-xs px-2 py-0.5">
-              {t("productCard.featured")}
+              {ensureString(t("productCard.featured"))}
             </Badge>
           )}
         </div>
@@ -55,10 +63,10 @@ export function ProductCard({ book, className }: ProductCardProps) {
           </span>
         </div>
       </CardContent>
-      <CardFooter className="p-3 pt-0 flex gap-1">
+      <CardFooter className="flex gap-2 p-3 pt-0">
         <Button className="flex-1 h-8 text-xs bg-orange-500 hover:bg-orange-600 text-white border-2 border-black shadow-sm hover:shadow-md transition-all duration-200" size="sm">
           <ShoppingCart className="mr-1 h-3 w-3" />
-          {t("productCard.buyNow")}
+          {ensureString(t("productCard.buyNow"))}
         </Button>
         <Button variant="outline" size="icon" className="h-8 w-8">
           <Heart className="h-3 w-3" />
