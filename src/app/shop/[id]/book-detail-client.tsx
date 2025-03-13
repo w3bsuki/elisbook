@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ProductCard } from '@/components/ui/product-card';
-import { Book } from '@/lib/shop-data';
+import { Book } from '@/types';
 
 interface BookDetailClientProps {
   book: Book;
