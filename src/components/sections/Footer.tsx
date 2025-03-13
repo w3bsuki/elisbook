@@ -6,6 +6,14 @@ import { DIcons } from "dicons";
 import ThemeToggle from "@/components/ui/theme-toggle";
 import { useLanguage } from "@/lib/LanguageContext";
 
+// Helper function to ensure translation returns a string
+const ensureString = (value: string | Record<string, unknown>): string => {
+  if (typeof value === 'string') {
+    return value;
+  }
+  return String(value) || '';
+};
+
 const Underline = `hover:-translate-y-1 border border-dotted rounded-xl p-2.5 transition-transform`;
 
 const Footer = () => {
@@ -18,26 +26,26 @@ const Footer = () => {
         sections: [
           {
             id: "about",
-            name: t("footer.about"),
+            name: ensureString(t("footer.about")),
             items: [
-              { name: t("footer.about"), href: "/about" },
-              { name: t("footer.contact"), href: "/contact" },
+              { name: ensureString(t("footer.about")), href: "/about" },
+              { name: ensureString(t("footer.contact")), href: "/contact" },
             ],
           },
           {
             id: "features",
-            name: t("footer.features"),
+            name: ensureString(t("footer.features")),
             items: [
-              { name: t("footer.books"), href: "/shop" },
-              { name: t("footer.dashboard"), href: "/dashboard" },
+              { name: ensureString(t("footer.books")), href: "/shop" },
+              { name: ensureString(t("footer.dashboard")), href: "/dashboard" },
             ],
           },
           {
             id: "legal",
-            name: t("footer.legal"),
+            name: ensureString(t("footer.legal")),
             items: [
-              { name: t("footer.termsOfService"), href: "/terms" },
-              { name: t("footer.privacyPolicy"), href: "/privacy" },
+              { name: ensureString(t("footer.termsOfService")), href: "/terms" },
+              { name: ensureString(t("footer.privacyPolicy")), href: "/privacy" },
             ],
           },
         ],
@@ -60,7 +68,7 @@ const Footer = () => {
           </p>
         </Link>
         <p className="bg-transparent text-center text-xs leading-4 text-primary/60 md:text-left">
-          {t("footer.welcome")}
+          {ensureString(t("footer.welcome"))}
         </p>
       </div>
 
@@ -137,7 +145,7 @@ const Footer = () => {
         <div className="flex flex-row items-center justify-center gap-1 text-slate-600 dark:text-slate-400">
           <span>©</span>
           <span>{new Date().getFullYear()}</span>
-          <span>BookHaven. {t("footer.allRightsReserved")}</span>
+          <span>BookHaven. {ensureString(t("footer.allRightsReserved"))}</span>
         </div>
       </div>
     </footer>

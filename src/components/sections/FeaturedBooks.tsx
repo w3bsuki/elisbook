@@ -10,6 +10,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
 
+// Helper function to ensure translation returns a string
+const ensureString = (value: string | Record<string, unknown>): string => {
+  if (typeof value === 'string') {
+    return value;
+  }
+  return String(value) || '';
+};
+
 const items = [
   {
     title: "The Silent Echo",
@@ -67,7 +75,7 @@ const FeaturedBooks = () => {
             <DashedLine className="text-muted-foreground" />
             <div className="absolute bg-secondary px-4 font-mono text-sm font-medium tracking-wide text-muted-foreground flex items-center gap-2">
               <Crown className="h-4 w-4 text-orange-500" />
-              {t("featuredBooks.bestselling")}
+              {ensureString(t("featuredBooks.bestselling"))}
             </div>
           </div>
 
@@ -76,15 +84,15 @@ const FeaturedBooks = () => {
             <div className="flex flex-col gap-6">
               <div className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-600 w-fit">
                 <TrendingUp className="h-4 w-4" />
-                {t("featuredBooks.tagline")}
+                {ensureString(t("featuredBooks.tagline"))}
               </div>
               <h2 className="text-3xl font-semibold tracking-tight md:text-4xl lg:text-5xl">
-                {t("featuredBooks.title")}
+                {ensureString(t("featuredBooks.title"))}
               </h2>
             </div>
             <div className="flex flex-col gap-6">
               <p className="text-base text-muted-foreground md:text-lg">
-                {t("featuredBooks.description")}
+                {ensureString(t("featuredBooks.description"))}
               </p>
               <div className="grid grid-cols-2 gap-6 rounded-2xl bg-background/50 p-6 backdrop-blur-sm">
                 <div className="flex items-center gap-3">
@@ -93,7 +101,7 @@ const FeaturedBooks = () => {
                   </div>
                   <div>
                     <div className="text-2xl font-semibold tracking-tight">4.8</div>
-                    <div className="text-sm text-muted-foreground">{t("featuredBooks.avgRating")}</div>
+                    <div className="text-sm text-muted-foreground">{ensureString(t("featuredBooks.avgRating"))}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -102,7 +110,7 @@ const FeaturedBooks = () => {
                   </div>
                   <div>
                     <div className="text-2xl font-semibold tracking-tight">7.2k+</div>
-                    <div className="text-sm text-muted-foreground">{t("featuredBooks.readers")}</div>
+                    <div className="text-sm text-muted-foreground">{ensureString(t("featuredBooks.readers"))}</div>
                   </div>
                 </div>
               </div>
@@ -129,7 +137,7 @@ const FeaturedBooks = () => {
                           {item.featured && (
                             <Badge className="bg-orange-500 hover:bg-orange-500/90">
                               <Sparkles className="mr-1 h-3 w-3" />
-                              {t("featuredBooks.featured")}
+                              {ensureString(t("featuredBooks.featured"))}
                             </Badge>
                           )}
                           <Badge className="bg-primary/90 hover:bg-primary/90">
@@ -147,7 +155,7 @@ const FeaturedBooks = () => {
                               {language === "en" ? item.title : item.titleBG}
                             </h3>
                             <p className="text-sm text-muted-foreground mt-1">
-                              {t("featuredBooks.by")} {language === "en" ? item.author : item.authorBG}
+                              {ensureString(t("featuredBooks.by"))} {language === "en" ? item.author : item.authorBG}
                             </p>
                           </div>
                           <div className="flex flex-col items-end gap-1 flex-shrink-0">
@@ -156,7 +164,7 @@ const FeaturedBooks = () => {
                               <span className="font-medium">{item.rating}</span>
                             </div>
                             <div className="text-xs text-muted-foreground whitespace-nowrap">
-                              {item.readers} {t("featuredBooks.readers").toLowerCase()}
+                              {item.readers} {ensureString(t("featuredBooks.readers")).toLowerCase()}
                             </div>
                           </div>
                         </div>
@@ -167,20 +175,20 @@ const FeaturedBooks = () => {
                         </p>
                         
                         {/* Buttons */}
-                        <div className="flex gap-3 mt-6">
+                        <div className="flex gap-2 mt-6">
                           <Button 
                             size="sm" 
                             variant="outline" 
                             className="gap-2 font-medium text-xs flex-1"
                           >
                             <BookOpen className="h-4 w-4" />
-                            {t("featuredBooks.readPreview")}
+                            {ensureString(t("featuredBooks.readPreview"))}
                           </Button>
                           <Button 
                             size="sm" 
                             className="gap-2 font-medium bg-orange-500 hover:bg-orange-600 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-200 text-xs flex-1"
                           >
-                            {t("featuredBooks.buyNow")}
+                            {ensureString(t("featuredBooks.buyNow"))}
                           </Button>
                         </div>
                       </div>
@@ -194,7 +202,7 @@ const FeaturedBooks = () => {
           <div className="mt-12 flex justify-center">
             <Button variant="outline" size="lg" className="gap-2 bg-orange-500 hover:bg-orange-600 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-200 font-medium">
               <BookOpen className="h-5 w-5" />
-              {t("featuredBooks.exploreAll")}
+              {ensureString(t("featuredBooks.exploreAll"))}
             </Button>
           </div>
         </div>

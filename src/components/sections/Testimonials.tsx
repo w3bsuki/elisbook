@@ -14,6 +14,14 @@ import {
 } from "@/components/ui/carousel";
 import { useLanguage } from "@/lib/LanguageContext";
 
+// Helper function to ensure translation returns a string
+const ensureString = (value: string | Record<string, unknown>): string => {
+  if (typeof value === 'string') {
+    return value;
+  }
+  return String(value) || '';
+};
+
 const testimonials = [
   {
     name: "Sarah Mitchell",
@@ -113,13 +121,13 @@ const Testimonials = () => {
         <div className="mx-auto flex max-w-[40rem] flex-col items-center text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-600">
             <Zap className="h-4 w-4" />
-            {t("testimonials.tagline")}
+            {ensureString(t("testimonials.tagline"))}
           </div>
           <h2 className="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
-            {t("testimonials.title")}
+            {ensureString(t("testimonials.title"))}
           </h2>
           <p className="mt-2 text-base text-muted-foreground md:text-lg">
-            {t("testimonials.description")}
+            {ensureString(t("testimonials.description"))}
           </p>
         </div>
 
@@ -167,7 +175,7 @@ const Testimonials = () => {
         <div className="mt-12 flex justify-center">
           <Button variant="outline" size="lg" className="gap-2">
             <MessageSquare className="h-5 w-5" />
-            {t("testimonials.leaveReview")}
+            {ensureString(t("testimonials.leaveReview"))}
           </Button>
         </div>
       </div>

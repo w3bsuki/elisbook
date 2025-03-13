@@ -11,6 +11,14 @@ import { HelpCircle, Mail } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/lib/translations";
 
+// Helper function to ensure translation returns a string
+const ensureString = (value: string | Record<string, unknown>): string => {
+  if (typeof value === 'string') {
+    return value;
+  }
+  return String(value) || '';
+};
+
 export default function FAQ() {
   const { t, language } = useLanguage();
   
@@ -26,13 +34,13 @@ export default function FAQ() {
           <div className="mx-auto flex max-w-[40rem] flex-col items-center text-center">
             <div className="inline-flex items-center rounded-2xl bg-muted px-3 py-1 text-sm font-medium">
               <HelpCircle className="mr-1 h-3 w-3" />
-              {t("faq.title")}
+              {ensureString(t("faq.title"))}
             </div>
             <h2 className="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl">
-              {t("faq.subtitle")}
+              {ensureString(t("faq.subtitle"))}
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              {t("faq.description")}
+              {ensureString(t("faq.description"))}
             </p>
           </div>
 
@@ -51,16 +59,16 @@ export default function FAQ() {
             </Accordion>
           </div>
 
-          <div className="mt-12 flex flex-col items-center gap-4 rounded-3xl bg-primary/5 p-8 text-center md:p-12">
+          <div className="mt-8 flex flex-col items-center justify-center text-center">
             <h3 className="text-xl font-semibold md:text-2xl">
-              {t("faq.stillHaveQuestions")}
+              {ensureString(t("faq.stillHaveQuestions"))}
             </h3>
             <p className="text-sm text-muted-foreground md:text-base">
-              {t("faq.cantFind")}
+              {ensureString(t("faq.cantFind"))}
             </p>
             <Button className="mt-2 gap-2">
               <Mail className="h-4 w-4" />
-              {t("faq.contactSupport")}
+              {ensureString(t("faq.contactSupport"))}
             </Button>
           </div>
         </div>

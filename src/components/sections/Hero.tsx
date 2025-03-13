@@ -12,6 +12,14 @@ import {
 import { useLanguage } from "@/lib/LanguageContext";
 import FlipCard from "@/components/animata/card/flip-card";
 
+// Helper function to ensure translation returns a string
+const ensureString = (value: string | Record<string, unknown>): string => {
+  if (typeof value === 'string') {
+    return value;
+  }
+  return String(value) || '';
+};
+
 export default function Hero() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const { t, language } = useLanguage();
@@ -57,20 +65,20 @@ export default function Hero() {
         <div className="flex flex-col items-center text-center">
           <div className="mb-10">
             <div className="inline-block bg-orange-100 text-orange-600 text-xs font-medium px-3 py-1 rounded-full mb-6">
-              {t("hero.tagline")}
+              {ensureString(t("hero.tagline"))}
             </div>
             
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              {t("hero.title")}{" "}
+              {ensureString(t("hero.title"))}{" "}
               <span className="block mt-1 bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
-                {t("hero.titleHighlight")}
+                {ensureString(t("hero.titleHighlight"))}
               </span>
             </h1>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
               <Button className="px-6 bg-orange-600 hover:bg-orange-700">
                 <BookOpen className="mr-2 h-4 w-4" />
-                {t("hero.cta")}
+                {ensureString(t("hero.cta"))}
               </Button>
               <Button 
                 className="px-6 bg-orange-600 hover:bg-orange-700"
@@ -101,7 +109,7 @@ export default function Hero() {
             className="flex flex-col items-center cursor-pointer mt-12 text-muted-foreground hover:text-foreground transition-colors" 
             onClick={scrollToNextSection}
           >
-            <span className="text-sm mb-1">{t("hero.scrollDown")}</span>
+            <span className="text-sm mb-1">{ensureString(t("hero.scrollDown"))}</span>
             <ArrowDown className="h-4 w-4 animate-bounce" />
           </div>
         </div>
@@ -110,20 +118,20 @@ export default function Hero() {
       <Dialog open={isAboutOpen} onOpenChange={setIsAboutOpen}>
         <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-lg sm:text-xl font-semibold">{t("aboutElis.title")}</DialogTitle>
+            <DialogTitle className="text-lg sm:text-xl font-semibold">{ensureString(t("aboutElis.title"))}</DialogTitle>
           </DialogHeader>
           <div className="pt-3 space-y-3 text-xs text-muted-foreground">
             <div>
-              {t("aboutElis.content1")}
+              {ensureString(t("aboutElis.content1"))}
             </div>
             <div>
-              {t("aboutElis.content2")}
+              {ensureString(t("aboutElis.content2"))}
             </div>
             <div>
-              {t("aboutElis.content3")}
+              {ensureString(t("aboutElis.content3"))}
             </div>
             <div className="italic">
-              {t("aboutElis.quote")}
+              {ensureString(t("aboutElis.quote"))}
             </div>
           </div>
         </DialogContent>
