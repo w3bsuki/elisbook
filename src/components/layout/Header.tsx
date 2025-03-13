@@ -144,15 +144,15 @@ export default function Header() {
                             </div>
                             <div className="line-clamp-2 text-xs text-muted-foreground">
                               {language === "en" ? book.description : 
-                                t(`bookDescriptions.${book.href.split('/').pop()}`)
+                                ensureString(t(`bookDescriptions.${book.href.split('/').pop()}`))
                               }
                             </div>
                             <div className="mt-auto">
                               <Badge variant="secondary" className="text-xs">
                                 {language === "en" ? book.category : 
-                                  book.category === "Fiction" ? t("categories.fiction") :
+                                  ensureString(book.category === "Fiction" ? t("categories.fiction") :
                                   book.category === "Non-Fiction" ? t("categories.nonFiction") :
-                                  book.category === "Poetry" ? t("categories.poetry") : book.category
+                                  book.category === "Poetry" ? t("categories.poetry") : book.category)
                                 }
                               </Badge>
                             </div>
@@ -262,7 +262,7 @@ export default function Header() {
               >
                 <span className="flex-1 text-lg flex items-center gap-2">
                   <Globe className="h-4 w-4" />
-                  {t("nav.language")}
+                  {ensureString(t("nav.language"))}
                 </span>
               </button>
             </div>
@@ -294,9 +294,9 @@ export default function Header() {
                   <div>
                     <div className="mb-1.5 text-base">
                       {language === "en" ? resource.title : 
-                        resource.title === "Fiction" ? t("categories.fiction") :
+                        ensureString(resource.title === "Fiction" ? t("categories.fiction") :
                         resource.title === "Non-Fiction" ? t("categories.nonFiction") :
-                        resource.title === "Poetry" ? t("categories.poetry") : resource.title
+                        resource.title === "Poetry" ? t("categories.poetry") : resource.title)
                       }
                     </div>
                     <div className="text-sm font-normal text-muted-foreground">
