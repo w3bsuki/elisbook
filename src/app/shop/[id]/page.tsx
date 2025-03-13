@@ -1,15 +1,25 @@
-import React from 'react';
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { shopBooks } from '@/lib/shop-data';
 import BookDetailClient from './book-detail-client';
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  // Find the book with the matching ID
+  const book = shopBooks.find((book) => book.id === params.id);
 
-export default function BookDetailPage({ params }: Props) {
+  if (!book) {
+    return {
+      title: 'Book Not Found',
+    };
+  }
+
+  return {
+    title: book.title,
+    description: book.description,
+  };
+}
+
+export default async function BookDetailPage({ params }: { params: { id: string } }) {
   // Find the book with the matching ID
   const book = shopBooks.find((book) => book.id === params.id);
 
