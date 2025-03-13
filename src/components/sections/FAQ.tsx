@@ -9,9 +9,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { HelpCircle, Mail } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/lib/translations";
 
 export default function FAQ() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  
+  // Get the FAQ questions directly from translations
+  const faqQuestions = language === 'en' 
+    ? translations.en.faq.questions 
+    : translations.bg.faq.questions;
   
   return (
     <section className="bg-secondary py-24">
@@ -32,7 +38,7 @@ export default function FAQ() {
 
           <div className="mt-8 md:mt-12">
             <Accordion type="single" collapsible className="w-full">
-              {t("faq.questions").map((faq, index) => (
+              {faqQuestions.map((faq, index) => (
                 <AccordionItem key={index} value={`item-${index}`}>
                   <AccordionTrigger className="text-left">
                     {faq.question}
