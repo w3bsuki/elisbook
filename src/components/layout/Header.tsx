@@ -79,6 +79,14 @@ const books = [
   },
 ];
 
+// Helper function to ensure translation returns a string
+const ensureString = (value: string | Record<string, unknown>): string => {
+  if (typeof value === 'string') {
+    return value;
+  }
+  return String(value) || '';
+};
+
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [submenu, setSubmenu] = useState<"books" | "about" | "contact" | null>(null);
@@ -99,13 +107,13 @@ export default function Header() {
               <NavigationMenuItem>
                 <Link href="/about" legacyBehavior passHref>
                   <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "text-lg font-medium")}>
-                    {t("nav.about")}
+                    {ensureString(t("nav.about"))}
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-lg font-medium">
-                  {t("nav.books")}
+                  {ensureString(t("nav.books"))}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="w-[600px] p-4">
@@ -158,7 +166,7 @@ export default function Header() {
               <NavigationMenuItem>
                 <Link href="/contact" legacyBehavior passHref>
                   <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "text-lg font-medium")}>
-                    {t("nav.contact")}
+                    {ensureString(t("nav.contact"))}
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
@@ -199,7 +207,7 @@ export default function Header() {
             </div>
             <Button className="bg-orange-500 hover:bg-orange-600 text-white text-base px-5 py-1.5 h-auto border-2 border-black shadow-md hover:shadow-lg transition-all duration-200 font-medium rounded-md" asChild>
               <Link href="/shop">
-                {t("nav.shop")}
+                {ensureString(t("nav.shop"))}
               </Link>
             </Button>
           </div>
@@ -229,23 +237,23 @@ export default function Header() {
           <div className="fixed inset-0 top-[72px] flex h-[calc(100vh-72px)] w-full flex-col overflow-scroll border-t border-border bg-background md:hidden">
             <div className="font-playfair">
               <Link href="/about" className="flex w-full items-center border-b border-border px-8 py-7 text-left">
-                <span className="flex-1 text-lg">{t("nav.about")}</span>
+                <span className="flex-1 text-lg">{ensureString(t("nav.about"))}</span>
               </Link>
               <button
                 type="button"
                 className="flex w-full items-center border-b border-border px-8 py-7 text-left"
                 onClick={() => setSubmenu("books")}
               >
-                <span className="flex-1 text-lg">{t("nav.books")}</span>
+                <span className="flex-1 text-lg">{ensureString(t("nav.books"))}</span>
                 <span className="shrink-0">
                   <ChevronRight className="size-4" />
                 </span>
               </button>
               <Link href="/contact" className="flex w-full items-center border-b border-border px-8 py-7 text-left">
-                <span className="flex-1 text-lg">{t("nav.contact")}</span>
+                <span className="flex-1 text-lg">{ensureString(t("nav.contact"))}</span>
               </Link>
               <Link href="/shop" className="flex w-full items-center border-b border-border px-8 py-7 text-left bg-orange-500 text-white border-2 border-black shadow-md">
-                <span className="flex-1 text-lg font-medium">{t("nav.shop")}</span>
+                <span className="flex-1 text-lg font-medium">{ensureString(t("nav.shop"))}</span>
               </Link>
               <button
                 type="button"
