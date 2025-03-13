@@ -1,4 +1,3 @@
-import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { shopBooks } from '@/lib/shop-data';
 import BookDetailClient from './book-detail-client';
