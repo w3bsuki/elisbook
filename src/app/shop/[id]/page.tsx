@@ -11,7 +11,13 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ProductCard } from '@/components/ui/product-card';
 
-export default function BookDetailPage({ params }: { params: { id: string } }) {
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function BookDetailPage({ params }: PageProps) {
   // Find the book with the matching ID
   const book = shopBooks.find((book) => book.id === params.id);
 
