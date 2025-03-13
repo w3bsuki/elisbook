@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  ArrowUpRight,
   ChevronLeft,
   ChevronRight,
   CircleCheckBig,
@@ -33,7 +32,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { navItems } from "@/lib/data";
 import { useLanguage } from "@/lib/LanguageContext";
 
 const resources = [

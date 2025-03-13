@@ -1,13 +1,13 @@
 "use client";
 
 import { BookOpen, Star, Sparkles, TrendingUp, Crown } from "lucide-react";
+import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/lib/LanguageContext";
 
 const items = [
@@ -118,10 +118,11 @@ const FeaturedBooks = () => {
                     <div className="p-6 lg:p-8 flex flex-col h-full">
                       {/* Image */}
                       <div className="aspect-[1.28/1] w-full overflow-hidden rounded-xl relative group">
-                        <img
+                        <Image
                           src={item.image}
                           alt={`${language === "en" ? item.title : item.titleBG} book cover`}
-                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
                         <div className="absolute top-3 right-3 flex gap-2">

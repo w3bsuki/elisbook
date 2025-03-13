@@ -11,7 +11,7 @@ import { HelpCircle, Mail } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 
 export default function FAQ() {
-  const { language, t } = useLanguage();
+  const { t } = useLanguage();
   
   return (
     <section className="bg-secondary py-24">

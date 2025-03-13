@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { DIcons } from "dicons";
 import ThemeToggle from "@/components/ui/theme-toggle";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -49,9 +50,11 @@ const Footer = () => {
       <div className="relative mx-auto grid max-w-4xl items-center justify-center gap-6 p-10 pb-0 md:flex">
         <Link href="/">
           <p className="flex items-center justify-center rounded-full">
-            <img
+            <Image
               src="https://shadcnblocks.com/images/block/logos/shadcn-ui-wordmark.svg"
               alt="BookHaven"
+              width={120}
+              height={32}
               className="h-8 dark:invert"
             />
           </p>

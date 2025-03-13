@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface FlipCardProps extends React.HTMLAttributes<HTMLDivElement> {
   image: string;
@@ -33,11 +34,14 @@ export default function FlipCard({
       >
         {/* Front */}
         <div className="absolute h-full w-full [backface-visibility:hidden]">
-          <img
-            src={image}
-            alt="image"
-            className="h-full w-full rounded-2xl object-cover shadow-2xl shadow-black/40"
-          />
+          <div className="relative h-full w-full">
+            <Image
+              src={image}
+              alt={title}
+              fill
+              className="rounded-2xl object-cover shadow-2xl shadow-black/40"
+            />
+          </div>
           <div className="absolute bottom-4 left-4 text-xl font-bold text-white">{title}</div>
         </div>
 

@@ -273,11 +273,11 @@ export const translations = {
 // Helper function to get translations based on current language
 export const getTranslation = (language: "en" | "bg", key: string) => {
   const keys = key.split(".");
-  let result: any = translations[language];
+  let result: Record<string, unknown> = translations[language];
   
   for (const k of keys) {
-    if (result && result[k]) {
-      result = result[k];
+    if (result && typeof result === 'object' && k in result) {
+      result = result[k] as Record<string, unknown>;
     } else {
       return key; // Return the key if translation not found
     }

@@ -1,7 +1,7 @@
 "use client";
 
 import AutoScroll from "embla-carousel-auto-scroll";
-import { ChevronRight, Star, Zap, MessageSquare, Quote } from "lucide-react";
+import { Star, Zap, MessageSquare, Quote } from "lucide-react";
 import { useRef } from "react";
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
