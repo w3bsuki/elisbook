@@ -271,7 +271,7 @@ export const translations = {
 };
 
 // Helper function to get translations based on current language
-export const getTranslation = (language: "en" | "bg", key: string) => {
+export const getTranslation = (language: "en" | "bg", key: string): string | Record<string, unknown> => {
   const keys = key.split(".");
   let result: Record<string, unknown> = translations[language];
   
@@ -289,6 +289,6 @@ export const getTranslation = (language: "en" | "bg", key: string) => {
 // Create a hook for using translations
 export const useTranslations = (language: "en" | "bg") => {
   return {
-    t: (key: string) => getTranslation(language, key),
+    t: (key: string): string | Record<string, unknown> => getTranslation(language, key),
   };
 }; 

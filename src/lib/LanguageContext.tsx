@@ -6,7 +6,7 @@ import { useTranslations } from "./translations";
 type LanguageContextType = {
   language: "en" | "bg";
   setLanguage: (lang: "en" | "bg") => void;
-  t: (key: string) => string;
+  t: (key: string) => string | Record<string, unknown>;
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
