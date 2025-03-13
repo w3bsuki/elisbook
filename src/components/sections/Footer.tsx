@@ -9,7 +9,7 @@ import { useLanguage } from "@/lib/LanguageContext";
 const Underline = `hover:-translate-y-1 border border-dotted rounded-xl p-2.5 transition-transform`;
 
 const Footer = () => {
-  const { language, t } = useLanguage();
+  const { t } = useLanguage();
   
   const navigation = {
     categories: [
