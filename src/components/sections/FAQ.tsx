@@ -32,7 +32,7 @@ export default function FAQ() {
       <div className="container mx-auto flex justify-center">
         <div className="max-w-[60rem] w-full">
           <div className="mx-auto flex max-w-[40rem] flex-col items-center text-center">
-            <div className="inline-flex items-center rounded-2xl bg-muted px-3 py-1 text-sm font-medium">
+            <div className="inline-flex items-center rounded-2xl bg-green-100 px-3 py-1 text-sm font-medium text-green-600">
               <HelpCircle className="mr-1 h-3 w-3" />
               {ensureString(t("faq.title"))}
             </div>
@@ -66,7 +66,7 @@ export default function FAQ() {
             <p className="text-sm text-muted-foreground md:text-base">
               {ensureString(t("faq.cantFind"))}
             </p>
-            <Button className="mt-2 gap-2">
+            <Button className="mt-2 gap-2 bg-green-500 hover:bg-green-600 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-200">
               <Mail className="h-4 w-4" />
               {ensureString(t("faq.contactSupport"))}
             </Button>

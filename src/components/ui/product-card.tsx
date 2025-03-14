@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { ShoppingCart, Heart, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 // Helper function to ensure translation returns a string
 const ensureString = (value: string | Record<string, unknown>): string => {
@@ -29,36 +30,38 @@ export function ProductCard({ book, className }: ProductCardProps) {
   
   return (
     <Card className={cn("overflow-hidden transition-all duration-200 hover:shadow-md max-w-xs mx-auto", className)}>
-      <div className="relative aspect-[4/5] overflow-hidden bg-muted">
-        <div className="absolute right-2 top-2 z-10 flex gap-1">
-          {book.featured && (
-            <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-200 text-xs px-2 py-0.5">
-              <Sparkles className="mr-1 h-3 w-3" />
-              {ensureString(t("productCard.featured"))}
-            </Badge>
-          )}
-          {book.category && (
-            <Badge variant="outline" className="bg-primary/10 text-primary hover:bg-primary/20 text-xs px-2 py-0.5">
-              {book.category === 'health' ? ensureString(t("categories.health")) : 
-               book.category === 'poetry' ? ensureString(t("categories.poetry")) : 
-               book.category === 'selfHelp' ? ensureString(t("categories.selfHelp")) : 
-               book.category}
-            </Badge>
-          )}
-        </div>
-        <Link href={`/shop/${book.id}`}>
-          <div className="relative h-full w-full">
-            <Image
-              src={book.coverImage || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=687&auto=format&fit=crop"}
-              alt={book.title}
-              fill
-              sizes="(max-width: 768px) 100vw, 300px"
-              quality={90}
-              priority={book.featured}
-              className="object-cover transition-transform duration-300 hover:scale-105"
-            />
+      <div className="relative overflow-hidden bg-muted">
+        <AspectRatio ratio={3/4}>
+          <div className="absolute right-2 top-2 z-10 flex gap-1">
+            {book.featured && (
+              <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-200 text-xs px-2 py-0.5">
+                <Sparkles className="mr-1 h-3 w-3" />
+                {ensureString(t("productCard.featured"))}
+              </Badge>
+            )}
+            {book.category && (
+              <Badge variant="outline" className="bg-primary/10 text-primary hover:bg-primary/20 text-xs px-2 py-0.5">
+                {book.category === 'health' ? ensureString(t("categories.health")) : 
+                 book.category === 'poetry' ? ensureString(t("categories.poetry")) : 
+                 book.category === 'selfHelp' ? ensureString(t("categories.selfHelp")) : 
+                 book.category}
+              </Badge>
+            )}
           </div>
-        </Link>
+          <Link href={`/shop/${book.id}`}>
+            <div className="relative h-full w-full">
+              <Image
+                src={book.coverImage || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=687&auto=format&fit=crop"}
+                alt={book.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 300px"
+                quality={90}
+                priority={book.featured}
+                className="object-cover transition-transform duration-300 hover:scale-105"
+              />
+            </div>
+          </Link>
+        </AspectRatio>
       </div>
       <CardContent className="p-3">
         <Link href={`/shop/${book.id}`} className="hover:underline">

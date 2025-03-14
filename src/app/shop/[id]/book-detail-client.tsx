@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { ProductCard } from '@/components/ui/product-card';
 import { Book } from '@/types';
 import { useLanguage } from '@/lib/LanguageContext';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 // Helper function to ensure translation returns a string
 const ensureString = (value: string | Record<string, unknown>): string => {
@@ -41,30 +42,34 @@ export default function BookDetailClient({ book, relatedBooks }: BookDetailClien
         {/* Product Details */}
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {/* Product Image */}
-          <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-muted">
-            <Image
-              src={book.coverImage || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=687&auto=format&fit=crop"}
-              alt={book.title}
-              fill
-              sizes="(max-width: 768px) 100vw, 500px"
-              quality={95}
-              priority
-              className="object-cover"
-            />
-            <div className="absolute right-4 top-4 flex gap-2">
-              {book.featured && (
-                <Badge variant="secondary" className="bg-green-100 text-green-700">
-                  {ensureString(t("bookDetail.featured"))}
-                </Badge>
-              )}
-              {book.category && (
-                <Badge variant="outline" className="bg-primary/10 text-primary">
-                  {book.category === 'health' ? ensureString(t("categories.health")) : 
-                   book.category === 'poetry' ? ensureString(t("categories.poetry")) : 
-                   book.category === 'selfHelp' ? ensureString(t("categories.selfHelp")) : 
-                   book.category}
-                </Badge>
-              )}
+          <div className="flex justify-center items-start">
+            <div className="relative overflow-hidden rounded-lg bg-muted max-w-[300px] w-full">
+              <AspectRatio ratio={2/3}>
+                <Image
+                  src={book.coverImage || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=687&auto=format&fit=crop"}
+                  alt={book.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 300px"
+                  quality={95}
+                  priority
+                  className="object-cover"
+                />
+                <div className="absolute right-4 top-4 flex gap-2">
+                  {book.featured && (
+                    <Badge variant="secondary" className="bg-green-100 text-green-700">
+                      {ensureString(t("bookDetail.featured"))}
+                    </Badge>
+                  )}
+                  {book.category && (
+                    <Badge variant="outline" className="bg-primary/10 text-primary">
+                      {book.category === 'health' ? ensureString(t("categories.health")) : 
+                       book.category === 'poetry' ? ensureString(t("categories.poetry")) : 
+                       book.category === 'selfHelp' ? ensureString(t("categories.selfHelp")) : 
+                       book.category}
+                    </Badge>
+                  )}
+                </div>
+              </AspectRatio>
             </div>
           </div>
 

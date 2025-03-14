@@ -28,8 +28,8 @@ const Footer = () => {
             id: "about",
             name: ensureString(t("footer.about")),
             items: [
-              { name: ensureString(t("footer.about")), href: "/about" },
-              { name: ensureString(t("footer.contact")), href: "/contact" },
+              { name: ensureString(t("footer.aboutMe")), href: "/about" },
+              { name: ensureString(t("footer.blog")), href: "/blog" },
             ],
           },
           {

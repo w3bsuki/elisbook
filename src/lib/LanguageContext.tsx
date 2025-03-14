@@ -12,7 +12,7 @@ type LanguageContextType = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState<"en" | "bg">("en");
+  const [language, setLanguage] = useState<"en" | "bg">("bg");
   const { t } = useTranslations(language);
 
   // Store language preference in localStorage

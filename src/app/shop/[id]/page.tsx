@@ -4,7 +4,8 @@ import BookDetailClient from './book-detail-client';
 
 export async function generateMetadata({ params }) {
   // Find the book with the matching ID
-  const book = shopBooks.find((book) => book.id === params.id);
+  const bookId = params.id;
+  const book = shopBooks.find((book) => book.id === bookId);
 
   if (!book) {
     return {
@@ -18,9 +19,10 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function BookDetailPage({ params }) {
+export default async function BookDetailPage({ params }) {
   // Find the book with the matching ID
-  const book = shopBooks.find((book) => book.id === params.id);
+  const bookId = params.id;
+  const book = shopBooks.find((book) => book.id === bookId);
 
   // If book not found, return 404
   if (!book) {

@@ -7,6 +7,10 @@ export interface Book {
   price: number;
   publishDate: string;
   featured?: boolean;
+  category?: string;
+  isbn?: string;
+  pages?: number;
+  publisher?: string;
 }
 
 // Author type

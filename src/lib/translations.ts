@@ -5,9 +5,9 @@ export const translations = {
   en: {
     // Navigation
     nav: {
-      about: "About",
+      about: "About Me",
       books: "Books",
-      contact: "Contact",
+      blog: "Blog",
       shop: "Shop",
       language: "Български",
     },
@@ -120,16 +120,16 @@ export const translations = {
     },
     // Footer
     footer: {
-      welcome: "Welcome to BookHaven, where stories come to life. We are passionate about connecting readers with their next favorite book. Our curated collection spans across various genres, ensuring there's something for every book lover.",
       about: "About",
-      contact: "Contact",
+      aboutMe: "About Me",
+      blog: "Blog",
       features: "Features",
       books: "Books",
       dashboard: "Dashboard",
       legal: "Legal",
       termsOfService: "Terms of Service",
       privacyPolicy: "Privacy Policy",
-      allRightsReserved: "All rights reserved.",
+      allRightsReserved: "All Rights Reserved",
       back: "Back"
     },
     // Product card
@@ -154,14 +154,21 @@ export const translations = {
       returns: "30-Day Returns",
       returnsDesc: "Simple returns up to 30 days from purchase",
       youMayAlsoLike: "You May Also Like"
+    },
+    // Blog section
+    blog: {
+      title: "Wellness & Mindfulness Blog",
+      subtitle: "Explore articles on health, wellness, mindfulness, and personal growth written by Elis",
+      viewAll: "View all articles",
+      readMore: "Read more"
     }
   },
   bg: {
     // Navigation
     nav: {
-      about: "За нас",
+      about: "За мен",
       books: "Книги",
-      contact: "Контакти",
+      blog: "Блог",
       shop: "Магазин",
       language: "English",
     },
@@ -274,16 +281,16 @@ export const translations = {
     },
     // Footer
     footer: {
-      welcome: "Добре дошли в BookHaven, където историите оживяват. Ние сме страстни да свързваме читателите с тяхната следваща любима книга. Нашата курирана колекция обхваща различни жанрове, гарантирайки, че има нещо за всеки любител на книгите.",
       about: "За нас",
-      contact: "Контакти",
+      aboutMe: "За мен",
+      blog: "Блог",
       features: "Функции",
       books: "Книги",
       dashboard: "Табло",
       legal: "Правна информация",
       termsOfService: "Условия за ползване",
       privacyPolicy: "Политика за поверителност",
-      allRightsReserved: "Всички права запазени.",
+      allRightsReserved: "Всички права запазени",
       back: "Назад"
     },
     // Product card
@@ -296,7 +303,7 @@ export const translations = {
       backToShop: "Обратно към Магазина",
       featured: "Препоръчано",
       reviews: "отзива",
-      published: "Публикувано на",
+      published: "Публикувано",
       description: "Описание",
       publisher: "Издател",
       pages: "Страници",
@@ -305,9 +312,16 @@ export const translations = {
       freeShippingDesc: "Безплатна стандартна доставка за поръчки над 50 лв.",
       securePayment: "Сигурно Плащане",
       securePaymentDesc: "Вашата информация за плащане се обработва сигурно",
-      returns: "30-дневно Връщане",
+      returns: "30-Дневно Връщане",
       returnsDesc: "Лесно връщане до 30 дни от покупката",
       youMayAlsoLike: "Може Също Да Харесате"
+    },
+    // Blog section
+    blog: {
+      title: "Блог за Благосъстояние и Осъзнатост",
+      subtitle: "Разгледайте статии за здраве, благосъстояние, осъзнатост и личностно развитие, написани от Елис",
+      viewAll: "Вижте всички статии",
+      readMore: "Прочетете повече"
     }
   },
 };

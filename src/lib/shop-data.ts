@@ -74,7 +74,7 @@ export const shopBooks: Book[] = [
     coverImage: '/images/books/s-dusha-i-sarce.jpg',
     price: 22.00,
     publishDate: '2023-03-25',
-    featured: false,
+    featured: true,
     category: 'poetry',
     isbn: '9786199211304',
     pages: 76,

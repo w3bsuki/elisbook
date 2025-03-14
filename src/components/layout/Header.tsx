@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/LanguageContext";
+import { NavbarThemeToggle } from "@/components/ui/navbar-theme-toggle";
 
 const resources = [
   {
@@ -96,10 +97,26 @@ export default function Header() {
     <header className="sticky inset-x-0 top-0 z-20 bg-background border-b">
       <div className="container mx-auto flex justify-center">
         <div className="flex w-full items-center justify-between py-4 max-w-6xl">
-          <div className="flex-1">
+          <div className="flex-1 flex items-center gap-3">
             <Link href="/">
-              <span className="text-3xl font-bold tracking-wide text-orange-600 font-playfair">ELIS</span>
+              <span className="text-3xl font-bold tracking-wide text-green-600 font-playfair">ELIS</span>
             </Link>
+            <NavbarThemeToggle />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon" className="rounded-full">
+                  <Globe className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setLanguage("en")}>
+                  English
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLanguage("bg")}>
+                  Български
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           
           <NavigationMenu className="flex-1 flex justify-center">
@@ -164,48 +181,33 @@ export default function Header() {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/contact" legacyBehavior passHref>
+                <Link href="/blog" legacyBehavior passHref>
                   <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "text-lg font-medium")}>
-                    {ensureString(t("nav.contact"))}
+                    {ensureString(t("nav.blog"))}
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
           
-          <div className="hidden items-center gap-4 md:flex flex-1 justify-end">
-            <div className="flex items-center gap-4 mr-5">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200 hover:text-orange-600">
-                    <Globe className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => setLanguage("en")} className={language === "en" ? "bg-orange-100" : ""}>
-                    English
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setLanguage("bg")} className={language === "bg" ? "bg-orange-100" : ""}>
-                    Български
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+          <div className="flex-1 flex items-center justify-end gap-4">
+            <div className="hidden md:flex items-center gap-2">
               <Link 
                 href="https://facebook.com" 
                 target="_blank" 
-                className="text-gray-700 hover:text-orange-600 transition-colors duration-200 flex items-center justify-center h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200"
+                className="text-gray-700 hover:text-green-600 transition-colors duration-200 flex items-center justify-center h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200"
               >
                 <Facebook className="h-4 w-4" />
               </Link>
               <Link 
                 href="https://instagram.com" 
                 target="_blank" 
-                className="text-gray-700 hover:text-orange-600 transition-colors duration-200 flex items-center justify-center h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200"
+                className="text-gray-700 hover:text-green-600 transition-colors duration-200 flex items-center justify-center h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200"
               >
                 <Instagram className="h-4 w-4" />
               </Link>
             </div>
-            <Button className="bg-orange-500 hover:bg-orange-600 text-white text-base px-5 py-1.5 h-auto border-2 border-black shadow-md hover:shadow-lg transition-all duration-200 font-medium rounded-md" asChild>
+            <Button className="bg-green-500 hover:bg-green-600 text-white text-base px-5 py-1.5 h-auto border-2 border-black shadow-md hover:shadow-lg transition-all duration-200 font-medium rounded-md" asChild>
               <Link href="/shop">
                 {ensureString(t("nav.shop"))}
               </Link>
@@ -249,10 +251,10 @@ export default function Header() {
                   <ChevronRight className="size-4" />
                 </span>
               </button>
-              <Link href="/contact" className="flex w-full items-center border-b border-border px-8 py-7 text-left">
-                <span className="flex-1 text-lg">{ensureString(t("nav.contact"))}</span>
+              <Link href="/blog" className="flex w-full items-center border-b border-border px-8 py-7 text-left">
+                <span className="flex-1 text-lg">{ensureString(t("nav.blog"))}</span>
               </Link>
-              <Link href="/shop" className="flex w-full items-center border-b border-border px-8 py-7 text-left bg-orange-500 text-white border-2 border-black shadow-md">
+              <Link href="/shop" className="flex w-full items-center border-b border-border px-8 py-7 text-left bg-green-500 text-white border-2 border-black shadow-md">
                 <span className="flex-1 text-lg font-medium">{ensureString(t("nav.shop"))}</span>
               </Link>
               <button

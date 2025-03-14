@@ -119,7 +119,7 @@ const Testimonials = () => {
     <section className="flex items-center justify-center bg-secondary py-24">
       <div className="w-full max-w-[1200px] px-4">
         <div className="mx-auto flex max-w-[40rem] flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-600">
+          <div className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-600">
             <Zap className="h-4 w-4" />
             {ensureString(t("testimonials.tagline"))}
           </div>
@@ -147,7 +147,7 @@ const Testimonials = () => {
                   <Card className="relative h-[200px] p-6">
                     <Quote className="absolute right-4 top-4 h-4 w-4 text-muted-foreground/20" />
                     <div className="flex flex-col items-center gap-3">
-                      <Avatar className="h-10 w-10 border-2 border-orange-100">
+                      <Avatar className="h-10 w-10 border-2 border-green-100">
                         <AvatarImage
                           src={testimonial.avatar}
                           alt={testimonial.name}
@@ -157,7 +157,7 @@ const Testimonials = () => {
                         <h3 className="text-base font-medium">{testimonial.name}</h3>
                         <div className="flex gap-0.5">
                           {[...Array(testimonial.rating)].map((_, i) => (
-                            <Star key={i} className="h-4 w-4 fill-orange-500 text-orange-500" />
+                            <Star key={i} className="h-4 w-4 fill-green-500 text-green-500" />
                           ))}
                         </div>
                       </div>
@@ -173,7 +173,7 @@ const Testimonials = () => {
         </div>
 
         <div className="mt-12 flex justify-center">
-          <Button variant="outline" size="lg" className="gap-2">
+          <Button variant="outline" size="lg" className="gap-2 bg-green-500 hover:bg-green-600 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-200">
             <MessageSquare className="h-5 w-5" />
             {ensureString(t("testimonials.leaveReview"))}
           </Button>
