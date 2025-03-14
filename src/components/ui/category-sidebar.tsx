@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { BookOpen, BookText, Bookmark, Heart, Sparkles } from 'lucide-react';
+import { BookOpen, Bookmark, Heart, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 
 // Helper function to ensure translation returns a string

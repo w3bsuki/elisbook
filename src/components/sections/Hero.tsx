@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, UserCircle, ArrowDown, X, MessageCircle, Send } from "lucide-react";
+import { BookOpen, UserCircle, ArrowDown, X, Send } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {

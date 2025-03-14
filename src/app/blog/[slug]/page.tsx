@@ -3,20 +3,11 @@
 import React from 'react';
 import { useLanguage } from "@/lib/LanguageContext";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar, Clock, Tag, ArrowLeft, Share2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from 'next/navigation';
-
-// Helper function to ensure translation returns a string
-const ensureString = (value: string | Record<string, unknown>): string => {
-  if (typeof value === 'string') {
-    return value;
-  }
-  return String(value) || '';
-};
 
 // Format date function
 const formatDate = (dateString: string, language: string) => {
@@ -230,7 +221,7 @@ const blogPosts = {
 };
 
 export default function BlogPostPage() {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const params = useParams();
   const slug = params.slug as string;
   

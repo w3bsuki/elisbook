@@ -3,19 +3,8 @@
 import React from 'react';
 import { useLanguage } from "@/lib/LanguageContext";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar, Clock, Tag, ChevronRight } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
-
-// Helper function to ensure translation returns a string
-const ensureString = (value: string | Record<string, unknown>): string => {
-  if (typeof value === 'string') {
-    return value;
-  }
-  return String(value) || '';
-};
 
 // Sample blog posts data
 const blogPosts = [
@@ -83,7 +72,7 @@ const formatDate = (dateString: string, language: string) => {
 };
 
 export default function BlogPage() {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   
   return (
     <div className="container mx-auto py-12 px-4 md:px-6">

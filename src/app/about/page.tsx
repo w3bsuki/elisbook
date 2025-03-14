@@ -6,20 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Mail, Send, Phone, MapPin, BookOpen } from "lucide-react";
 import Image from "next/image";
 
-// Helper function to ensure translation returns a string
-const ensureString = (value: string | Record<string, unknown>): string => {
-  if (typeof value === 'string') {
-    return value;
-  }
-  return String(value) || '';
-};
-
 export default function AboutPage() {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const [formData, setFormData] = React.useState({
     name: '',
     email: '',
