@@ -2,7 +2,16 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { BookOpen, BookText, Bookmark, BookmarkCheck, BookMarked } from 'lucide-react';
+import { BookOpen, BookText, Bookmark, Heart, Sparkles } from 'lucide-react';
+import { useLanguage } from '@/lib/LanguageContext';
+
+// Helper function to ensure translation returns a string
+const ensureString = (value: string | Record<string, unknown>): string => {
+  if (typeof value === 'string') {
+    return value;
+  }
+  return String(value) || '';
+};
 
 interface CategorySidebarProps {
   activeCategory: string;
@@ -12,10 +21,9 @@ interface CategorySidebarProps {
 
 const categories = [
   { id: 'all', name: 'All Books', icon: BookOpen },
-  { id: 'fiction', name: 'Fiction', icon: BookText },
-  { id: 'non-fiction', name: 'Non-Fiction', icon: BookMarked },
+  { id: 'health', name: 'Health & Nutrition', icon: Heart },
   { id: 'poetry', name: 'Poetry', icon: Bookmark },
-  { id: 'biography', name: 'Biography', icon: BookmarkCheck },
+  { id: 'selfHelp', name: 'Self-Help', icon: Sparkles },
 ];
 
 export function CategorySidebar({
@@ -23,10 +31,12 @@ export function CategorySidebar({
   onCategoryChange,
   className,
 }: CategorySidebarProps) {
+  const { t } = useLanguage();
+  
   return (
     <div className={cn("w-full", className)}>
       <div className="space-y-1">
-        <h3 className="font-semibold text-sm mb-3">Categories</h3>
+        <h3 className="font-semibold text-sm mb-3">{ensureString(t("shop.categories"))}</h3>
         <Separator className="my-4" />
         {categories.map((category) => {
           const Icon = category.icon;
@@ -41,38 +51,39 @@ export function CategorySidebar({
               onClick={() => onCategoryChange(category.id)}
             >
               <Icon className="h-4 w-4" />
-              {category.name}
+              {category.id === 'all' ? ensureString(t("categories.all")) :
+               category.id === 'health' ? ensureString(t("categories.health")) :
+               category.id === 'poetry' ? ensureString(t("categories.poetry")) :
+               category.id === 'selfHelp' ? ensureString(t("categories.selfHelp")) :
+               category.name}
             </Button>
           );
         })}
       </div>
       
       <div className="mt-8">
-        <h3 className="font-semibold text-sm mb-3">Price Range</h3>
+        <h3 className="font-semibold text-sm mb-3">{ensureString(t("shop.priceRange"))}</h3>
         <Separator className="my-4" />
         <div className="space-y-2">
           <Button variant="ghost" className="w-full justify-start text-sm font-normal">
-            Under $15
+            {ensureString(t("shop.under"))} 25 лв.
           </Button>
           <Button variant="ghost" className="w-full justify-start text-sm font-normal">
-            $15 - $25
+            25 - 30 лв.
           </Button>
           <Button variant="ghost" className="w-full justify-start text-sm font-normal">
-            $25 - $35
-          </Button>
-          <Button variant="ghost" className="w-full justify-start text-sm font-normal">
-            Over $35
+            {ensureString(t("shop.over"))} 30 лв.
           </Button>
         </div>
       </div>
       
       <div className="mt-8 rounded-lg bg-secondary p-4">
-        <h3 className="font-semibold">Special Offer</h3>
+        <h3 className="font-semibold">{ensureString(t("shop.specialOffer"))}</h3>
         <p className="mt-2 text-sm text-muted-foreground">
-          Get 20% off when you buy 3 or more books from our featured collection.
+          {ensureString(t("shop.offerDescription"))}
         </p>
-        <Button className="mt-4 w-full" size="sm">
-          View Offer
+        <Button className="mt-4 w-full bg-green-500 hover:bg-green-600 text-white" size="sm">
+          {ensureString(t("shop.viewOffer"))}
         </Button>
       </div>
     </div>

@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { ShoppingCart, Heart } from 'lucide-react';
+import { ShoppingCart, Heart, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 
 // Helper function to ensure translation returns a string
@@ -30,10 +30,19 @@ export function ProductCard({ book, className }: ProductCardProps) {
   return (
     <Card className={cn("overflow-hidden transition-all duration-200 hover:shadow-md max-w-xs mx-auto", className)}>
       <div className="relative aspect-[4/5] overflow-hidden bg-muted">
-        <div className="absolute right-2 top-2 z-10">
+        <div className="absolute right-2 top-2 z-10 flex gap-1">
           {book.featured && (
-            <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200 text-xs px-2 py-0.5">
+            <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-200 text-xs px-2 py-0.5">
+              <Sparkles className="mr-1 h-3 w-3" />
               {ensureString(t("productCard.featured"))}
+            </Badge>
+          )}
+          {book.category && (
+            <Badge variant="outline" className="bg-primary/10 text-primary hover:bg-primary/20 text-xs px-2 py-0.5">
+              {book.category === 'health' ? ensureString(t("categories.health")) : 
+               book.category === 'poetry' ? ensureString(t("categories.poetry")) : 
+               book.category === 'selfHelp' ? ensureString(t("categories.selfHelp")) : 
+               book.category}
             </Badge>
           )}
         </div>
@@ -43,6 +52,9 @@ export function ProductCard({ book, className }: ProductCardProps) {
               src={book.coverImage || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=687&auto=format&fit=crop"}
               alt={book.title}
               fill
+              sizes="(max-width: 768px) 100vw, 300px"
+              quality={90}
+              priority={book.featured}
               className="object-cover transition-transform duration-300 hover:scale-105"
             />
           </div>
@@ -54,7 +66,7 @@ export function ProductCard({ book, className }: ProductCardProps) {
         </Link>
         <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{book.description}</p>
         <div className="mt-2 flex items-center justify-between">
-          <span className="font-semibold text-sm">${book.price.toFixed(2)}</span>
+          <span className="font-semibold text-sm">{book.price.toFixed(2)} лв.</span>
           <span className="text-xs text-muted-foreground">
             {new Date(book.publishDate).toLocaleDateString(language === 'en' ? 'en-US' : 'bg-BG', { 
               year: 'numeric', 
@@ -64,7 +76,7 @@ export function ProductCard({ book, className }: ProductCardProps) {
         </div>
       </CardContent>
       <CardFooter className="flex gap-2 p-3 pt-0">
-        <Button className="flex-1 h-8 text-xs bg-orange-500 hover:bg-orange-600 text-white border-2 border-black shadow-sm hover:shadow-md transition-all duration-200" size="sm">
+        <Button className="flex-1 h-8 text-xs bg-green-500 hover:bg-green-600 text-white border-2 border-black shadow-sm hover:shadow-md transition-all duration-200" size="sm">
           <ShoppingCart className="mr-1 h-3 w-3" />
           {ensureString(t("productCard.buyNow"))}
         </Button>

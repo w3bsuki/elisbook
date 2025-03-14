@@ -16,6 +16,9 @@ export const translations = {
       fiction: "Fiction",
       nonFiction: "Non-Fiction",
       poetry: "Poetry",
+      health: "Health & Nutrition",
+      selfHelp: "Self-Help",
+      all: "All Books"
     },
     // Book descriptions
     bookDescriptions: {
@@ -133,6 +136,24 @@ export const translations = {
     productCard: {
       buyNow: "Buy Now",
       featured: "Featured"
+    },
+    // Book detail page
+    bookDetail: {
+      backToShop: "Back to Shop",
+      featured: "Featured",
+      reviews: "reviews",
+      published: "Published",
+      description: "Description",
+      publisher: "Publisher",
+      pages: "Pages",
+      buyNow: "Buy Now",
+      freeShipping: "Free Shipping",
+      freeShippingDesc: "Free standard shipping on orders over 50 лв.",
+      securePayment: "Secure Payment",
+      securePaymentDesc: "Your payment information is processed securely",
+      returns: "30-Day Returns",
+      returnsDesc: "Simple returns up to 30 days from purchase",
+      youMayAlsoLike: "You May Also Like"
     }
   },
   bg: {
@@ -149,6 +170,9 @@ export const translations = {
       fiction: "Художествена литература",
       nonFiction: "Нехудожествена литература",
       poetry: "Поезия",
+      health: "Здраве и Хранене",
+      selfHelp: "Самопомощ",
+      all: "Всички Книги"
     },
     // Book descriptions
     bookDescriptions: {
@@ -266,6 +290,24 @@ export const translations = {
     productCard: {
       buyNow: "Купете Сега",
       featured: "Препоръчано"
+    },
+    // Book detail page
+    bookDetail: {
+      backToShop: "Обратно към Магазина",
+      featured: "Препоръчано",
+      reviews: "отзива",
+      published: "Публикувано на",
+      description: "Описание",
+      publisher: "Издател",
+      pages: "Страници",
+      buyNow: "Купете Сега",
+      freeShipping: "Безплатна Доставка",
+      freeShippingDesc: "Безплатна стандартна доставка за поръчки над 50 лв.",
+      securePayment: "Сигурно Плащане",
+      securePaymentDesc: "Вашата информация за плащане се обработва сигурно",
+      returns: "30-дневно Връщане",
+      returnsDesc: "Лесно връщане до 30 дни от покупката",
+      youMayAlsoLike: "Може Също Да Харесате"
     }
   },
 };
