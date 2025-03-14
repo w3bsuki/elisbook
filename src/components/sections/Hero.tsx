@@ -76,12 +76,12 @@ export default function Hero() {
             </h1>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-              <Button className="px-6 bg-orange-600 hover:bg-orange-700">
+              <Button className="px-6 bg-orange-600 hover:bg-orange-700 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-200">
                 <BookOpen className="mr-2 h-4 w-4" />
                 {ensureString(t("hero.cta"))}
               </Button>
               <Button 
-                className="px-6 bg-orange-600 hover:bg-orange-700"
+                className="px-6 bg-black hover:bg-gray-900 text-white border-2 border-orange-600 shadow-md hover:shadow-lg transition-all duration-200"
                 onClick={() => setIsAboutOpen(true)}
               >
                 <UserCircle className="mr-2 h-4 w-4" />
