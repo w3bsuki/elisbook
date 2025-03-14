@@ -36,7 +36,7 @@ export default function FAQ() {
               <HelpCircle className="mr-1 h-3 w-3" />
               {ensureString(t("faq.title"))}
             </div>
-            <h2 className="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl">
+            <h2 className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">
               {ensureString(t("faq.subtitle"))}
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -66,7 +66,7 @@ export default function FAQ() {
             <p className="text-sm text-muted-foreground md:text-base">
               {ensureString(t("faq.cantFind"))}
             </p>
-            <Button className="mt-2 gap-2 bg-green-500 hover:bg-green-600 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-200">
+            <Button className="mt-2 gap-2 bg-green-500 hover:bg-green-600 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-300 text-lg rounded-none transform hover:-translate-y-1 hover:scale-105">
               <Mail className="h-4 w-4" />
               {ensureString(t("faq.contactSupport"))}
             </Button>

@@ -128,3 +128,27 @@
     font-family: var(--font-playfair);
   }
 }
+
+/* Force theme application */
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+/* Ensure proper theme colors for all sections */
+section {
+  @apply bg-white dark:bg-gray-900 text-black dark:text-white;
+}
+
+/* Fix for footer */
+footer {
+  @apply bg-white dark:bg-gray-900 text-black dark:text-white;
+}
+
+/* Fix for header */
+header {
+  @apply bg-white dark:bg-gray-900;
+}

@@ -123,7 +123,7 @@ const Testimonials = () => {
             <Zap className="h-4 w-4" />
             {ensureString(t("testimonials.tagline"))}
           </div>
-          <h2 className="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
+          <h2 className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl md:text-5xl">
             {ensureString(t("testimonials.title"))}
           </h2>
           <p className="mt-2 text-base text-muted-foreground md:text-lg">
@@ -173,7 +173,7 @@ const Testimonials = () => {
         </div>
 
         <div className="mt-12 flex justify-center">
-          <Button variant="outline" size="lg" className="gap-2 bg-green-500 hover:bg-green-600 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-200">
+          <Button variant="outline" size="lg" className="gap-2 bg-green-500 hover:bg-green-600 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-300 text-lg rounded-none transform hover:-translate-y-1 hover:scale-105">
             <MessageSquare className="h-5 w-5" />
             {ensureString(t("testimonials.leaveReview"))}
           </Button>

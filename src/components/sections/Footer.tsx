@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { DIcons } from "dicons";
-import ThemeToggle from "@/components/ui/theme-toggle";
+import { Facebook, Instagram, Twitter, Mail, Code } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useLanguage } from "@/lib/LanguageContext";
 
 // Helper function to ensure translation returns a string
@@ -54,7 +54,7 @@ const Footer = () => {
   };
   
   return (
-    <footer className="border-t px-2">
+    <footer className="border-t px-2 bg-white dark:bg-gray-900 text-black dark:text-white">
       <div className="relative mx-auto grid max-w-4xl items-center justify-center gap-6 p-10 pb-0 md:flex">
         <Link href="/">
           <p className="flex items-center justify-center rounded-full">
@@ -67,13 +67,13 @@ const Footer = () => {
             />
           </p>
         </Link>
-        <p className="bg-transparent text-center text-xs leading-4 text-primary/60 md:text-left">
+        <p className="bg-transparent text-center text-xs leading-4 text-primary/60 dark:text-gray-400 md:text-left">
           {ensureString(t("footer.welcome"))}
         </p>
       </div>
 
       <div className="mx-auto max-w-4xl px-6 py-10">
-        <div className="border-b border-dotted" />
+        <div className="border-b border-dotted dark:border-gray-700" />
         <div className="py-10">
           {navigation.categories.map((category) => (
             <div
@@ -103,7 +103,7 @@ const Footer = () => {
             </div>
           ))}
         </div>
-        <div className="border-b border-dotted" />
+        <div className="border-b border-dotted dark:border-gray-700" />
       </div>
 
       <div className="flex flex-wrap justify-center gap-y-6">
@@ -115,7 +115,7 @@ const Footer = () => {
             target="_blank"
             className={Underline}
           >
-            <DIcons.Mail strokeWidth={1.5} className="h-5 w-5" />
+            <Mail strokeWidth={1.5} className="h-5 w-5" />
           </Link>
           <Link
             aria-label="Twitter"
@@ -124,7 +124,7 @@ const Footer = () => {
             target="_blank"
             className={Underline}
           >
-            <DIcons.X className="h-5 w-5" />
+            <Twitter className="h-5 w-5" />
           </Link>
           <Link
             aria-label="GitHub"
@@ -133,7 +133,23 @@ const Footer = () => {
             target="_blank"
             className={Underline}
           >
-            <DIcons.Code className="h-5 w-5" />
+            <Code className="h-5 w-5" />
+          </Link>
+          <Link 
+            aria-label="Facebook"
+            href="https://facebook.com" 
+            className={Underline}
+          >
+            <span className="sr-only">Facebook</span>
+            <Facebook className="h-5 w-5" />
+          </Link>
+          <Link 
+            aria-label="Instagram"
+            href="https://instagram.com" 
+            className={Underline}
+          >
+            <span className="sr-only">Instagram</span>
+            <Instagram className="h-5 w-5" />
           </Link>
           <div className="ml-2">
             <ThemeToggle />

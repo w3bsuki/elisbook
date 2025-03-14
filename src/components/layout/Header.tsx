@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/LanguageContext";
-import { NavbarThemeToggle } from "@/components/ui/navbar-theme-toggle";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const resources = [
   {
@@ -101,10 +101,10 @@ export default function Header() {
             <Link href="/">
               <span className="text-3xl font-bold tracking-wide text-green-600 font-playfair">ELIS</span>
             </Link>
-            <NavbarThemeToggle />
+            <ThemeToggle />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon" className="rounded-full">
+                <Button variant="outline" size="icon">
                   <Globe className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
@@ -177,6 +177,13 @@ export default function Header() {
                         </Link>
                       ))}
                     </div>
+                    <div className="mt-6 flex justify-center border-t pt-6">
+                      <Button className="bg-green-600 hover:bg-green-700 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-200" asChild>
+                        <Link href="/shop">
+                          {language === "en" ? "Explore All Books" : "Разгледай Всички Книги"}
+                        </Link>
+                      </Button>
+                    </div>
                   </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
@@ -195,19 +202,19 @@ export default function Header() {
               <Link 
                 href="https://facebook.com" 
                 target="_blank" 
-                className="text-gray-700 hover:text-green-600 transition-colors duration-200 flex items-center justify-center h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200"
+                className="text-gray-700 hover:text-green-600 transition-colors duration-200 flex items-center justify-center h-8 w-8 bg-gray-100 hover:bg-gray-200"
               >
                 <Facebook className="h-4 w-4" />
               </Link>
               <Link 
                 href="https://instagram.com" 
                 target="_blank" 
-                className="text-gray-700 hover:text-green-600 transition-colors duration-200 flex items-center justify-center h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200"
+                className="text-gray-700 hover:text-green-600 transition-colors duration-200 flex items-center justify-center h-8 w-8 bg-gray-100 hover:bg-gray-200"
               >
                 <Instagram className="h-4 w-4" />
               </Link>
             </div>
-            <Button className="bg-green-500 hover:bg-green-600 text-white text-base px-5 py-1.5 h-auto border-2 border-black shadow-md hover:shadow-lg transition-all duration-200 font-medium rounded-md" asChild>
+            <Button className="bg-green-500 hover:bg-green-600 text-white text-base px-5 py-1.5 h-auto border-2 border-black shadow-md hover:shadow-lg transition-all duration-200 font-medium" asChild>
               <Link href="/shop">
                 {ensureString(t("nav.shop"))}
               </Link>
@@ -311,6 +318,13 @@ export default function Header() {
                   </div>
                 </Link>
               ))}
+              <div className="border-t border-border px-8 py-7">
+                <Button className="w-full bg-green-600 hover:bg-green-700 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-200" asChild>
+                  <Link href="/shop">
+                    {language === "en" ? "Explore All Books" : "Разгледай Всички Книги"}
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         )}

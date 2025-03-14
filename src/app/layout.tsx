@@ -33,8 +33,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="bg" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased`}>
+    <html lang="bg" suppressHydrationWarning className="light">
+      <body className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased bg-white dark:bg-gray-900 text-black dark:text-white`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -42,9 +42,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <LanguageProvider>
-            <Header />
-            <main>{children}</main>
-            <Footer />
+            <div className="min-h-screen flex flex-col">
+              <Header />
+              <main className="flex-grow">{children}</main>
+              <Footer />
+            </div>
           </LanguageProvider>
         </ThemeProvider>
       </body>
