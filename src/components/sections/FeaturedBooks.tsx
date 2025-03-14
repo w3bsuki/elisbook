@@ -1,17 +1,11 @@
 "use client";
 
-import { BookOpen, Star, Sparkles, TrendingUp, Crown, FileText, Calendar } from "lucide-react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-import { cn } from "@/lib/utils";
-import { shopBooks } from "@/lib/shop-data";
-
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 // Helper function to ensure translation returns a string
 const ensureString = (value: string | Record<string, unknown>): string => {
@@ -21,421 +15,238 @@ const ensureString = (value: string | Record<string, unknown>): string => {
   return String(value) || '';
 };
 
-// Blog posts data
-const blogPosts = [
-  {
-    id: '1',
-    title: 'Как Ежедневната Практика на Осъзнатост Може да Преобрази Живота Ви',
-    titleEn: 'How Daily Mindfulness Practice Can Transform Your Life',
-    excerpt: 'Открийте мощните ползи от включването на само 10 минути осъзнатост във вашата ежедневна рутина и как това може да доведе до дълбоки промени в психическото ви благосъстояние.',
-    excerptEn: 'Discover the powerful benefits of incorporating just 10 minutes of mindfulness into your daily routine and how it can lead to profound changes in your mental wellbeing.',
-    image: '/images/blog/mindfulness-practice.txt',
-    date: '15 Май, 2023',
-    dateEn: 'May 15, 2023',
-    category: 'mindfulness',
-    readTime: '5 мин',
-    readTimeEn: '5 min'
-  },
-  {
-    id: '2',
-    title: '5 Прости Навика за Осъзнато Хранене Всеки Ден',
-    titleEn: '5 Simple Habits for Mindful Eating Every Day',
-    excerpt: 'Научете практически стратегии за развиване на по-здравословна връзка с храната чрез практики за осъзнато хранене, които лесно можете да включите в натоварения си начин на живот.',
-    excerptEn: 'Learn practical strategies to develop a healthier relationship with food through mindful eating practices that you can easily incorporate into your busy lifestyle.',
-    image: '/images/blog/healthy-eating.txt',
-    date: '28 Април, 2023',
-    dateEn: 'April 28, 2023',
-    category: 'health',
-    readTime: '7 мин',
-    readTimeEn: '7 min'
-  },
-  {
-    id: '3',
-    title: 'Силата на Ежедневното Водене на Дневник за Личностно Развитие',
-    titleEn: 'The Power of Daily Journaling for Personal Growth',
-    excerpt: 'Разберете как воденето на ежедневен дневник може да ви помогне да изясните мислите си, да обработите емоциите си и да проследите пътя си на личностно развитие с течение на времето.',
-    excerptEn: 'Explore how keeping a daily journal can help you clarify your thoughts, process emotions, and track your personal growth journey over time.',
-    image: '/images/blog/personal-growth.txt',
-    date: '12 Март, 2023',
-    dateEn: 'March 12, 2023',
-    category: 'development',
-    readTime: '6 мин',
-    readTimeEn: '6 min'
-  }
-];
-
-const FeaturedBooks = () => {
-  const { language, t } = useLanguage();
+export default function FeaturedBooks() {
+  const [activeTab, setActiveTab] = useState<'poetry' | 'health' | 'selfHelp'>('poetry');
+  const { language } = useLanguage();
+  
+  // Hardcoded featured books data
+  const featuredBooks = {
+    poetry: [
+      {
+        id: 'poetry-1',
+        title: language === 'bg' ? 'Вдъхновения' : 'Inspirations',
+        description: language === 'bg' 
+          ? 'Сборник от поетични творби, които ще докоснат душата ви и ще ви накарат да се замислите за красотата на живота.'
+          : 'A collection of poetic works that will touch your soul and make you think about the beauty of life.',
+        image: '/images/books/vdahnovenia-kniga-1.png',
+        price: language === 'bg' ? 19.99 : 24.99,
+      },
+      {
+        id: 'poetry-2',
+        title: language === 'bg' ? 'Душевни Пътеки' : 'Soul Paths',
+        description: language === 'bg'
+          ? 'Поетично пътешествие през емоциите и преживяванията, които формират човешкия опит.'
+          : 'A poetic journey through the emotions and experiences that shape the human experience.',
+        image: '/images/books/vdahnovenia-kniga-1.png',
+        price: language === 'bg' ? 22.99 : 27.99,
+      },
+      {
+        id: 'poetry-3',
+        title: language === 'bg' ? 'Моменти на Яснота' : 'Moments of Clarity',
+        description: language === 'bg'
+          ? 'Стихове, които улавят мигове на прозрение и яснота в хаоса на ежедневието.'
+          : 'Verses that capture moments of insight and clarity in the chaos of everyday life.',
+        image: '/images/books/vdahnovenia-kniga-1.png',
+        price: language === 'bg' ? 18.99 : 23.99,
+      },
+    ],
+    health: [
+      {
+        id: 'health-1',
+        title: language === 'bg' ? 'Балансирано Хранене' : 'Balanced Nutrition',
+        description: language === 'bg'
+          ? 'Практически съвети за здравословно хранене и поддържане на енергичен начин на живот.'
+          : 'Practical advice for healthy eating and maintaining an energetic lifestyle.',
+        image: '/images/books/vdahnovenia-kniga-1.png',
+        price: language === 'bg' ? 24.99 : 29.99,
+      },
+      {
+        id: 'health-2',
+        title: language === 'bg' ? 'Йога за Начинаещи' : 'Yoga for Beginners',
+        description: language === 'bg'
+          ? 'Въведение в йога практиките, които могат да трансформират тялото и ума ви.'
+          : 'An introduction to yoga practices that can transform your body and mind.',
+        image: '/images/books/vdahnovenia-kniga-1.png',
+        price: language === 'bg' ? 21.99 : 26.99,
+      },
+      {
+        id: 'health-3',
+        title: language === 'bg' ? 'Здравословен Сън' : 'Healthy Sleep',
+        description: language === 'bg'
+          ? 'Разкрийте тайните на качествения сън и как той влияе на цялостното ви здраве.'
+          : 'Discover the secrets of quality sleep and how it affects your overall health.',
+        image: '/images/books/vdahnovenia-kniga-1.png',
+        price: language === 'bg' ? 19.99 : 24.99,
+      },
+    ],
+    selfHelp: [
+      {
+        id: 'selfHelp-1',
+        title: language === 'bg' ? 'Пътят към Себепознанието' : 'The Path to Self-Knowledge',
+        description: language === 'bg'
+          ? 'Ръководство за откриване на вътрешната мъдрост и разбиране на истинската си същност.'
+          : 'A guide to discovering inner wisdom and understanding your true nature.',
+        image: '/images/books/vdahnovenia-kniga-1.png',
+        price: language === 'bg' ? 26.99 : 31.99,
+      },
+      {
+        id: 'selfHelp-2',
+        title: language === 'bg' ? 'Емоционална Интелигентност' : 'Emotional Intelligence',
+        description: language === 'bg'
+          ? 'Научете се да разпознавате и управлявате емоциите си за по-пълноценни взаимоотношения.'
+          : 'Learn to recognize and manage your emotions for more fulfilling relationships.',
+        image: '/images/books/vdahnovenia-kniga-1.png',
+        price: language === 'bg' ? 23.99 : 28.99,
+      },
+      {
+        id: 'selfHelp-3',
+        title: language === 'bg' ? 'Преодоляване на Страховете' : 'Overcoming Fears',
+        description: language === 'bg'
+          ? 'Практически подход за идентифициране и преодоляване на ограничаващите страхове.'
+          : 'A practical approach to identifying and overcoming limiting fears.',
+        image: '/images/books/vdahnovenia-kniga-1.png',
+        price: language === 'bg' ? 22.99 : 27.99,
+      },
+    ],
+  };
+  
+  const currentBooks = featuredBooks[activeTab];
+  
+  const getCategoryTitle = () => {
+    switch (activeTab) {
+      case 'poetry':
+        return language === 'bg' ? 'ПОЕЗИЯ' : 'POETRY';
+      case 'health':
+        return language === 'bg' ? 'ЗДРАВЕ' : 'HEALTH';
+      case 'selfHelp':
+        return language === 'bg' ? 'САМОПОМОЩ' : 'SELF-HELP';
+      default:
+        return '';
+    }
+  };
+  
+  const getCategoryIcon = () => {
+    switch (activeTab) {
+      case 'poetry':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+          </svg>
+        );
+      case 'health':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+        );
+      case 'selfHelp':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+          </svg>
+        );
+      default:
+        return null;
+    }
+  };
+  
+  const getTabClass = (tab: 'poetry' | 'health' | 'selfHelp') => {
+    return `px-4 py-2 text-sm font-medium transition-colors ${
+      activeTab === tab
+        ? 'bg-green-600 text-white'
+        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+    }`;
+  };
   
   return (
-    <section className="bg-secondary py-32">
-      <div className="container mx-auto flex justify-center">
-        <div className="max-w-[60rem] w-full">
-          {/* Top dashed line with text */}
-          <div className="relative flex items-center justify-center">
-            <div className="w-full h-px bg-gray-300 relative">
+    <section className="py-16 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="relative text-center mb-12">
+          <div className="flex items-center justify-center">
+            <div className="w-1/3 h-px bg-gray-300 relative">
               <div className="absolute w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, transparent 0%, transparent 50%, #d1d5db 50%, #d1d5db 100%)', backgroundSize: '8px 1px' }}></div>
             </div>
-            <div className="absolute bg-secondary px-4 font-mono text-sm font-medium tracking-wide text-green-600 flex items-center gap-2">
-              <FileText className="h-5 w-5 text-green-600" />
-              <span className="font-medium uppercase text-sm">
-                {language === 'en' ? 'BLOG' : 'БЛОГ'}
+            <div className="mx-6 flex items-center text-black">
+              {getCategoryIcon()}
+              <span className="font-normal uppercase text-3xl">
+                {getCategoryTitle()}
               </span>
             </div>
-          </div>
-
-          {/* Content */}
-          <div className="mx-auto mt-10 grid max-w-5xl gap-8 lg:mt-16 lg:grid-cols-2 lg:items-start">
-            <div className="flex flex-col gap-6">
-              <div className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-600 w-fit">
-                <TrendingUp className="h-4 w-4" />
-                {language === 'en' ? 'Latest Articles' : 'Последни Статии'}
-              </div>
-              <h2 className="text-3xl font-semibold tracking-tight md:text-4xl lg:text-5xl">
-                {language === 'en' ? 'Insights & Wisdom' : 'Прозрения и Мъдрост'}
-              </h2>
+            <div className="w-1/3 h-px bg-gray-300 relative">
+              <div className="absolute w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, #d1d5db 0%, #d1d5db 50%, transparent 50%, transparent 100%)', backgroundSize: '8px 1px' }}></div>
             </div>
-            <div className="flex flex-col gap-6">
-              <p className="text-base text-muted-foreground md:text-lg">
-                {language === 'en' 
-                  ? 'Explore our collection of thought-provoking articles, practical guides, and inspirational content designed to help you on your journey of personal growth and mindfulness.'
-                  : 'Разгледайте нашата колекция от провокиращи размисъл статии, практически ръководства и вдъхновяващо съдържание, създадено да ви помогне в пътуването ви на личностно развитие и осъзнатост.'}
-              </p>
-              <div className="grid grid-cols-2 gap-6 rounded-2xl bg-background/50 p-6 backdrop-blur-sm">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                    <FileText className="h-6 w-6 text-green-600" />
+          </div>
+        </div>
+        
+        <div className="flex justify-center mb-8">
+          <div className="inline-flex rounded-md shadow-sm" role="group">
+            <button
+              type="button"
+              className={`${getTabClass('poetry')} rounded-l-md border border-r-0`}
+              onClick={() => setActiveTab('poetry')}
+            >
+              {language === 'bg' ? 'Поезия' : 'Poetry'}
+            </button>
+            <button
+              type="button"
+              className={`${getTabClass('health')} border-y border-r-0`}
+              onClick={() => setActiveTab('health')}
+            >
+              {language === 'bg' ? 'Здраве' : 'Health'}
+            </button>
+            <button
+              type="button"
+              className={`${getTabClass('selfHelp')} rounded-r-md border`}
+              onClick={() => setActiveTab('selfHelp')}
+            >
+              {language === 'bg' ? 'Самопомощ' : 'Self-Help'}
+            </button>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {currentBooks.map((book) => (
+            <div key={book.id} className="group">
+              <div className="relative transition-all duration-300 transform group-hover:translate-y-[-5px] group-hover:shadow-xl">
+                <div className="bg-white border-2 border-black overflow-hidden rounded-none shadow-md">
+                  <div className="relative h-64 w-full overflow-hidden">
+                    <Image
+                      src={book.image}
+                      alt={book.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                   </div>
-                  <div>
-                    <div className="text-2xl font-semibold tracking-tight">50+</div>
-                    <div className="text-sm text-muted-foreground">
-                      {language === 'en' ? 'Articles' : 'Статии'}
+                  <div className="p-5">
+                    <h3 className="font-bold text-lg mb-2">{book.title}</h3>
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-3">{book.description}</p>
+                    <div className="flex justify-between items-center">
+                      <span className="font-bold text-lg">
+                        {language === 'bg' ? `${book.price.toFixed(2)} лв.` : `$${book.price.toFixed(2)}`}
+                      </span>
+                      <Button variant="outline" size="sm" className="bg-green-600 hover:bg-green-700 text-white border-2 border-black shadow-sm hover:shadow-md transition-all duration-300 rounded-none">
+                        <BookOpen className="mr-2 h-4 w-4" />
+                        {language === 'bg' ? 'Детайли' : 'Details'}
+                      </Button>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                    <Star className="h-6 w-6 text-green-600" />
-                  </div>
-                  <div>
-                    <div className="text-2xl font-semibold tracking-tight">4.9</div>
-                    <div className="text-sm text-muted-foreground">
-                      {language === 'en' ? 'Reader Rating' : 'Читателска Оценка'}
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
-          </div>
-
-          {/* Blog Posts */}
-          <Card className="mt-16 overflow-hidden border-none bg-transparent shadow-none">
-            <CardContent className="p-0">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {blogPosts.map((post, i) => (
-                  <div key={i} className="cursor-pointer group">
-                    <div className="relative transition-all duration-300 transform group-hover:translate-y-[-5px] group-hover:shadow-lg">
-                      <div className="bg-white border-2 border-black overflow-hidden">
-                        <div className="relative h-48">
-                          <Image
-                            src={post.image}
-                            alt={language === 'en' ? post.titleEn : post.title}
-                            fill
-                            className="object-cover transition-transform duration-300 group-hover:scale-110"
-                          />
-                          <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-                          <div className="absolute top-3 right-3">
-                            <Badge className="bg-green-500 hover:bg-green-500/90">
-                              {language === 'en' 
-                                ? post.category.charAt(0).toUpperCase() + post.category.slice(1) 
-                                : post.category === 'health' ? 'Здраве' 
-                                : post.category === 'mindfulness' ? 'Осъзнатост' 
-                                : post.category === 'development' ? 'Развитие'
-                                : post.category}
-                            </Badge>
-                          </div>
-                        </div>
-                        <div className="p-4">
-                          <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
-                            <Calendar className="h-3 w-3" />
-                            {language === 'en' ? post.dateEn : post.date}
-                            <span className="inline-block h-1 w-1 rounded-full bg-gray-500"></span>
-                            {language === 'en' ? post.readTimeEn : post.readTime}
-                          </div>
-                          <h3 className="font-bold text-lg mb-2 line-clamp-2">
-                            {language === 'en' ? post.titleEn : post.title}
-                          </h3>
-                          <p className="text-sm text-gray-600 mb-3 line-clamp-3">
-                            {language === 'en' ? post.excerptEn : post.excerpt}
-                          </p>
-                          <div className="flex justify-end">
-                            <span className="text-xs text-green-600 font-medium">
-                              {language === 'en' ? 'Read more →' : 'Прочети още →'}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="mt-12 flex justify-center">
-            <Link href="/blog">
-              <Button variant="outline" size="lg" className="gap-2 bg-green-500 hover:bg-green-600 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-200 font-medium">
-                <FileText className="h-5 w-5" />
-                {language === 'en' ? 'View All Articles' : 'Вижте Всички Статии'}
-              </Button>
+          ))}
+        </div>
+        
+        <div className="flex justify-center mt-12">
+          <Button className="px-8 py-6 bg-green-600 hover:bg-green-700 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-300 text-lg rounded-none transform hover:-translate-y-1 hover:scale-105" asChild>
+            <Link href={`/category/${activeTab}`}>
+              <BookOpen className="mr-2 h-5 w-5" />
+              {language === 'bg' ? 'Вижте всички книги' : 'View All Books'}
             </Link>
-          </div>
-
-          {/* About the Author Section */}
-          <div className="mt-24 mb-24">
-            <div className="relative flex items-center justify-center mb-12">
-              <div className="w-full h-px bg-gray-300 relative">
-                <div className="absolute w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, transparent 0%, transparent 50%, #d1d5db 50%, #d1d5db 100%)', backgroundSize: '8px 1px' }}></div>
-              </div>
-              <div className="absolute bg-secondary px-4 font-mono text-sm font-medium tracking-wide text-green-600 flex items-center gap-2">
-                <BookOpen className="h-5 w-5 text-green-600" />
-                <span className="font-medium uppercase text-sm">
-                  {language === 'en' ? 'ABOUT THE AUTHOR' : 'ЗА АВТОРА'}
-                </span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-              <div className="relative">
-                <div className="absolute -top-4 -left-4 w-full h-full border-2 border-black bg-green-100 z-0"></div>
-                <div className="relative z-10 border-2 border-black overflow-hidden">
-                  <Image 
-                    src="/images/avatar/author-full.jpg" 
-                    alt={language === 'en' ? "Author Portrait" : "Портрет на автора"}
-                    width={600}
-                    height={800}
-                    className="w-full h-auto object-cover"
-                  />
-                </div>
-              </div>
-              
-              <div className="flex flex-col justify-center">
-                <h2 className="text-3xl font-bold mb-6 font-playfair">
-                  {language === 'en' ? 'Elena Ivanova' : 'Елена Иванова'}
-                </h2>
-                <p className="text-gray-700 mb-6">
-                  {language === 'en' 
-                    ? 'Award-winning author and mindfulness practitioner with over 15 years of experience in personal development coaching and writing. My journey began in the mountains of Bulgaria, where I discovered the power of mindfulness and journaling to transform lives.'
-                    : 'Отличен автор и практикуващ осъзнатост с над 15 години опит в коучинга за личностно развитие и писането. Моето пътуване започна в планините на България, където открих силата на осъзнатостта и воденето на дневник да трансформират животи.'}
-                </p>
-                <p className="text-gray-700 mb-6">
-                  {language === 'en' 
-                    ? 'Through my books and workshops, I have helped thousands of people discover their authentic selves and create meaningful change in their lives. I believe that everyone has a story worth telling, and I am passionate about helping others find their voice.'
-                    : 'Чрез моите книги и работилници съм помогнала на хиляди хора да открият автентичните си същности и да създадат смислена промяна в живота си. Вярвам, че всеки има история, която си заслужава да бъде разказана, и съм страстна да помагам на другите да намерят своя глас.'}
-                </p>
-                
-                <div className="flex gap-4 mt-4">
-                  <Link href="/about">
-                    <Button variant="outline" className="border-2 border-black bg-white hover:bg-gray-100 text-black">
-                      {language === 'en' ? 'My Story' : 'Моята История'}
-                    </Button>
-                  </Link>
-                  <Link href="/contact">
-                    <Button className="border-2 border-black bg-green-600 hover:bg-green-700 text-white">
-                      {language === 'en' ? 'Get in Touch' : 'Свържете се'}
-                    </Button>
-                  </Link>
-                </div>
-                
-                <div className="flex gap-4 mt-8">
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
-                      <BookOpen className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div>
-                      <div className="text-xl font-semibold">12</div>
-                      <div className="text-xs text-gray-500">
-                        {language === 'en' ? 'Books Published' : 'Публикувани Книги'}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
-                      <Star className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div>
-                      <div className="text-xl font-semibold">50+</div>
-                      <div className="text-xs text-gray-500">
-                        {language === 'en' ? 'Workshops Held' : 'Проведени Работилници'}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
-                      <TrendingUp className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div>
-                      <div className="text-xl font-semibold">10k+</div>
-                      <div className="text-xs text-gray-500">
-                        {language === 'en' ? 'Lives Impacted' : 'Повлияни Животи'}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Writing Services Section */}
-          <div className="mt-24">
-            <div className="relative flex items-center justify-center mb-12">
-              <div className="w-full h-px bg-gray-300 relative">
-                <div className="absolute w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, transparent 0%, transparent 50%, #d1d5db 50%, #d1d5db 100%)', backgroundSize: '8px 1px' }}></div>
-              </div>
-              <div className="absolute bg-secondary px-4 font-mono text-sm font-medium tracking-wide text-green-600 flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-green-600" />
-                <span className="font-medium uppercase text-sm">
-                  {language === 'en' ? 'WRITING SERVICES' : 'ПИСАТЕЛСКИ УСЛУГИ'}
-                </span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {/* Service 1 */}
-              <div className="bg-white border-2 border-black p-6 transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                    <BookOpen className="h-6 w-6 text-green-600" />
-                  </div>
-                  <h3 className="font-bold text-xl">
-                    {language === 'en' ? 'Book Editing' : 'Редактиране на Книги'}
-                  </h3>
-                </div>
-                <p className="text-gray-600 mb-4">
-                  {language === 'en' 
-                    ? 'Professional editing services to polish your manuscript and prepare it for publication. Includes developmental editing, line editing, and proofreading.'
-                    : 'Професионални услуги за редактиране, които ще шлифоват вашия ръкопис и ще го подготвят за публикуване. Включва развитийно редактиране, редактиране на текста и коректура.'}
-                </p>
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-green-600">
-                    {language === 'en' ? 'From $500' : 'От 900 лв.'}
-                  </span>
-                  <Link href="/services">
-                    <span className="text-sm text-green-600 font-medium">
-                      {language === 'en' ? 'Learn more →' : 'Научете повече →'}
-                    </span>
-                  </Link>
-                </div>
-              </div>
-
-              {/* Service 2 */}
-              <div className="bg-white border-2 border-black p-6 transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                    <FileText className="h-6 w-6 text-green-600" />
-                  </div>
-                  <h3 className="font-bold text-xl">
-                    {language === 'en' ? 'Ghostwriting' : 'Писане от Призрак'}
-                  </h3>
-                </div>
-                <p className="text-gray-600 mb-4">
-                  {language === 'en' 
-                    ? 'Professional ghostwriting services for your book, memoir, or article. I will help bring your ideas to life while maintaining your unique voice and vision.'
-                    : 'Професионални услуги за писане от призрак за вашата книга, мемоари или статия. Ще помогна да съживя идеите ви, като запазя вашия уникален глас и визия.'}
-                </p>
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-green-600">
-                    {language === 'en' ? 'From $2,000' : 'От 3,600 лв.'}
-                  </span>
-                  <Link href="/services">
-                    <span className="text-sm text-green-600 font-medium">
-                      {language === 'en' ? 'Learn more →' : 'Научете повече →'}
-                    </span>
-                  </Link>
-                </div>
-              </div>
-
-              {/* Service 3 */}
-              <div className="bg-white border-2 border-black p-6 transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                    <TrendingUp className="h-6 w-6 text-green-600" />
-                  </div>
-                  <h3 className="font-bold text-xl">
-                    {language === 'en' ? 'Writing Workshops' : 'Писателски Работилници'}
-                  </h3>
-                </div>
-                <p className="text-gray-600 mb-4">
-                  {language === 'en' 
-                    ? 'Interactive workshops and courses designed to help you develop your writing skills, overcome creative blocks, and find your authentic voice.'
-                    : 'Интерактивни работилници и курсове, предназначени да ви помогнат да развиете писателските си умения, да преодолеете творческите блокажи и да намерите автентичния си глас.'}
-                </p>
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-green-600">
-                    {language === 'en' ? 'From $250' : 'От 450 лв.'}
-                  </span>
-                  <Link href="/services">
-                    <span className="text-sm text-green-600 font-medium">
-                      {language === 'en' ? 'Learn more →' : 'Научете повече →'}
-                    </span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-12 flex justify-center">
-              <Link href="/services">
-                <Button variant="outline" size="lg" className="gap-2 bg-black hover:bg-gray-900 text-white border-2 border-green-600 shadow-md hover:shadow-lg transition-all duration-200 font-medium">
-                  <Sparkles className="h-5 w-5" />
-                  {language === 'en' ? 'Explore All Services' : 'Разгледайте Всички Услуги'}
-                </Button>
-              </Link>
-            </div>
-          </div>
+          </Button>
         </div>
       </div>
     </section>
   );
-};
-
-interface DashedLineProps {
-  orientation?: "horizontal" | "vertical";
-  className?: string;
-}
-
-const DashedLine = ({
-  orientation = "horizontal",
-  className,
-}: DashedLineProps) => {
-  const isHorizontal = orientation === "horizontal";
-
-  return (
-    <div
-      className={cn(
-        "relative text-muted-foreground",
-        isHorizontal ? "h-px w-full" : "h-full w-px",
-        className,
-      )}
-    >
-      <div
-        className={cn(
-          isHorizontal
-            ? [
-                "h-px w-full",
-                "bg-[repeating-linear-gradient(90deg,transparent,transparent_4px,currentColor_4px,currentColor_10px)]",
-                "[mask-image:linear-gradient(90deg,transparent,black_25%,black_45%,transparent)]",
-              ]
-            : [
-                "h-full w-px",
-                "bg-[repeating-linear-gradient(180deg,transparent,transparent_4px,currentColor_4px,currentColor_8px)]",
-                "[mask-image:linear-gradient(180deg,transparent,black_25%,black_45%,transparent)]",
-              ],
-        )}
-      />
-    </div>
-  );
-};
-
-export default FeaturedBooks; 
+} 

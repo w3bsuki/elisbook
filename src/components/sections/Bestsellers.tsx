@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,15 +9,26 @@ import { shopBooks } from "@/lib/shop-data";
 import FlipCard from "@/components/animata/card/flip-card";
 import { BookPreviewDialog } from "@/components/ui/book-preview-dialog";
 
+// Define a Book type to replace 'any'
+interface Book {
+  id: string;
+  title: string;
+  description: string;
+  category?: string;
+  price?: number;
+  featured?: boolean;
+  image?: string;
+}
+
 export default function Bestsellers() {
-  const [selectedBook, setSelectedBook] = useState<any>(null);
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const { language } = useLanguage();
   
   // Filter bestsellers - for this example, we'll use the featured books
   const bestsellers = shopBooks.filter(book => book.featured);
   
-  const handleBookClick = (book: any) => {
+  const handleBookClick = (book: Book) => {
     setSelectedBook(book);
     setIsPreviewOpen(true);
   };

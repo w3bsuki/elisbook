@@ -9,15 +9,26 @@ import { shopBooks } from "@/lib/shop-data";
 import FlipCard from "@/components/animata/card/flip-card";
 import { BookPreviewDialog } from "@/components/ui/book-preview-dialog";
 
+// Define a Book type to replace 'any'
+interface Book {
+  id: string;
+  title: string;
+  description: string;
+  category?: string;
+  price?: number;
+  featured?: boolean;
+  image?: string;
+}
+
 export default function DigitalBooks() {
-  const [selectedBook, setSelectedBook] = useState<any>(null);
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const { language } = useLanguage();
   
   // For this example, we'll use the first 3 books as digital books
   const digitalBooks = shopBooks.slice(0, 3);
   
-  const handleBookClick = (book: any) => {
+  const handleBookClick = (book: Book) => {
     setSelectedBook(book);
     setIsPreviewOpen(true);
   };
