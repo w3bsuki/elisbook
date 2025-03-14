@@ -70,17 +70,34 @@ export default function FlipCard({
     }
   };
 
+  // Define spine colors based on category
+  const getSpineColor = () => {
+    switch (category) {
+      case 'health':
+        return "bg-green-700";
+      case 'poetry':
+        return "bg-pink-700";
+      case 'selfHelp':
+        return "bg-purple-700";
+      default:
+        return "bg-green-700";
+    }
+  };
+
   return (
     <div className={cn("group h-80 w-60 [perspective:1000px]", className)} {...props}>
       <div
         className={cn(
-          "relative h-full rounded-2xl transition-all duration-500 [transform-style:preserve-3d]",
+          "relative h-full transition-all duration-500 [transform-style:preserve-3d]",
           self[0],
         )}
       >
+        {/* Spine effect */}
+        <div className={cn("absolute left-0 top-0 h-full w-[10px] shadow-md", getSpineColor())}></div>
+        
         {/* Front */}
         <div className="absolute h-full w-full [backface-visibility:hidden]">
-          <div className="relative h-full w-full rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
+          <div className="relative h-full w-full overflow-hidden border-2 border-black shadow-md">
             <AspectRatio ratio={3/5} className="h-full">
               <Image
                 src={image}
@@ -98,13 +115,13 @@ export default function FlipCard({
         {/* Back */}
         <div
           className={cn(
-            "absolute h-full w-full rounded-2xl p-5 bg-white text-gray-800 shadow-2xl shadow-black/40 [backface-visibility:hidden]",
+            "absolute h-full w-full p-5 bg-white text-gray-800 border-2 border-black shadow-md [backface-visibility:hidden]",
             self[1],
           )}
         >
           <div className="flex min-h-full flex-col">
             {/* Category Badge */}
-            <div className={cn("text-xs font-medium px-2 py-1 rounded-full w-fit", getBadgeColor())}>
+            <div className={cn("text-xs font-medium px-2 py-1 w-fit", getBadgeColor())}>
               {subtitle}
             </div>
             
@@ -112,7 +129,7 @@ export default function FlipCard({
             <h1 className="text-xl font-bold mt-3 text-gray-900">{title}</h1>
             
             {/* Divider */}
-            <div className={cn("w-16 h-1 my-3 rounded", getBorderColor())}></div>
+            <div className={cn("w-16 h-1 my-3", getBorderColor())}></div>
             
             {/* Description */}
             <p className="text-sm text-gray-600 leading-relaxed flex-grow overflow-y-auto pr-1 max-h-[140px] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
