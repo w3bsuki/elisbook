@@ -33,6 +33,22 @@ export default function AllBooks() {
     setIsPreviewOpen(true);
   };
   
+  // Helper function to safely format category
+  const formatCategory = (category?: string): string => {
+    if (!category) return '';
+    
+    if (language === 'en') {
+      return category.charAt(0).toUpperCase() + category.slice(1);
+    } else {
+      switch (category) {
+        case 'health': return 'Здраве';
+        case 'poetry': return 'Поезия';
+        case 'selfHelp': return 'Самопомощ';
+        default: return category;
+      }
+    }
+  };
+  
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -65,12 +81,7 @@ export default function AllBooks() {
               <FlipCard
                 image="/images/books/vdahnovenia-kniga-1.png"
                 title={book.title}
-                subtitle={language === 'en' 
-                  ? book.category?.charAt(0).toUpperCase() + book.category?.slice(1) 
-                  : book.category === 'health' ? 'Здраве' 
-                  : book.category === 'poetry' ? 'Поезия' 
-                  : book.category === 'selfHelp' ? 'Самопомощ'
-                  : book.category}
+                subtitle={formatCategory(book.category)}
                 description={book.description}
                 category={book.category || 'default'}
                 className={index % 3 === 1 ? "z-10" : ""}

@@ -14,10 +14,7 @@ interface FlipCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export default function FlipCard({
-  image: _image,
   title,
-  description: _description,
-  subtitle: _subtitle,
   category = "default",
   rotate = "y",
   className,

@@ -17,10 +17,6 @@ export function ThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
   const { language } = useLanguage();
   
-  const lightText = language === 'bg' ? 'Светла' : 'Light';
-  const darkText = language === 'bg' ? 'Тъмна' : 'Dark';
-  const systemText = language === 'bg' ? 'Системна' : 'System';
-
   // Force theme application on mount
   React.useEffect(() => {
     const root = window.document.documentElement;

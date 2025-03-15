@@ -7,14 +7,6 @@ import { BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
 
-// Helper function to ensure translation returns a string
-const ensureString = (value: string | Record<string, unknown>): string => {
-  if (typeof value === 'string') {
-    return value;
-  }
-  return String(value) || '';
-};
-
 export default function FeaturedBooks() {
   const [activeTab, setActiveTab] = useState<'poetry' | 'health' | 'selfHelp'>('poetry');
   const { language } = useLanguage();
