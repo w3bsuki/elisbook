@@ -77,7 +77,11 @@ export default function Bestsellers() {
             {language === 'en' ? 'Reader Favorites' : 'Читателски Фаворити'}
           </Badge>
           <h2 className="text-4xl md:text-5xl font-bold font-playfair mb-4 text-gray-900 dark:text-white">
-            {language === 'en' ? 'Bestselling Books' : 'Бестселъри'}
+            <span className="relative inline-block">
+              {language === 'en' ? 'Bestselling' : 'Бестселъри'}
+              <span className="absolute -bottom-2 left-0 w-full h-3 bg-green-200 dark:bg-green-700/50 -z-10 transform -rotate-1"></span>
+            </span>
+            {language === 'en' ? ' Books' : ''}
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             {language === 'en' 
