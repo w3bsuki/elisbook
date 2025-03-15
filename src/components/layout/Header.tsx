@@ -101,7 +101,7 @@ const NavLink = ({
 
 export default function Header() {
   const { t, language, setLanguage } = useLanguage();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean | string>(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [headerHeight, setHeaderHeight] = useState(0);
   const headerRef = React.useRef<HTMLDivElement>(null);
@@ -222,7 +222,6 @@ export default function Header() {
                   {getTranslation("nav.books")}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent 
-                  align="start" 
                   className="animate-in fade-in-50 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
                 >
                   <div className="w-[600px] p-4">
@@ -440,7 +439,7 @@ export default function Header() {
               <div className="text-xs tracking-widest text-muted-foreground uppercase">
                 {language === "en" ? "Book Categories" : "Категории Книги"}
               </div>
-              <Button variant="outline" onClick={() => setIsMenuOpen(null)} className="flex items-center">
+              <Button variant="outline" onClick={() => setIsMenuOpen(false)} className="flex items-center">
                 <ChevronLeft className="mr-2 size-4" />
                 {language === "en" ? "Back" : "Назад"}
               </Button>
