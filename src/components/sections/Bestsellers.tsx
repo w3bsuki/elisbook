@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { BookOpen, Star, TrendingUp } from "lucide-react";
+import { BookOpen, ShoppingCart, Star, TrendingUp, Eye, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
 import { shopBooks } from "@/lib/shop-data";
 import FlipCard from "@/components/animata/card/flip-card";
 import { BookPreviewDialog } from "@/components/ui/book-preview-dialog";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 // Define a Book type to replace 'any'
 interface Book {
@@ -69,10 +72,10 @@ export default function Bestsellers() {
       <div className="container mx-auto px-4">
         {/* Modern heading with accent */}
         <div className="text-center mb-16 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full bg-green-100 dark:bg-green-900/30 px-3 py-1 text-sm font-medium text-green-600 dark:text-green-400 mb-4">
-            <Star className="h-4 w-4" />
+          <Badge variant="outline" className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800 mb-4">
+            <Star className="h-3.5 w-3.5 mr-1" />
             {language === 'en' ? 'Reader Favorites' : 'Читателски Фаворити'}
-          </div>
+          </Badge>
           <h2 className="text-4xl md:text-5xl font-bold font-playfair mb-4 text-gray-900 dark:text-white">
             {language === 'en' ? 'Bestselling Books' : 'Бестселъри'}
           </h2>
@@ -84,42 +87,96 @@ export default function Bestsellers() {
         </div>
         
         {/* Books grid */}
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {bestsellers.map((book) => (
               <div 
                 key={book.id} 
-                className="flex flex-col h-full cursor-pointer"
-                onClick={() => handleBookClick(book)}
+                className="flex flex-col h-full group relative overflow-hidden border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800/50 rounded-xl transition-all duration-300 hover:shadow-[8px_8px_0px_0px_rgba(22,163,74,0.5)] dark:hover:shadow-[8px_8px_0px_0px_rgba(22,163,74,0.3)]"
               >
-                <div className="relative">
-                  <FlipCard
-                    image={book.coverImage || "/images/books/vdahnovenia-kniga-1.png"}
-                    title={book.title}
-                    subtitle={formatCategory(book.category)}
-                    description={book.description}
-                    category={book.category || 'default'}
-                    className="mx-auto shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)]"
-                  />
-                  
-                  {/* Bestseller badge */}
-                  <div className="absolute -top-4 -right-4 bg-yellow-500 text-black px-3 py-1 rounded-full border-2 border-black dark:border-gray-700 shadow-md z-20 transform rotate-12">
-                    <div className="flex items-center gap-1">
-                      <TrendingUp className="h-3 w-3" />
-                      <span className="font-bold text-xs">
-                        {language === 'en' ? 'Bestseller' : 'Бестселър'}
-                      </span>
-                    </div>
+                {/* Bestseller badge - fixed positioning */}
+                <div className="absolute top-0 right-0 z-30">
+                  <div className="bg-yellow-500 text-black px-3 py-1 rounded-bl-lg border-l-2 border-b-2 border-black dark:border-gray-700 shadow-md transform rotate-0 font-medium text-xs flex items-center gap-1">
+                    <TrendingUp className="h-3 w-3" />
+                    {language === 'en' ? 'Bestseller' : 'Бестселър'}
                   </div>
                 </div>
                 
-                {/* Book title below card - updated format with correct titles */}
-                <div className="mt-4 text-center">
-                  <h3 className="font-bold text-gray-900 dark:text-white text-lg">{getDisplayTitle(book)}</h3>
-                  <div className="inline-block bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-1 text-xs font-medium rounded mt-2">
-                    {formatCategory(book.category)}
+                {/* Book cover with hover effect */}
+                <div className="relative p-5 pb-0">
+                  <div 
+                    onClick={() => handleBookClick(book)} 
+                    className="cursor-pointer transform transition-transform duration-300 group-hover:translate-y-[-5px] max-w-[200px] mx-auto"
+                  >
+                    <AspectRatio ratio={3/5} className="bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden">
+                      <FlipCard
+                        image={book.coverImage || "/images/books/vdahnovenia-kniga-1.png"}
+                        title={book.title}
+                        subtitle={formatCategory(book.category)}
+                        description={book.description}
+                        category={book.category || 'default'}
+                        className="mx-auto shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)]"
+                      />
+                    </AspectRatio>
                   </div>
-                  <p className="font-bold mt-2 text-lg">{book.price?.toFixed(0)}{language === 'en' ? ' BGN' : 'лв'}</p>
+                  
+                  {/* Quick action button */}
+                  <div className="absolute top-7 left-7 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Button 
+                      size="icon" 
+                      variant="secondary" 
+                      className="h-8 w-8 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-md hover:bg-white dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700"
+                      onClick={() => handleBookClick(book)}
+                      title={language === 'en' ? 'Quick view' : 'Бърз преглед'}
+                    >
+                      <Eye className="h-4 w-4 text-gray-700 dark:text-gray-300" />
+                    </Button>
+                  </div>
+                </div>
+                
+                {/* Book details with green accent border */}
+                <div className="flex flex-col flex-grow p-5 pt-4 border-t-2 border-green-600/20 dark:border-green-600/10 mt-3 bg-gray-50 dark:bg-gray-800/80">
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="font-bold text-gray-900 dark:text-white text-base">{getDisplayTitle(book)}</h3>
+                    <span className="font-bold text-base text-green-600 dark:text-green-400">{book.price?.toFixed(0)}{language === 'en' ? ' BGN' : 'лв'}</span>
+                  </div>
+                  
+                  <div className="mb-2">
+                    <Badge variant="secondary" className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-200 text-xs">
+                      {formatCategory(book.category)}
+                    </Badge>
+                  </div>
+                  
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-3 line-clamp-2 flex-grow">
+                    {book.description}
+                  </p>
+                  
+                  {/* Action buttons in a unified container */}
+                  <div className="flex gap-2 mt-auto">
+                    <Button 
+                      variant="outline"
+                      size="sm"
+                      className="border-green-600 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-950/30 flex-1 h-8 text-xs"
+                      onClick={() => handleBookClick(book)}
+                    >
+                      <Eye className="h-3 w-3 mr-1" />
+                      {language === 'en' ? 'Preview' : 'Преглед'}
+                    </Button>
+                    
+                    <Button 
+                      size="sm"
+                      className={cn(
+                        "bg-green-600 hover:bg-green-700 text-white flex-1 h-8 text-xs",
+                        "transition-transform duration-200 hover:scale-105"
+                      )}
+                      asChild
+                    >
+                      <Link href={`/shop/${book.id}`}>
+                        <ShoppingCart className="h-3 w-3 mr-1" />
+                        {language === 'en' ? 'Buy' : 'Купи'}
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -129,12 +186,13 @@ export default function Bestsellers() {
         {/* Call to action */}
         <div className="flex justify-center mt-16">
           <Button 
-            className="bg-green-600 hover:bg-green-700 text-white border-2 border-black dark:border-gray-700 shadow-md hover:shadow-lg transition-all duration-300 text-lg rounded-none group h-14 px-8" 
+            variant="outline"
+            className="border-green-600 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-950/30 group border-2 px-6 py-5 h-auto"
             asChild
           >
             <Link href="/bestsellers" className="flex items-center">
-              <BookOpen className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
               {language === 'en' ? 'Explore All Bestsellers' : 'Разгледайте всички бестселъри'}
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>
         </div>
