@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Calendar, Clock, PenTool } from "lucide-react";
+import { ArrowRight, Calendar, Clock, PenTool, BookOpen, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 export default function BlogPreview() {
   const { language } = useLanguage();
@@ -65,16 +67,29 @@ export default function BlogPreview() {
   };
   
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-green-50 dark:from-gray-900 dark:to-gray-800">
-      <div className="container mx-auto px-4">
+    <section className="py-24 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-[url('/images/pattern-light.svg')] dark:bg-[url('/images/pattern-dark.svg')] opacity-5 bg-repeat bg-[length:20px_20px]"></div>
+        
+        {/* Enhanced background elements */}
+        <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/20 rounded-br-full opacity-30 blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-to-tl from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/20 rounded-tl-full opacity-30 blur-3xl"></div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
         {/* Modern heading with accent */}
         <div className="text-center mb-16 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 dark:bg-amber-900/30 px-3 py-1 text-sm font-medium text-amber-600 dark:text-amber-400 mb-4">
-            <PenTool className="h-4 w-4" />
+          <Badge variant="outline" className="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800 mb-4">
+            <PenTool className="h-3.5 w-3.5 mr-1" />
             {language === 'bg' ? 'Вдъхновяващи Статии' : 'Inspiring Articles'}
-          </div>
+          </Badge>
           <h2 className="text-4xl md:text-5xl font-bold font-playfair mb-4 text-gray-900 dark:text-white">
-            {language === 'bg' ? 'Блог за Благосъстояние' : 'Wellness & Mindfulness Blog'}
+            <span className="relative inline-block">
+              {language === 'bg' ? 'Блог за' : 'Wellness &'}
+              <span className="absolute -bottom-2 left-0 w-full h-4 bg-amber-300 dark:bg-amber-600/60 -z-10 transform -rotate-1 rounded-sm"></span>
+            </span>{" "}
+            {language === 'bg' ? 'Благосъстояние' : 'Mindfulness Blog'}
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             {language === 'bg' 
@@ -86,61 +101,80 @@ export default function BlogPreview() {
         {/* Blog posts grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {blogPosts.map((post) => (
-            <Link 
+            <div 
               key={post.id} 
-              href={`/blog/${post.id}`}
-              className="group block"
+              className="flex flex-col h-full group relative overflow-hidden border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800/50 rounded-xl transition-all duration-300 hover:shadow-[8px_8px_0px_0px_rgba(245,158,11,0.5)] dark:hover:shadow-[8px_8px_0px_0px_rgba(245,158,11,0.3)]"
             >
-              <div className="relative transition-all duration-300 transform group-hover:translate-y-[-5px] group-hover:shadow-xl">
-                <div className="bg-white dark:bg-gray-800 border-2 border-black dark:border-gray-700 overflow-hidden rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)]">
-                  <div className="relative h-48 w-full overflow-hidden">
-                    <Image
-                      src={post.image}
-                      alt={post.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    <div className="absolute top-4 left-4 bg-amber-500 text-white text-xs font-medium px-2 py-1 rounded-none border border-black">
-                      {post.category}
-                    </div>
-                  </div>
-                  <div className="p-5">
-                    <div className="flex justify-between items-center mb-3 text-xs text-gray-500 dark:text-gray-400">
-                      <div className="flex items-center">
-                        <Calendar className="h-3.5 w-3.5 mr-1" />
-                        <span>{formatDate(post.date)}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <Clock className="h-3.5 w-3.5 mr-1" />
-                        <span>{post.readTime}</span>
-                      </div>
-                    </div>
-                    <h3 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors dark:text-white">{post.title}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">{post.excerpt}</p>
-                    <div className="flex items-center text-amber-600 dark:text-amber-400 text-sm font-medium">
-                      {language === 'bg' ? 'Прочетете повече' : 'Read more'}
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </div>
+              {/* Category badge - top left */}
+              <div className="absolute top-0 left-0 z-30">
+                <div className="bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 px-3 py-1 rounded-br-lg border-r-2 border-b-2 border-black dark:border-gray-700 shadow-md transform rotate-0 font-medium text-xs">
+                  {post.category}
                 </div>
               </div>
-            </Link>
+              
+              {/* Image container */}
+              <div className="relative h-48 w-full overflow-hidden">
+                <Image
+                  src={post.image}
+                  alt={post.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              </div>
+              
+              {/* Post details with amber accent border */}
+              <div className="flex flex-col flex-grow p-5 pt-4 border-t-2 border-amber-600/20 dark:border-amber-600/10 bg-gray-50 dark:bg-gray-800/80">
+                <div className="flex justify-between items-center mb-3 text-xs text-gray-500 dark:text-gray-400">
+                  <div className="flex items-center">
+                    <Calendar className="h-3.5 w-3.5 mr-1" />
+                    <span>{formatDate(post.date)}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Clock className="h-3.5 w-3.5 mr-1" />
+                    <span>{post.readTime}</span>
+                  </div>
+                </div>
+                
+                <h3 className="font-bold text-gray-900 dark:text-white text-lg mb-2 line-clamp-2 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                  {post.title}
+                </h3>
+                
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 flex-grow">
+                  {post.excerpt}
+                </p>
+                
+                {/* Action button */}
+                <div className="mt-auto">
+                  <Button 
+                    variant="outline"
+                    size="sm"
+                    className="border-amber-600 text-amber-600 hover:bg-amber-50 dark:border-amber-500 dark:text-amber-500 dark:hover:bg-amber-950/30 w-full h-9 text-xs group"
+                    asChild
+                  >
+                    <Link href={`/blog/${post.id}`} className="flex items-center justify-center">
+                      <BookOpen className="h-3.5 w-3.5 mr-1.5" />
+                      {language === 'bg' ? 'Прочетете статията' : 'Read Article'}
+                      <ArrowRight className="ml-1.5 h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
         
         {/* Call to action */}
         <div className="flex justify-center mt-16">
           <Button 
-            className="bg-amber-600 hover:bg-amber-700 text-white border-2 border-black dark:border-gray-700 shadow-md hover:shadow-lg transition-all duration-300 text-lg rounded-none group h-14 px-8" 
+            variant="outline"
+            className="border-amber-600 text-amber-600 hover:bg-amber-50 dark:border-amber-500 dark:text-amber-500 dark:hover:bg-amber-950/30 group border-2 px-6 py-5 h-auto"
             asChild
           >
             <Link href="/blog" className="flex items-center">
-              <span className="flex items-center">
-                {language === 'bg' ? 'Вижте всички статии' : 'View All Articles'}
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </span>
+              {language === 'bg' ? 'Вижте всички статии' : 'View All Articles'}
+              <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>
         </div>
