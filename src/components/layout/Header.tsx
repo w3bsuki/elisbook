@@ -277,7 +277,7 @@ export default function Header() {
                       ))}
                     </div>
                     <div className="mt-6 flex justify-center border-t pt-6">
-                      <Button className="bg-green-600 hover:bg-green-700 text-white rounded-md border border-green-700 hover:border-green-800 shadow-sm hover:shadow-md transition-all duration-200 group hover:translate-y-[-2px]" asChild>
+                      <Button className="bg-green-600 hover:bg-green-700 text-white rounded-md border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-200 group hover:translate-y-[-2px]" asChild>
                         <Link href="/shop" className="flex items-center">
                           <ShoppingBag className="mr-2 h-4 w-4 transition-transform group-hover:scale-110" />
                           {language === "en" ? "Explore All Books" : "Разгледай Всички Книги"}
@@ -315,7 +315,7 @@ export default function Header() {
               </Link>
             </div>
             <Button 
-              className="bg-green-600 hover:bg-green-700 text-white text-base px-5 py-1.5 h-auto rounded-md border border-green-700 hover:border-green-800 shadow-sm hover:shadow-md transition-all duration-200 font-medium group hover:translate-y-[-2px]" 
+              className="bg-green-600 hover:bg-green-700 text-white text-base px-5 py-1.5 h-auto rounded-md border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-200 font-medium group hover:translate-y-[-2px]" 
               asChild
             >
               <Link href="/shop" className="flex items-center">
@@ -390,7 +390,7 @@ export default function Header() {
               </Link>
               <Link 
                 href="/shop" 
-                className="flex w-full items-center border-b border-border px-8 py-6 text-left bg-green-600 hover:bg-green-700 text-white transition-all duration-200 hover:translate-y-[-2px]"
+                className="flex w-full items-center border-b border-border px-8 py-6 text-left bg-green-600 hover:bg-green-700 text-white transition-all duration-200 hover:translate-y-[-2px] border-2 border-black dark:border-gray-700"
               >
                 <span className="flex-1 text-lg font-medium flex items-center">
                   <ShoppingBag className="mr-2 h-4 w-4" />
@@ -483,7 +483,7 @@ export default function Header() {
                 </div>
               ))}
               <div className="border-t border-border px-8 py-7">
-                <Button className="w-full bg-green-600 hover:bg-green-700 text-white rounded-md border border-green-700 hover:border-green-800 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center hover:translate-y-[-2px]" asChild>
+                <Button className="w-full bg-green-600 hover:bg-green-700 text-white rounded-md border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-200 flex items-center justify-center hover:translate-y-[-2px]" asChild>
                   <Link href="/shop">
                     <ShoppingBag className="mr-2 h-4 w-4" />
                     {language === "en" ? "Explore All Books" : "Разгледай Всички Книги"}
