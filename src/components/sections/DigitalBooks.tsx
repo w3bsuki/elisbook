@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Download, Sparkles, ChevronRight, Laptop, FileText, BookOpen } from "lucide-react";
+import { Download, ChevronRight, Laptop, FileText, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
 import { shopBooks } from "@/lib/shop-data";
