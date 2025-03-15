@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { BookOpen, ShoppingCart, Star, TrendingUp, Eye, ArrowRight } from "lucide-react";
+import { ShoppingCart, Star, TrendingUp, Eye, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
 import { shopBooks } from "@/lib/shop-data";
