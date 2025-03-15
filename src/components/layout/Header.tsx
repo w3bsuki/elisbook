@@ -277,7 +277,7 @@ export default function Header() {
                       ))}
                     </div>
                     <div className="mt-6 flex justify-center border-t pt-6">
-                      <Button className="bg-green-600 hover:bg-green-700 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-200 group" asChild>
+                      <Button className="bg-green-600 hover:bg-green-700 text-white rounded-md border border-green-700 hover:border-green-800 shadow-sm hover:shadow-md transition-all duration-200 group hover:translate-y-[-2px]" asChild>
                         <Link href="/shop" className="flex items-center">
                           <ShoppingBag className="mr-2 h-4 w-4 transition-transform group-hover:scale-110" />
                           {language === "en" ? "Explore All Books" : "Разгледай Всички Книги"}
@@ -296,11 +296,11 @@ export default function Header() {
           </NavigationMenu>
           
           <div className="flex-1 flex items-center justify-end gap-4">
-            <div className="hidden md:flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-3">
               <Link 
                 href="https://facebook.com" 
                 target="_blank" 
-                className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400 transition-colors duration-200 flex items-center justify-center h-8 w-8 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full"
+                className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400 transition-all duration-200 flex items-center justify-center h-9 w-9 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full border border-gray-200 dark:border-gray-700 hover:scale-110"
                 aria-label="Facebook"
               >
                 <Facebook className="h-4 w-4" />
@@ -308,14 +308,14 @@ export default function Header() {
               <Link 
                 href="https://instagram.com" 
                 target="_blank" 
-                className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400 transition-colors duration-200 flex items-center justify-center h-8 w-8 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full"
+                className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400 transition-all duration-200 flex items-center justify-center h-9 w-9 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full border border-gray-200 dark:border-gray-700 hover:scale-110"
                 aria-label="Instagram"
               >
                 <Instagram className="h-4 w-4" />
               </Link>
             </div>
             <Button 
-              className="bg-green-600 hover:bg-green-700 text-white text-base px-5 py-1.5 h-auto border-2 border-black shadow-md hover:shadow-lg transition-all duration-200 font-medium group" 
+              className="bg-green-600 hover:bg-green-700 text-white text-base px-5 py-1.5 h-auto rounded-md border border-green-700 hover:border-green-800 shadow-sm hover:shadow-md transition-all duration-200 font-medium group hover:translate-y-[-2px]" 
               asChild
             >
               <Link href="/shop" className="flex items-center">
@@ -390,7 +390,7 @@ export default function Header() {
               </Link>
               <Link 
                 href="/shop" 
-                className="flex w-full items-center border-b border-border px-8 py-6 text-left bg-green-600 hover:bg-green-700 text-white transition-colors"
+                className="flex w-full items-center border-b border-border px-8 py-6 text-left bg-green-600 hover:bg-green-700 text-white transition-all duration-200 hover:translate-y-[-2px]"
               >
                 <span className="flex-1 text-lg font-medium flex items-center">
                   <ShoppingBag className="mr-2 h-4 w-4" />
@@ -411,7 +411,7 @@ export default function Header() {
                 <Link 
                   href="https://facebook.com" 
                   target="_blank" 
-                  className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400 transition-colors duration-200 flex items-center justify-center h-10 w-10 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full"
+                  className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400 transition-all duration-200 flex items-center justify-center h-10 w-10 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full border border-gray-200 dark:border-gray-700 hover:scale-110"
                   aria-label="Facebook"
                 >
                   <Facebook className="h-5 w-5" />
@@ -419,7 +419,7 @@ export default function Header() {
                 <Link 
                   href="https://instagram.com" 
                   target="_blank" 
-                  className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400 transition-colors duration-200 flex items-center justify-center h-10 w-10 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full"
+                  className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400 transition-all duration-200 flex items-center justify-center h-10 w-10 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full border border-gray-200 dark:border-gray-700 hover:scale-110"
                   aria-label="Instagram"
                 >
                   <Instagram className="h-5 w-5" />
@@ -483,7 +483,7 @@ export default function Header() {
                 </div>
               ))}
               <div className="border-t border-border px-8 py-7">
-                <Button className="w-full bg-green-600 hover:bg-green-700 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center" asChild>
+                <Button className="w-full bg-green-600 hover:bg-green-700 text-white rounded-md border border-green-700 hover:border-green-800 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center hover:translate-y-[-2px]" asChild>
                   <Link href="/shop">
                     <ShoppingBag className="mr-2 h-4 w-4" />
                     {language === "en" ? "Explore All Books" : "Разгледай Всички Книги"}
