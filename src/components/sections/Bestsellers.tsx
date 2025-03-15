@@ -102,8 +102,15 @@ export default function Bestsellers() {
                   </div>
                 </div>
                 
+                {/* Category badge - top left */}
+                <div className="absolute top-0 left-0 z-30">
+                  <div className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-3 py-1 rounded-br-lg border-r-2 border-b-2 border-black dark:border-gray-700 shadow-md transform rotate-0 font-medium text-xs">
+                    {formatCategory(book.category)}
+                  </div>
+                </div>
+                
                 {/* Book cover with hover effect */}
-                <div className="relative p-5 pb-0">
+                <div className="relative p-5 pt-8 pb-0">
                   <div 
                     onClick={() => handleBookClick(book)} 
                     className="cursor-pointer transform transition-transform duration-300 group-hover:translate-y-[-5px] max-w-[200px] mx-auto"
@@ -115,13 +122,13 @@ export default function Bestsellers() {
                         subtitle={formatCategory(book.category)}
                         description={book.description}
                         category={book.category || 'default'}
-                        className="mx-auto shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)]"
+                        className="mx-auto shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] w-full h-full"
                       />
                     </AspectRatio>
                   </div>
                   
                   {/* Quick action button */}
-                  <div className="absolute top-7 left-7 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute top-10 left-7 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <Button 
                       size="icon" 
                       variant="secondary" 
@@ -139,12 +146,6 @@ export default function Bestsellers() {
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="font-bold text-gray-900 dark:text-white text-base">{getDisplayTitle(book)}</h3>
                     <span className="font-bold text-base text-green-600 dark:text-green-400">{book.price?.toFixed(0)}{language === 'en' ? ' BGN' : 'лв'}</span>
-                  </div>
-                  
-                  <div className="mb-2">
-                    <Badge variant="secondary" className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-200 text-xs">
-                      {formatCategory(book.category)}
-                    </Badge>
                   </div>
                   
                   <p className="text-xs text-gray-600 dark:text-gray-400 mb-3 line-clamp-2 flex-grow">
