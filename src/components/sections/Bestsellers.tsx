@@ -79,7 +79,7 @@ export default function Bestsellers() {
           <h2 className="text-4xl md:text-5xl font-bold font-playfair mb-4 text-gray-900 dark:text-white">
             <span className="relative inline-block">
               {language === 'en' ? 'Bestselling' : 'Бестселъри'}
-              <span className="absolute -bottom-2 left-0 w-full h-3 bg-green-200 dark:bg-green-700/50 -z-10 transform -rotate-1"></span>
+              <span className="absolute -bottom-2 left-0 w-full h-4 bg-green-300 dark:bg-green-600/60 -z-10 transform -rotate-1 rounded-sm"></span>
             </span>
             {language === 'en' ? ' Books' : ''}
           </h2>
