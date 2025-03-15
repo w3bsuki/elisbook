@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Calendar, Clock } from "lucide-react";
+import { ArrowRight, Calendar, Clock, PenTool } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
 
@@ -65,32 +65,25 @@ export default function BlogPreview() {
   };
   
   return (
-    <section className="py-16 bg-gradient-to-b from-white to-green-50 dark:from-gray-900 dark:to-gray-800">
+    <section className="py-24 bg-gradient-to-b from-white to-green-50 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4">
-        <div className="relative text-center mb-12">
-          <div className="flex items-center justify-center">
-            <div className="w-1/3 h-px bg-gray-300 dark:bg-gray-700 relative">
-              <div className="absolute w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, transparent 0%, transparent 50%, #d1d5db 50%, #d1d5db 100%)', backgroundSize: '8px 1px' }}></div>
-            </div>
-            <div className="mx-6 flex items-center text-black dark:text-white">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-              </svg>
-              <span className="font-normal uppercase text-3xl">
-                {language === 'bg' ? 'БЛОГ ЗА БЛАГОСЪСТОЯНИЕ И ОСЪЗНАТОСТ' : 'WELLNESS & MINDFULNESS BLOG'}
-              </span>
-            </div>
-            <div className="w-1/3 h-px bg-gray-300 dark:bg-gray-700 relative">
-              <div className="absolute w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, #d1d5db 0%, #d1d5db 50%, transparent 50%, transparent 100%)', backgroundSize: '8px 1px' }}></div>
-            </div>
+        {/* Modern heading with accent */}
+        <div className="text-center mb-16 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 dark:bg-amber-900/30 px-3 py-1 text-sm font-medium text-amber-600 dark:text-amber-400 mb-4">
+            <PenTool className="h-4 w-4" />
+            {language === 'bg' ? 'Вдъхновяващи Статии' : 'Inspiring Articles'}
           </div>
-          <p className="mt-4 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold font-playfair mb-4 text-gray-900 dark:text-white">
+            {language === 'bg' ? 'Блог за Благосъстояние' : 'Wellness & Mindfulness Blog'}
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             {language === 'bg' 
               ? 'Разгледайте статии за здраве, благосъстояние, осъзнатост и личностно развитие, написани от Елис'
               : 'Explore articles on health, wellness, mindfulness, and personal growth written by Elis'}
           </p>
         </div>
         
+        {/* Blog posts grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {blogPosts.map((post) => (
             <Link 
@@ -99,7 +92,7 @@ export default function BlogPreview() {
               className="group block"
             >
               <div className="relative transition-all duration-300 transform group-hover:translate-y-[-5px] group-hover:shadow-xl">
-                <div className="bg-white dark:bg-gray-800 border-2 border-black dark:border-gray-700 overflow-hidden rounded-none shadow-md">
+                <div className="bg-white dark:bg-gray-800 border-2 border-black dark:border-gray-700 overflow-hidden rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)]">
                   <div className="relative h-48 w-full overflow-hidden">
                     <Image
                       src={post.image}
@@ -109,7 +102,7 @@ export default function BlogPreview() {
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    <div className="absolute top-4 left-4 bg-green-600 text-white text-xs font-medium px-2 py-1 rounded-none">
+                    <div className="absolute top-4 left-4 bg-amber-500 text-white text-xs font-medium px-2 py-1 rounded-none border border-black">
                       {post.category}
                     </div>
                   </div>
@@ -124,9 +117,9 @@ export default function BlogPreview() {
                         <span>{post.readTime}</span>
                       </div>
                     </div>
-                    <h3 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors dark:text-white">{post.title}</h3>
+                    <h3 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors dark:text-white">{post.title}</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">{post.excerpt}</p>
-                    <div className="flex items-center text-green-600 dark:text-green-400 text-sm font-medium">
+                    <div className="flex items-center text-amber-600 dark:text-amber-400 text-sm font-medium">
                       {language === 'bg' ? 'Прочетете повече' : 'Read more'}
                       <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </div>
@@ -137,12 +130,16 @@ export default function BlogPreview() {
           ))}
         </div>
         
-        <div className="flex justify-center mt-12">
-          <Button className="px-8 py-6 bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600 text-white border-2 border-black dark:border-gray-700 shadow-md hover:shadow-lg transition-all duration-300 text-lg rounded-none transform hover:-translate-y-1 hover:scale-105" asChild>
-            <Link href="/blog">
+        {/* Call to action */}
+        <div className="flex justify-center mt-16">
+          <Button 
+            className="bg-amber-600 hover:bg-amber-700 text-white border-2 border-black dark:border-gray-700 shadow-md hover:shadow-lg transition-all duration-300 text-lg rounded-none group h-14 px-8" 
+            asChild
+          >
+            <Link href="/blog" className="flex items-center">
               <span className="flex items-center">
                 {language === 'bg' ? 'Вижте всички статии' : 'View All Articles'}
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </span>
             </Link>
           </Button>

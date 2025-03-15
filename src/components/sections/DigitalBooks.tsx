@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { BookOpen } from "lucide-react";
+import { Download, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
 import { shopBooks } from "@/lib/shop-data";
@@ -18,6 +18,7 @@ interface Book {
   price?: number;
   featured?: boolean;
   image?: string;
+  coverImage?: string;
 }
 
 export default function DigitalBooks() {
@@ -33,52 +34,90 @@ export default function DigitalBooks() {
     setIsPreviewOpen(true);
   };
   
+  // Helper function to get the display title for each book
+  const getDisplayTitle = (book: Book): string => {
+    // Map book IDs to their display titles
+    switch (book.id) {
+      case '1': return 'Осъзнато Хранене';
+      case '2': 
+      case '3': return 'Вдъхновения';
+      case '6': return 'С душа и сърце';
+      case '5': return 'Дневник на успеха';
+      default: return book.title.split(' - ')[0];
+    }
+  };
+  
   return (
-    <section className="py-16 bg-white">
+    <section className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
       <div className="container mx-auto px-4">
-        <div className="relative text-center mb-12">
-          <div className="flex items-center justify-center">
-            <div className="w-1/3 h-px bg-gray-300 relative">
-              <div className="absolute w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, transparent 0%, transparent 50%, #d1d5db 50%, #d1d5db 100%)', backgroundSize: '8px 1px' }}></div>
-            </div>
-            <div className="mx-6 flex items-center text-black">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
-              <span className="font-normal uppercase text-3xl">
-                {language === 'en' ? 'DIGITAL BOOKS' : 'ДИГИТАЛНИ КНИГИ'}
-              </span>
-            </div>
-            <div className="w-1/3 h-px bg-gray-300 relative">
-              <div className="absolute w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, #d1d5db 0%, #d1d5db 50%, transparent 50%, transparent 100%)', backgroundSize: '8px 1px' }}></div>
-            </div>
+        {/* Modern heading with accent */}
+        <div className="text-center mb-16 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full bg-blue-100 dark:bg-blue-900/30 px-3 py-1 text-sm font-medium text-blue-600 dark:text-blue-400 mb-4">
+            <Download className="h-4 w-4" />
+            {language === 'en' ? 'Instant Access' : 'Незабавен Достъп'}
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold font-playfair mb-4 text-gray-900 dark:text-white">
+            {language === 'en' ? 'Digital Books Collection' : 'Дигитални Книги'}
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            {language === 'en' 
+              ? 'Download and start reading immediately with our collection of digital books, available in multiple formats.'
+              : 'Изтеглете и започнете да четете веднага с нашата колекция от дигитални книги, налични в различни формати.'}
+          </p>
+        </div>
+        
+        {/* Books grid */}
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+            {digitalBooks.map((book, index) => (
+              <div 
+                key={book.id} 
+                onClick={() => handleBookClick(book)}
+                className="cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2"
+              >
+                <div className="relative">
+                  <FlipCard
+                    image={book.coverImage || "/images/books/vdahnovenia-kniga-1.png"}
+                    title={book.title}
+                    subtitle={language === 'en' ? 'Digital' : 'Дигитална'}
+                    description={book.description}
+                    category={book.category || 'default'}
+                    className="mx-auto shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)]"
+                  />
+                  
+                  {/* Digital badge */}
+                  <div className="absolute -top-4 -right-4 bg-blue-500 text-white px-3 py-1 rounded-full border-2 border-black dark:border-gray-700 shadow-md z-20 transform rotate-12">
+                    <div className="flex items-center gap-1">
+                      <Sparkles className="h-3 w-3" />
+                      <span className="font-bold text-xs">
+                        {language === 'en' ? 'Digital' : 'Дигитална'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Book title below card */}
+                <div className="mt-4 text-center">
+                  <h3 className="font-bold text-gray-900 dark:text-white text-lg">{getDisplayTitle(book)}</h3>
+                  <div className="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2 py-1 text-xs font-medium rounded mt-2">
+                    PDF & EPUB
+                  </div>
+                  <p className="font-bold mt-2 text-lg">{book.price?.toFixed(0)}{language === 'en' ? ' BGN' : 'лв'}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
         
-        <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6 lg:gap-8 max-w-6xl mx-auto">
-          {digitalBooks.map((book, index) => (
-            <div 
-              key={book.id} 
-              onClick={() => handleBookClick(book)}
-              className="cursor-pointer transition-transform hover:scale-105"
-            >
-              <FlipCard
-                image="/images/books/vdahnovenia-kniga-1.png"
-                title={book.title}
-                subtitle={language === 'en' ? 'Digital' : 'Дигитална'}
-                description={book.description}
-                category={book.category || 'default'}
-                className={index === 1 ? "z-10" : ""}
-              />
-            </div>
-          ))}
-        </div>
-        
+        {/* Call to action */}
         <div className="flex justify-center mt-16">
-          <Button className="px-8 py-6 bg-green-600 hover:bg-green-700 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-300 text-lg rounded-none transform hover:-translate-y-1 hover:scale-105" asChild>
-            <Link href="/digital">
-              <BookOpen className="mr-2 h-5 w-5" />
-              {language === 'en' ? 'Digital Shop' : 'Дигитален Магазин'}
+          <Button 
+            className="bg-blue-600 hover:bg-blue-700 text-white border-2 border-black dark:border-gray-700 shadow-md hover:shadow-lg transition-all duration-300 text-lg rounded-none group h-14 px-8" 
+            asChild
+          >
+            <Link href="/digital" className="flex items-center">
+              <Download className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
+              {language === 'en' ? 'Browse Digital Library' : 'Разгледайте Дигиталната Библиотека'}
             </Link>
           </Button>
         </div>
@@ -88,7 +127,7 @@ export default function DigitalBooks() {
         <BookPreviewDialog 
           book={{
             ...selectedBook,
-            image: "/images/books/vdahnovenia-kniga-1.png"
+            image: selectedBook.coverImage || "/images/books/vdahnovenia-kniga-1.png"
           }}
           open={isPreviewOpen}
           onOpenChange={setIsPreviewOpen}

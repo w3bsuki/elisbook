@@ -14,7 +14,10 @@ interface FlipCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export default function FlipCard({
+  image,
   title,
+  description,
+  subtitle,
   category = "default",
   rotate = "y",
   className,
@@ -51,9 +54,9 @@ export default function FlipCard({
         {/* Spine effect */}
         <div className={cn("absolute left-0 top-0 h-full w-[10px] shadow-md z-10", getSpineColor())}></div>
         
-        {/* Front */}
+        {/* Front - always use vdahnovenia-kniga-1.png */}
         <div className="absolute inset-0 h-full w-full [backface-visibility:hidden]">
-          <div className="relative h-full w-full overflow-hidden border-2 border-black shadow-md">
+          <div className="relative h-full w-full overflow-hidden border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800">
             <AspectRatio ratio={3/5} className="h-full w-full">
               <Image
                 src="/images/books/vdahnovenia-kniga-1.png"
@@ -65,13 +68,12 @@ export default function FlipCard({
               />
             </AspectRatio>
           </div>
-          <div className="absolute bottom-4 left-4 right-4 text-xl font-bold text-white drop-shadow-md line-clamp-2">{title}</div>
         </div>
 
-        {/* Back - Just the image, no text overlay */}
+        {/* Back - always use vdahnovenia-kniga-2.png - no text overlay */}
         <div
           className={cn(
-            "absolute inset-0 h-full w-full border-2 border-black shadow-md [backface-visibility:hidden]",
+            "absolute inset-0 h-full w-full border-2 border-black dark:border-gray-700 [backface-visibility:hidden]",
             self[1],
           )}
         >
