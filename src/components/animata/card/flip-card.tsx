@@ -4,22 +4,15 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
-interface FlipCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  image: string;
+interface FlipCardProps {
   title: string;
-  description: string;
-  subtitle?: string;
-  category?: string;
-  rotate?: "x" | "y";
+  className?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any; // For other props
 }
 
 export default function FlipCard({
-  image,
   title,
-  description,
-  subtitle,
-  category = "default",
-  rotate = "y",
   className,
   ...props
 }: FlipCardProps) {
@@ -27,11 +20,11 @@ export default function FlipCard({
     x: ["group-hover:[transform:rotateX(180deg)]", "[transform:rotateX(180deg)]"],
     y: ["group-hover:[transform:rotateY(180deg)]", "[transform:rotateY(180deg)]"],
   };
-  const self = rotationClass[rotate];
+  const self = rotationClass["y"];
 
   // Define spine colors based on category
   const getSpineColor = () => {
-    switch (category) {
+    switch (title) {
       case 'health':
         return "bg-green-700";
       case 'poetry':

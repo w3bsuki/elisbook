@@ -11,11 +11,10 @@ import { ArrowDown, BookOpen, User } from "lucide-react";
 export default function Hero() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const { language } = useLanguage();
-  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      // setScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);

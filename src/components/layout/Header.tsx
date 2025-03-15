@@ -3,7 +3,6 @@
 import {
   ChevronLeft,
   ChevronRight,
-  CircleCheckBig,
   Menu,
   X,
   Facebook,
@@ -38,27 +37,6 @@ import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/LanguageContext";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { BookPreviewDialog } from "@/components/ui/book-preview-dialog";
-
-const resources = [
-  {
-    title: "Fiction",
-    description: "Explore captivating stories that transport you to new worlds.",
-    href: "/shop?category=fiction",
-    icon: CircleCheckBig,
-  },
-  {
-    title: "Non-Fiction",
-    description: "Discover insightful works based on real events and research.",
-    href: "/shop?category=non-fiction",
-    icon: CircleCheckBig,
-  },
-  {
-    title: "Poetry",
-    description: "Experience the beauty of language through poetic expression.",
-    href: "/shop?category=poetry",
-    icon: CircleCheckBig,
-  },
-];
 
 // Updated books to use the same images as bestsellers
 const books = [
@@ -122,12 +100,11 @@ const NavLink = ({
 };
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
-  const [submenu, setSubmenu] = useState<"books" | "about" | "contact" | null>(null);
+  const { t, language, setLanguage } = useLanguage();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [headerHeight, setHeaderHeight] = useState(0);
   const headerRef = React.useRef<HTMLDivElement>(null);
-  const { language, setLanguage, t } = useLanguage();
   const pathname = usePathname();
   
   // Book preview state
@@ -165,8 +142,7 @@ export default function Header() {
   
   // Close mobile menu when route changes
   useEffect(() => {
-    setOpen(false);
-    setSubmenu(null);
+    setIsMenuOpen(false);
   }, [pathname]);
   
   // Helper function to safely get translation string
@@ -357,22 +333,21 @@ export default function Header() {
               aria-label="Main Menu"
               className="border-none"
               onClick={() => {
-                if (open) {
-                  setOpen(false);
-                  setSubmenu(null);
+                if (isMenuOpen) {
+                  setIsMenuOpen(false);
                 } else {
-                  setOpen(true);
+                  setIsMenuOpen(true);
                 }
               }}
             >
-              {!open && <Menu className="size-4" />}
-              {open && <X className="size-4" />}
+              {!isMenuOpen && <Menu className="size-4" />}
+              {isMenuOpen && <X className="size-4" />}
             </Button>
           </div>
         </div>
 
         {/* Mobile Menu (Root) */}
-        {open && submenu === null && (
+        {isMenuOpen && (
           <div 
             style={mobileMenuStyle}
             className="fixed inset-x-0 bottom-0 flex flex-col overflow-scroll border-t border-border bg-background/95 backdrop-blur-md md:hidden animate-in slide-in-from-right"
@@ -395,12 +370,10 @@ export default function Header() {
               <button
                 type="button"
                 className="flex w-full items-center border-b border-border px-8 py-6 text-left transition-colors hover:bg-accent"
-                onClick={() => setSubmenu("books")}
+                onClick={() => setIsMenuOpen(false)}
               >
                 <span className="flex-1 text-lg">{getTranslation("nav.books")}</span>
-                <span className="shrink-0">
-                  <ChevronRight className="size-4" />
-                </span>
+                <ChevronRight className="size-4" />
               </button>
               <Link 
                 href="/blog" 
@@ -458,7 +431,7 @@ export default function Header() {
         )}
         
         {/* Mobile Menu > Books */}
-        {open && submenu === "books" && (
+        {isMenuOpen === "books" && (
           <div 
             style={mobileMenuStyle}
             className="fixed inset-x-0 bottom-0 flex flex-col overflow-scroll bg-background/95 backdrop-blur-md md:hidden animate-in slide-in-from-right"
@@ -467,7 +440,7 @@ export default function Header() {
               <div className="text-xs tracking-widest text-muted-foreground uppercase">
                 {language === "en" ? "Book Categories" : "Категории Книги"}
               </div>
-              <Button variant="outline" onClick={() => setSubmenu(null)} className="flex items-center">
+              <Button variant="outline" onClick={() => setIsMenuOpen(null)} className="flex items-center">
                 <ChevronLeft className="mr-2 size-4" />
                 {language === "en" ? "Back" : "Назад"}
               </Button>

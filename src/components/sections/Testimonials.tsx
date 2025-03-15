@@ -14,14 +14,6 @@ import {
 } from "@/components/ui/carousel";
 import { useLanguage } from "@/lib/LanguageContext";
 
-// Helper function to ensure translation returns a string
-const ensureString = (value: string | Record<string, unknown>): string => {
-  if (typeof value === 'string') {
-    return value;
-  }
-  return String(value) || '';
-};
-
 const testimonials = [
   {
     name: "Sarah Mitchell",
@@ -112,7 +104,7 @@ const Testimonials = () => {
     }),
   );
   
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
   const currentTestimonials = language === "en" ? testimonials : testimonialsBG;
 
   return (
@@ -166,7 +158,7 @@ const Testimonials = () => {
                         </div>
                       </div>
                       <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 text-center">
-                        "{testimonial.comment}"
+                        &quot;{testimonial.comment}&quot;
                       </p>
                     </div>
                   </Card>

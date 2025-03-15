@@ -68,41 +68,42 @@ export default function DigitalBooks() {
         
         {/* Books grid */}
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-            {digitalBooks.map((book, index) => (
-              <div 
-                key={book.id} 
-                onClick={() => handleBookClick(book)}
-                className="cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2"
-              >
-                <div className="relative">
-                  <FlipCard
-                    image={book.coverImage || "/images/books/vdahnovenia-kniga-1.png"}
-                    title={book.title}
-                    subtitle={language === 'en' ? 'Digital' : 'Дигитална'}
-                    description={book.description}
-                    category={book.category || 'default'}
-                    className="mx-auto shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)]"
-                  />
-                  
-                  {/* Digital badge */}
-                  <div className="absolute -top-4 -right-4 bg-blue-500 text-white px-3 py-1 rounded-full border-2 border-black dark:border-gray-700 shadow-md z-20 transform rotate-12">
-                    <div className="flex items-center gap-1">
-                      <Sparkles className="h-3 w-3" />
-                      <span className="font-bold text-xs">
-                        {language === 'en' ? 'Digital' : 'Дигитална'}
-                      </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {digitalBooks.map((book) => (
+              <div key={book.id} className="flex flex-col h-full">
+                <div 
+                  onClick={() => handleBookClick(book)}
+                  className="cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2"
+                >
+                  <div className="relative">
+                    <FlipCard
+                      image={book.coverImage || "/images/books/vdahnovenia-kniga-1.png"}
+                      title={book.title}
+                      subtitle={language === 'en' ? 'Digital' : 'Дигитална'}
+                      description={book.description}
+                      category={book.category || 'default'}
+                      className="mx-auto shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)]"
+                    />
+                    
+                    {/* Digital badge */}
+                    <div className="absolute -top-4 -right-4 bg-blue-500 text-white px-3 py-1 rounded-full border-2 border-black dark:border-gray-700 shadow-md z-20 transform rotate-12">
+                      <div className="flex items-center gap-1">
+                        <Sparkles className="h-3 w-3" />
+                        <span className="font-bold text-xs">
+                          {language === 'en' ? 'Digital' : 'Дигитална'}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                {/* Book title below card */}
-                <div className="mt-4 text-center">
-                  <h3 className="font-bold text-gray-900 dark:text-white text-lg">{getDisplayTitle(book)}</h3>
-                  <div className="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2 py-1 text-xs font-medium rounded mt-2">
-                    PDF & EPUB
+                  
+                  {/* Book title below card */}
+                  <div className="mt-4 text-center">
+                    <h3 className="font-bold text-gray-900 dark:text-white text-lg">{getDisplayTitle(book)}</h3>
+                    <div className="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2 py-1 text-xs font-medium rounded mt-2">
+                      PDF & EPUB
+                    </div>
+                    <p className="font-bold mt-2 text-lg">{book.price?.toFixed(0)}{language === 'en' ? ' BGN' : 'лв'}</p>
                   </div>
-                  <p className="font-bold mt-2 text-lg">{book.price?.toFixed(0)}{language === 'en' ? ' BGN' : 'лв'}</p>
                 </div>
               </div>
             ))}

@@ -11,16 +11,8 @@ import { HelpCircle, Mail, PlusCircle, MinusCircle } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/lib/translations";
 
-// Helper function to ensure translation returns a string
-const ensureString = (value: string | Record<string, unknown>): string => {
-  if (typeof value === 'string') {
-    return value;
-  }
-  return String(value) || '';
-};
-
 export default function FAQ() {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   
   // Get the FAQ questions directly from translations
   const faqQuestions = language === 'en' 
