@@ -162,7 +162,7 @@ export default function AllBooks() {
                     <Button 
                       variant="outline"
                       size="sm"
-                      className="border-purple-600 text-purple-600 hover:bg-purple-50 dark:border-purple-500 dark:text-purple-500 dark:hover:bg-purple-950/30 flex-1 h-8 text-xs"
+                      className="border-purple-600 text-purple-600 hover:bg-purple-50 dark:border-purple-500 dark:text-purple-500 dark:hover:bg-purple-950/30 flex-1 h-8 text-xs border border-black dark:border-gray-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 rounded-sm"
                       onClick={() => handleBookClick(book)}
                     >
                       <Eye className="h-3 w-3 mr-1" />
@@ -172,7 +172,7 @@ export default function AllBooks() {
                     <Button 
                       size="sm"
                       className={cn(
-                        "bg-purple-600 hover:bg-purple-700 text-white flex-1 h-8 text-xs",
+                        "bg-purple-600 hover:bg-purple-700 text-white flex-1 h-8 text-xs border border-black dark:border-gray-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 rounded-sm",
                         "transition-transform duration-200 hover:scale-105"
                       )}
                       asChild
@@ -193,7 +193,7 @@ export default function AllBooks() {
         <div className="flex justify-center mt-16">
           <Button 
             variant="outline"
-            className="border-purple-600 text-purple-600 hover:bg-purple-50 dark:border-purple-500 dark:text-purple-500 dark:hover:bg-purple-950/30 group border-2 px-6 py-5 h-auto"
+            className="border-purple-600 text-purple-600 hover:bg-purple-50 dark:border-purple-500 dark:text-purple-500 dark:hover:bg-purple-950/30 group border-2 border-black dark:border-gray-700 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 px-6 py-5 h-auto rounded-md"
             asChild
           >
             <Link href="/shop" className="flex items-center">

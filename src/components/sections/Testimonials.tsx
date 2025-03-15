@@ -171,7 +171,7 @@ const Testimonials = () => {
         {/* Call to action */}
         <div className="flex justify-center mt-16">
           <Button 
-            className="bg-rose-600 hover:bg-rose-700 text-white border-2 border-black dark:border-gray-700 shadow-md hover:shadow-lg transition-all duration-300 text-lg rounded-none group h-14 px-8" 
+            className="bg-rose-600 hover:bg-rose-700 text-white border-2 border-black dark:border-gray-700 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 text-lg rounded-md group h-14 px-8" 
             asChild
           >
             <a href="#contact" className="flex items-center">

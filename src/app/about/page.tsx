@@ -219,7 +219,7 @@ export default function AboutPage() {
                 
                 <Button 
                   type="submit" 
-                  className="w-full bg-green-600 hover:bg-green-700 text-white"
+                  className="w-full bg-green-600 hover:bg-green-700 text-white border-2 border-black dark:border-gray-700 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 rounded-md"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
@@ -229,7 +229,7 @@ export default function AboutPage() {
                     </span>
                   ) : (
                     <span className="flex items-center gap-2">
-                      <Send className="h-4 w-4" />
+                      <Send className="h-4 w-4 transition-transform group-hover:scale-110" />
                       {language === 'en' ? 'Send Message' : 'Изпрати съобщение'}
                     </span>
                   )}

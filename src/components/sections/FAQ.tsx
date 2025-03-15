@@ -77,7 +77,7 @@ export default function FAQ() {
               : 'Не можете да намерите отговора, който търсите? Не се колебайте да се свържете с нашия екип за поддръжка.'}
           </p>
           <Button 
-            className="bg-purple-600 hover:bg-purple-700 text-white border-2 border-black dark:border-gray-700 shadow-md hover:shadow-lg transition-all duration-300 text-lg rounded-none group h-14 px-8" 
+            className="bg-purple-600 hover:bg-purple-700 text-white border-2 border-black dark:border-gray-700 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 text-lg rounded-md group h-14 px-8" 
             asChild
           >
             <a href="#contact" className="flex items-center">
