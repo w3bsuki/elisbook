@@ -6,7 +6,6 @@ import { ArrowRight, Calendar, Clock, PenTool, BookOpen, ChevronRight } from "lu
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 
 export default function BlogPreview() {
   const { language } = useLanguage();
