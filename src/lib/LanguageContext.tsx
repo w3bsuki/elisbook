@@ -15,7 +15,7 @@ interface LanguageContextType {
 }
 
 const defaultValue: LanguageContextType = {
-  language: 'en',
+  language: 'bg',
   setLanguage: () => {},
   translations: translationsData,
 };
@@ -25,7 +25,7 @@ const LanguageContext = createContext<LanguageContextType>(defaultValue);
 export const useLanguage = () => useContext(LanguageContext);
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState('bg');
 
   // Helper function to get translations
   const t = (key: string): string => {
