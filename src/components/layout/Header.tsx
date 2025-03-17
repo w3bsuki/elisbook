@@ -88,8 +88,8 @@ const NavLink = ({
       <NavigationMenuLink 
         className={cn(
           navigationMenuTriggerStyle(), 
-          "text-lg font-medium transition-colors",
-          isActive && "text-green-600 font-semibold",
+          "text-lg font-medium transition-colors text-white !bg-transparent",
+          isActive ? "font-semibold !bg-green-700" : "hover:!bg-green-700",
           className
         )}
       >
@@ -111,14 +111,22 @@ export default function Header() {
   const [selectedBook, setSelectedBook] = useState<typeof books[0] | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   
-  // Handle scroll effect
+  // Handle scroll effect with debounce for better performance
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsScrolled(window.scrollY > 10);
+      }, 10);
     };
     
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timeoutId);
+    };
   }, []);
   
   // Update header height for mobile menu positioning
@@ -145,12 +153,6 @@ export default function Header() {
     setIsMenuOpen(false);
   }, [pathname]);
   
-  // Helper function to safely get translation string
-  const getTranslation = (key: string): string => {
-    const translation = t(key);
-    return typeof translation === 'string' ? translation : String(translation || '');
-  };
-  
   const mobileMenuStyle = {
     top: `${headerHeight}px`,
     height: `calc(100vh - ${headerHeight}px)`
@@ -166,12 +168,7 @@ export default function Header() {
   return (
     <header 
       ref={headerRef}
-      className={cn(
-        "sticky inset-x-0 top-0 z-20 w-full transition-all duration-300",
-        isScrolled 
-          ? "bg-background/95 backdrop-blur-md border-b shadow-sm" 
-          : "bg-background border-b"
-      )}
+      className="sticky inset-x-0 top-0 z-20 w-full transition-all duration-300 border-b shadow-sm bg-green-600"
     >
       <div className="container mx-auto flex justify-center">
         <div className={cn(
@@ -181,7 +178,7 @@ export default function Header() {
           <div className="flex-1 flex items-center gap-3">
             <Link href="/" className="transition-transform hover:scale-105">
               <span className={cn(
-                "font-bold tracking-wide text-green-600 font-playfair transition-all duration-300",
+                "font-bold tracking-wide text-white font-playfair transition-all duration-300",
                 isScrolled ? "text-2xl md:text-3xl" : "text-3xl md:text-4xl"
               )}>ELIS</span>
             </Link>
@@ -189,7 +186,11 @@ export default function Header() {
               <ThemeToggle />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon" className="border-none hover:bg-accent">
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="bg-transparent hover:bg-green-700 text-white border-none shadow-none focus:shadow-none focus-visible:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                  >
                     <Globe className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -208,21 +209,21 @@ export default function Header() {
           <NavigationMenu className="flex-1 flex justify-center max-w-full">
             <NavigationMenuList className="font-playfair hidden md:flex">
               <NavigationMenuItem>
-                <NavLink href="/about">
-                  {getTranslation("nav.about")}
+                <NavLink href="/about" className="text-white hover:text-gray-100 hover:bg-green-800">
+                  {language === 'en' ? 'About Me' : 'За мен'}
                 </NavLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuTrigger 
                   className={cn(
-                    "text-lg font-medium transition-colors",
-                    pathname.startsWith("/shop") && "text-green-600 font-semibold"
+                    "text-lg font-medium transition-colors !text-white !bg-transparent hover:!text-gray-100 hover:!bg-green-700",
+                    pathname.startsWith("/shop") && "!text-white font-semibold !bg-green-700"
                   )}
                 >
-                  {getTranslation("nav.books")}
+                  {language === 'en' ? 'Books' : 'Книги'}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent 
-                  className="animate-in fade-in-50 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
+                  className="animate-in fade-in-50 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 !bg-white dark:!bg-gray-900"
                 >
                   <div className="w-[600px] p-4">
                     <div className="grid grid-cols-3 gap-4">
@@ -230,7 +231,7 @@ export default function Header() {
                         <div
                           key={book.href}
                           onClick={(e) => handleBookClick(book, e)}
-                          className="group block space-y-3 rounded-lg p-3 hover:bg-accent h-full transition-colors cursor-pointer"
+                          className="group block space-y-3 rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-gray-800 h-full transition-colors cursor-pointer"
                         >
                           <div className="overflow-hidden rounded-lg">
                             <div className="relative aspect-[3/5] w-full bg-muted">
@@ -244,7 +245,7 @@ export default function Header() {
                             </div>
                           </div>
                           <div className="flex flex-col space-y-2 h-[120px]">
-                            <div className="font-medium leading-tight text-base whitespace-pre-line min-h-[40px] group-hover:text-green-600 transition-colors">
+                            <div className="font-medium leading-tight text-base whitespace-pre-line min-h-[40px] text-gray-900 dark:text-gray-100 group-hover:text-green-600 transition-colors">
                               {language === "en" ? 
                                 (book.title === "Вдъхновения" ? "Inspirations" : 
                                 book.title === "Душевни Пътеки" ? "Soul Paths" : 
@@ -252,7 +253,7 @@ export default function Header() {
                                 : book.title
                               }
                             </div>
-                            <div className="line-clamp-2 text-xs text-muted-foreground">
+                            <div className="line-clamp-2 text-xs text-gray-600 dark:text-gray-400">
                               {language === "en" ? 
                                 (book.description === "Сборник от поетични творби, които ще докоснат душата ви" ? 
                                 "A collection of poetic works that will touch your soul" : 
@@ -266,9 +267,9 @@ export default function Header() {
                             <div className="mt-auto">
                               <Badge variant="secondary" className="text-xs">
                                 {language === "en" ? book.category : 
-                                  book.category === "Fiction" ? getTranslation("categories.fiction") :
-                                  book.category === "Non-Fiction" ? getTranslation("categories.nonFiction") :
-                                  book.category === "Poetry" ? getTranslation("categories.poetry") : book.category
+                                  book.category === "Fiction" ? "Художествена литература" :
+                                  book.category === "Non-Fiction" ? "Нехудожествена литература" :
+                                  book.category === "Poetry" ? "Поезия" : book.category
                                 }
                               </Badge>
                             </div>
@@ -288,8 +289,18 @@ export default function Header() {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavLink href="/blog">
-                  {getTranslation("nav.blog")}
+                <NavLink href="/services" className="text-white hover:text-gray-100 hover:bg-green-800">
+                  {language === 'en' ? 'Services' : 'Услуги'}
+                </NavLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavLink href="/blog" className="text-white hover:text-gray-100 hover:bg-green-800">
+                  {language === 'en' ? 'Blog' : 'Блог'}
+                </NavLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavLink href="/contact" className="text-white hover:text-gray-100 hover:bg-green-800">
+                  {language === 'en' ? 'Contact' : 'Контакти'}
                 </NavLink>
               </NavigationMenuItem>
             </NavigationMenuList>
@@ -300,7 +311,7 @@ export default function Header() {
               <Link 
                 href="https://facebook.com" 
                 target="_blank" 
-                className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400 transition-all duration-200 flex items-center justify-center h-9 w-9 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full border border-gray-200 dark:border-gray-700 hover:scale-110"
+                className="text-white hover:text-gray-100 transition-all duration-200 flex items-center justify-center h-9 w-9 bg-transparent hover:bg-green-700 rounded-full border border-white/20 hover:scale-110"
                 aria-label="Facebook"
               >
                 <Facebook className="h-4 w-4" />
@@ -308,29 +319,29 @@ export default function Header() {
               <Link 
                 href="https://instagram.com" 
                 target="_blank" 
-                className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400 transition-all duration-200 flex items-center justify-center h-9 w-9 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full border border-gray-200 dark:border-gray-700 hover:scale-110"
+                className="text-white hover:text-gray-100 transition-all duration-200 flex items-center justify-center h-9 w-9 bg-transparent hover:bg-green-700 rounded-full border border-white/20 hover:scale-110"
                 aria-label="Instagram"
               >
                 <Instagram className="h-4 w-4" />
               </Link>
             </div>
             <Button 
-              className="bg-green-600 hover:bg-green-700 text-white text-base px-5 py-1.5 h-auto rounded-md border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-200 font-medium group hover:translate-y-[-2px]" 
+              className="bg-white hover:bg-gray-100 text-green-700 text-base px-5 py-1.5 h-auto rounded-md border-2 border-green-900 shadow-[3px_3px_0px_0px_rgba(20,83,45,1)] hover:shadow-[5px_5px_0px_0px_rgba(20,83,45,1)] transition-all duration-200 font-medium group hover:translate-y-[-2px]" 
               asChild
             >
               <Link href="/shop" className="flex items-center">
                 <ShoppingBag className="mr-2 h-4 w-4 transition-transform group-hover:scale-110" />
-                {getTranslation("nav.shop")}
+                {language === "en" ? "Shop" : "Магазин"}
               </Link>
             </Button>
           </div>
           
           <div className="flex items-center gap-4 md:hidden flex-1 justify-end">
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
               aria-label="Main Menu"
-              className="border-none"
+              className="bg-transparent hover:bg-green-700 text-white border-none shadow-none focus:shadow-none focus-visible:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
               onClick={() => {
                 if (isMenuOpen) {
                   setIsMenuOpen(false);
@@ -349,57 +360,90 @@ export default function Header() {
         {isMenuOpen && (
           <div 
             style={mobileMenuStyle}
-            className="fixed inset-x-0 bottom-0 flex flex-col overflow-scroll border-t border-border bg-background/95 backdrop-blur-md md:hidden animate-in slide-in-from-right"
+            className="fixed inset-x-0 bottom-0 flex flex-col overflow-y-auto max-h-[80vh] border-t border-white/20 bg-green-600/95 backdrop-blur-md md:hidden animate-in slide-in-from-right"
           >
             <div className="font-playfair">
               <Link 
                 href="/about" 
                 className={cn(
-                  "flex w-full items-center border-b border-border px-8 py-6 text-left transition-colors",
-                  pathname === "/about" && "bg-accent"
+                  "flex w-full items-center border-b border-white/20 px-8 py-4 text-left transition-colors",
+                  pathname === "/about" ? "bg-green-700" : "hover:bg-green-700"
                 )}
               >
                 <span className={cn(
-                  "flex-1 text-lg",
-                  pathname === "/about" && "text-green-600 font-medium"
+                  "flex-1 text-lg text-white",
+                  pathname === "/about" && "font-medium"
                 )}>
-                  {getTranslation("nav.about")}
+                  {language === 'en' ? 'About Me' : 'За мен'}
                 </span>
               </Link>
               <button
                 type="button"
-                className="flex w-full items-center border-b border-border px-8 py-6 text-left transition-colors hover:bg-accent"
-                onClick={() => setIsMenuOpen(false)}
+                className="flex w-full items-center border-b border-white/20 px-8 py-4 text-left transition-colors hover:bg-green-700 text-white"
+                onClick={() => setIsMenuOpen("books")}
               >
-                <span className="flex-1 text-lg">{getTranslation("nav.books")}</span>
+                <span className="flex-1 text-lg">{language === 'en' ? 'Books' : 'Книги'}</span>
                 <ChevronRight className="size-4" />
               </button>
               <Link 
-                href="/blog" 
+                href="/services" 
                 className={cn(
-                  "flex w-full items-center border-b border-border px-8 py-6 text-left transition-colors",
-                  pathname === "/blog" && "bg-accent"
+                  "flex w-full items-center border-b border-white/20 px-8 py-4 text-left transition-colors",
+                  pathname === "/services" ? "bg-green-700" : "hover:bg-green-700"
                 )}
               >
                 <span className={cn(
-                  "flex-1 text-lg",
-                  pathname === "/blog" && "text-green-600 font-medium"
+                  "flex-1 text-lg text-white",
+                  pathname === "/services" && "font-medium"
                 )}>
-                  {getTranslation("nav.blog")}
+                  {language === 'en' ? 'Services' : 'Услуги'}
+                </span>
+              </Link>
+              <Link 
+                href="/blog" 
+                className={cn(
+                  "flex w-full items-center border-b border-white/20 px-8 py-4 text-left transition-colors",
+                  pathname === "/blog" ? "bg-green-700" : "hover:bg-green-700"
+                )}
+              >
+                <span className={cn(
+                  "flex-1 text-lg text-white",
+                  pathname === "/blog" && "font-medium"
+                )}>
+                  {language === 'en' ? 'Blog' : 'Блог'}
+                </span>
+              </Link>
+              <Link 
+                href="/contact" 
+                className={cn(
+                  "flex w-full items-center border-b border-white/20 px-8 py-4 text-left transition-colors",
+                  pathname === "/contact" ? "bg-green-700" : "hover:bg-green-700"
+                )}
+              >
+                <span className={cn(
+                  "flex-1 text-lg text-white",
+                  pathname === "/contact" && "font-medium"
+                )}>
+                  {language === 'en' ? 'Contact' : 'Контакти'}
                 </span>
               </Link>
               <Link 
                 href="/shop" 
-                className="flex w-full items-center border-b border-border px-8 py-6 text-left bg-green-600 hover:bg-green-700 text-white transition-all duration-200 hover:translate-y-[-2px] border-2 border-black dark:border-gray-700"
+                className={cn(
+                  "flex w-full items-center border-b border-white/20 px-8 py-4 text-left transition-colors",
+                  pathname === "/shop" ? "bg-green-700" : "hover:bg-green-700"
+                )}
               >
-                <span className="flex-1 text-lg font-medium flex items-center">
-                  <ShoppingBag className="mr-2 h-4 w-4" />
-                  {getTranslation("nav.shop")}
+                <span className={cn(
+                  "flex-1 text-lg text-white",
+                  pathname === "/shop" && "font-medium"
+                )}>
+                  {language === 'en' ? 'Shop' : 'Магазин'}
                 </span>
               </Link>
               <button
                 type="button"
-                className="flex w-full items-center border-b border-border px-8 py-6 text-left transition-colors hover:bg-accent"
+                className="flex w-full items-center border-b border-white/20 px-8 py-4 text-left transition-colors hover:bg-green-700 text-white"
                 onClick={() => setLanguage(language === "en" ? "bg" : "en")}
               >
                 <span className="flex-1 text-lg flex items-center gap-2">
@@ -407,11 +451,12 @@ export default function Header() {
                   {language === "en" ? "Български" : "English"}
                 </span>
               </button>
-              <div className="flex items-center justify-center gap-4 py-6 border-b border-border">
+              
+              <div className="flex justify-center gap-4 p-6">
                 <Link 
                   href="https://facebook.com" 
                   target="_blank" 
-                  className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400 transition-all duration-200 flex items-center justify-center h-10 w-10 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full border border-gray-200 dark:border-gray-700 hover:scale-110"
+                  className="text-white hover:text-gray-100 transition-all duration-200 flex items-center justify-center h-10 w-10 bg-transparent hover:bg-green-700 rounded-full border border-white/20 hover:scale-110"
                   aria-label="Facebook"
                 >
                   <Facebook className="h-5 w-5" />
@@ -419,7 +464,7 @@ export default function Header() {
                 <Link 
                   href="https://instagram.com" 
                   target="_blank" 
-                  className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400 transition-all duration-200 flex items-center justify-center h-10 w-10 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full border border-gray-200 dark:border-gray-700 hover:scale-110"
+                  className="text-white hover:text-gray-100 transition-all duration-200 flex items-center justify-center h-10 w-10 bg-transparent hover:bg-green-700 rounded-full border border-white/20 hover:scale-110"
                   aria-label="Instagram"
                 >
                   <Instagram className="h-5 w-5" />
@@ -433,13 +478,17 @@ export default function Header() {
         {isMenuOpen === "books" && (
           <div 
             style={mobileMenuStyle}
-            className="fixed inset-x-0 bottom-0 flex flex-col overflow-scroll bg-background/95 backdrop-blur-md md:hidden animate-in slide-in-from-right"
+            className="fixed inset-x-0 bottom-0 flex flex-col overflow-y-auto max-h-[80vh] bg-green-600/95 backdrop-blur-md md:hidden animate-in slide-in-from-right"
           >
-            <div className="flex items-center justify-between px-8 py-3.5 border-b border-border">
-              <div className="text-xs tracking-widest text-muted-foreground uppercase">
+            <div className="flex items-center justify-between px-8 py-3.5 border-b border-white/20">
+              <div className="text-xs tracking-widest text-white uppercase font-semibold">
                 {language === "en" ? "Book Categories" : "Категории Книги"}
               </div>
-              <Button variant="outline" onClick={() => setIsMenuOpen(false)} className="flex items-center">
+              <Button 
+                variant="ghost" 
+                onClick={() => setIsMenuOpen(true)} 
+                className="flex items-center bg-transparent hover:bg-green-700 text-white border-none shadow-none focus:shadow-none focus-visible:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              >
                 <ChevronLeft className="mr-2 size-4" />
                 {language === "en" ? "Back" : "Назад"}
               </Button>
@@ -448,7 +497,7 @@ export default function Header() {
               {books.map((book) => (
                 <div
                   key={book.id}
-                  className="group flex w-full items-start gap-x-4 border-b border-border px-8 py-6 text-left hover:bg-accent transition-colors cursor-pointer"
+                  className="group flex w-full items-start gap-x-4 border-b border-white/20 px-8 py-6 text-left hover:bg-green-700 transition-colors cursor-pointer"
                   onClick={(e) => handleBookClick(book, e)}
                 >
                   <div className="shrink-0 text-green-600 relative w-12 h-16 overflow-hidden rounded">
@@ -460,7 +509,7 @@ export default function Header() {
                     />
                   </div>
                   <div>
-                    <div className="mb-1.5 text-base font-medium group-hover:text-green-600 transition-colors">
+                    <div className="mb-1.5 text-base font-medium text-white">
                       {language === "en" ? 
                         (book.title === "Вдъхновения" ? "Inspirations" : 
                         book.title === "Душевни Пътеки" ? "Soul Paths" : 
@@ -468,7 +517,7 @@ export default function Header() {
                         : book.title
                       }
                     </div>
-                    <div className="text-sm font-normal text-muted-foreground">
+                    <div className="text-sm font-normal text-white/80">
                       {language === "en" ? 
                         (book.description === "Сборник от поетични творби, които ще докоснат душата ви" ? 
                         "A collection of poetic works that will touch your soul" : 
@@ -482,8 +531,8 @@ export default function Header() {
                   </div>
                 </div>
               ))}
-              <div className="border-t border-border px-8 py-7">
-                <Button className="w-full bg-green-600 hover:bg-green-700 text-white rounded-md border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-200 flex items-center justify-center hover:translate-y-[-2px]" asChild>
+              <div className="border-t border-white/20 px-8 py-7">
+                <Button className="w-full bg-white hover:bg-gray-100 text-green-700 rounded-md border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-200 flex items-center justify-center hover:translate-y-[-2px]" asChild>
                   <Link href="/shop">
                     <ShoppingBag className="mr-2 h-4 w-4" />
                     {language === "en" ? "Explore All Books" : "Разгледай Всички Книги"}
