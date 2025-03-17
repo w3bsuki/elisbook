@@ -53,25 +53,25 @@ export default function ServicesPage() {
         </div>
         
         {/* Filters and Search */}
-        <div className="mb-10 bg-white dark:bg-gray-800 rounded-xl border-2 border-black dark:border-gray-700 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] p-4">
-          <div className="flex flex-col md:flex-row gap-3">
+        <div className="mb-8 bg-white dark:bg-gray-800 rounded-lg border border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] p-3">
+          <div className="flex flex-col md:flex-row gap-2">
             <div className="flex-1">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input 
                   type="text" 
                   placeholder={language === 'en' ? "Search services..." : "Търсене на услуги..."}
-                  className="pl-10 border-2 border-gray-200 dark:border-gray-700 focus:border-green-500 dark:focus:border-green-500"
+                  className="pl-10 border border-gray-200 dark:border-gray-700 focus:border-green-500 dark:focus:border-green-500 h-9"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
             </div>
             
-            <div className="flex gap-3">
-              <div className="w-full md:w-48">
+            <div className="flex gap-2">
+              <div className="w-full md:w-44">
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="border-2 border-gray-200 dark:border-gray-700 focus:border-green-500 dark:focus:border-green-500">
+                  <SelectTrigger className="border border-gray-200 dark:border-gray-700 focus:border-green-500 dark:focus:border-green-500 h-9">
                     <SlidersHorizontal className="h-4 w-4 mr-2" />
                     <SelectValue placeholder={language === 'en' ? "Sort by" : "Сортирай по"} />
                   </SelectTrigger>
@@ -87,7 +87,7 @@ export default function ServicesPage() {
         </div>
         
         {/* Tabs for filtering */}
-        <div className="mb-10">
+        <div className="mb-8">
           <Tabs defaultValue="all" className="w-full" onValueChange={setActiveTab}>
             <div className="flex justify-center">
               <TabsList className="bg-gray-100 dark:bg-gray-800 p-1 rounded-full">
@@ -117,7 +117,7 @@ export default function ServicesPage() {
             {/* Services grid */}
             <TabsContent value={activeTab} className="mt-6">
               {filteredServices.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                   {filteredServices.map((service) => (
                     <ServiceCard key={service.id} service={service} />
                   ))}
@@ -144,10 +144,10 @@ function ServiceCard({ service }: { service: Service }) {
   const { language } = useLanguage();
   
   return (
-    <div className="flex flex-col h-full group relative overflow-hidden border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800/50 rounded-lg transition-all duration-300 hover:shadow-[5px_5px_0px_0px_rgba(22,163,74,0.5)] dark:hover:shadow-[5px_5px_0px_0px_rgba(22,163,74,0.3)]">
+    <div className="flex flex-col h-full group relative overflow-hidden border border-black dark:border-gray-700 bg-white dark:bg-gray-800/50 rounded-md transition-all duration-300 hover:shadow-[3px_3px_0px_0px_rgba(22,163,74,0.5)] dark:hover:shadow-[3px_3px_0px_0px_rgba(22,163,74,0.3)]">
       {/* Category badge - top left */}
       <div className="absolute top-0 left-0 z-30">
-        <div className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-0.5 rounded-br-lg border-r-2 border-b-2 border-black dark:border-gray-700 shadow-md transform rotate-0 font-medium text-[10px]">
+        <div className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-0.5 rounded-br-md border-r border-b border-black dark:border-gray-700 shadow-sm transform rotate-0 font-medium text-[10px]">
           {service.category === 'individual' 
             ? (language === 'en' ? 'Individual' : 'Индивидуална') 
             : (language === 'en' ? 'Package' : 'Пакет')}
@@ -155,33 +155,33 @@ function ServiceCard({ service }: { service: Service }) {
       </div>
       
       {/* Service image */}
-      <div className="p-3 pb-0">
-        <AspectRatio ratio={16/9} className="bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden mb-2 border border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)]">
+      <div className="p-2 pb-1">
+        <AspectRatio ratio={16/9} className="bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden mb-2 border border-black dark:border-gray-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)]">
           <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
             {service.category === 'individual' 
-              ? <User className="h-12 w-12 text-white" /> 
-              : <Package className="h-12 w-12 text-white" />}
+              ? <User className="h-10 w-10 text-white" /> 
+              : <Package className="h-10 w-10 text-white" />}
           </div>
         </AspectRatio>
       </div>
       
       {/* Service details */}
-      <div className="p-3 flex flex-col flex-grow">
+      <div className="p-2 flex flex-col flex-grow">
         <div className="flex items-start justify-between mb-1">
-          <h3 className="font-bold text-gray-900 dark:text-white text-sm">{service.title}</h3>
-          <span className="font-bold text-sm text-green-600 dark:text-green-400">{service.price.toFixed(0)}{language === 'en' ? ' BGN' : 'лв'}</span>
+          <h3 className="font-bold text-gray-900 dark:text-white text-sm line-clamp-1">{service.title}</h3>
+          <span className="font-bold text-sm text-green-600 dark:text-green-400 ml-1 whitespace-nowrap">{service.price.toFixed(0)}{language === 'en' ? ' BGN' : 'лв'}</span>
         </div>
         
-        <div className="flex items-center text-gray-500 dark:text-gray-400 text-xs mb-2">
-          <Clock className="h-3 w-3 mr-1" />
+        <div className="flex items-center text-gray-500 dark:text-gray-400 text-xs mb-1">
+          <Clock className="h-3 w-3 mr-1 flex-shrink-0" />
           <span>{service.duration}</span>
         </div>
         
-        <p className="text-xs text-gray-600 dark:text-gray-400 mb-3 flex-grow line-clamp-3">
+        <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 flex-grow line-clamp-2">
           {service.description}
         </p>
         
-        {/* Includes list for packages - only show for packages and limit to 2 items */}
+        {/* Includes list for packages - show up to 2 items */}
         {service.category === 'package' && service.includes && (
           <div className="mb-2">
             <h4 className="font-semibold text-xs text-gray-700 dark:text-gray-300 mb-1">
@@ -190,12 +190,12 @@ function ServiceCard({ service }: { service: Service }) {
             <ul className="text-[10px] text-gray-600 dark:text-gray-400 space-y-0.5">
               {service.includes.slice(0, 2).map((item, index) => (
                 <li key={index} className="flex items-start">
-                  <span className="text-green-500 mr-1">✓</span>
+                  <span className="text-green-500 mr-1 flex-shrink-0">✓</span>
                   <span className="line-clamp-1">{item}</span>
                 </li>
               ))}
               {service.includes.length > 2 && (
-                <li className="text-green-600 dark:text-green-400 italic">
+                <li className="text-green-600 dark:text-green-400 italic text-[9px]">
                   +{service.includes.length - 2} {language === 'en' ? 'more' : 'още'}
                 </li>
               )}
