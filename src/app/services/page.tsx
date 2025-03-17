@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowRight } from 'lucide-react';
-import { services, filterServicesByCategory, searchServices, sortServices } from '@/lib/services-data';
+import { services, filterServicesByCategory, searchServices, sortServices } from '@/data/services';
 import { Service } from '@/types';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';

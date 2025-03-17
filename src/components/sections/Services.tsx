@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ArrowRight, Calendar, Clock, Package, User, ChevronRight, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
-import { services, filterServicesByCategory } from "@/lib/services-data";
+import { services, filterServicesByCategory } from "@/data/services";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

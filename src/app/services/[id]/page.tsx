@@ -8,7 +8,7 @@ import { ArrowLeft, Calendar, Clock, Package, User, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/lib/LanguageContext';
-import { services } from '@/lib/services-data';
+import { services } from '@/data/services';
 import { shopBooks } from '@/lib/shop-data';
 import { Service } from '@/types';
 
