@@ -13,6 +13,20 @@ export interface Book {
   publisher?: string;
 }
 
+// Service type
+export interface Service {
+  id: string;
+  title: string;
+  description: string;
+  duration: string;
+  price: number;
+  category: 'individual' | 'package';
+  coverImage: string;
+  featured?: boolean;
+  includes?: string[];
+  relatedBookId?: string; // Reference to the book this service is related to
+}
+
 // Author type
 export interface Author {
   name: string;

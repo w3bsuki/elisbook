@@ -6,6 +6,7 @@ import AllBooks from "@/components/sections/AllBooks";
 import BlogPreview from "@/components/sections/BlogPreview";
 import Testimonials from "@/components/sections/Testimonials";
 import FAQ from "@/components/sections/FAQ";
+import Services from "@/components/sections/Services";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <Bestsellers />
       <DigitalBooks />
       <AllBooks />
+      <Services />
       <BlogPreview />
       <Testimonials />
       <FAQ />

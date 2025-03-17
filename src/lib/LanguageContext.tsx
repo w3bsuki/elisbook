@@ -11,6 +11,30 @@ type LanguageContextType = {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+// Define translations
+const translations = {
+  en: {
+    nav: {
+      about: "About",
+      books: "Books",
+      blog: "Blog",
+      contact: "Contact",
+      services: "Services",
+    },
+    // ... other translations ...
+  },
+  bg: {
+    nav: {
+      about: "За Мен",
+      books: "Книги",
+      blog: "Блог",
+      contact: "Контакти",
+      services: "Услуги",
+    },
+    // ... other translations ...
+  },
+};
+
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState<"en" | "bg">("bg");
   const { t } = useTranslations(language);
