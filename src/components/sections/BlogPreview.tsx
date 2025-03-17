@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Calendar, Clock, PenTool, BookOpen, ChevronRight } from "lucide-react";
@@ -10,6 +11,16 @@ import { Badge } from "@/components/ui/badge";
 export default function BlogPreview() {
   const { language } = useLanguage();
   
+  // State to track image loading errors
+  const [imageErrors, setImageErrors] = useState<{[key: string]: boolean}>({});
+  
+  // Local fallback images
+  const fallbackImages = [
+    "/images/fallback-blog-1.jpg",
+    "/images/books/vdahnovenia-kniga-1.png",
+    "/images/books/vdahnovenia-kniga-2.png",
+  ];
+  
   // Blog posts data with proper Bulgarian content
   const blogPosts = [
     {
@@ -19,6 +30,7 @@ export default function BlogPreview() {
         ? 'Открийте как ежедневната медитация може да трансформира вашето психическо здраве и да ви помогне да се справите по-добре със стреса и тревожността.'
         : 'Discover how daily meditation can transform your mental health and help you better cope with stress and anxiety.',
       image: 'https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=2070&auto=format&fit=crop',
+      fallbackImage: "/images/books/vdahnovenia-kniga-1.png",
       date: '2023-10-15',
       readTime: language === 'bg' ? '5 мин. четене' : '5 min read',
       category: language === 'bg' ? 'Психическо здраве' : 'Mental Health',
@@ -30,6 +42,7 @@ export default function BlogPreview() {
         ? 'Научете как правилното хранене влияе не само на физическото, но и на психическото ви състояние, и как да създадете хранителен план.'
         : 'Learn how proper nutrition affects not only your physical but also your mental state, and how to create a nutritional plan.',
       image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2070&auto=format&fit=crop',
+      fallbackImage: "/images/books/vdahnovenia-kniga-2.png",
       date: '2023-11-02',
       readTime: language === 'bg' ? '7 мин. четене' : '7 min read',
       category: language === 'bg' ? 'Хранене' : 'Nutrition',
@@ -41,6 +54,7 @@ export default function BlogPreview() {
         ? 'Изследвайте дълбоката връзка между физическото и духовното благосъстояние и как холистичният подход към здравето може да доведе до по-пълноценен живот.'
         : 'Explore the deep connection between physical and spiritual well-being and how a holistic approach to health can lead to a more fulfilling life.',
       image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2022&auto=format&fit=crop',
+      fallbackImage: "/images/books/osaznato-hranene.jpg",
       date: '2023-12-05',
       readTime: language === 'bg' ? '6 мин. четене' : '6 min read',
       category: language === 'bg' ? 'Холистично здраве' : 'Holistic Health',
@@ -63,6 +77,12 @@ export default function BlogPreview() {
         day: 'numeric' 
       }).format(date);
     }
+  };
+  
+  // Handle image error
+  const handleImageError = (postId: string) => {
+    setImageErrors(prev => ({...prev, [postId]: true}));
+    console.log(`Image for post ${postId} failed to load, using fallback`);
   };
   
   return (
@@ -114,11 +134,12 @@ export default function BlogPreview() {
               {/* Image container */}
               <div className="relative h-48 w-full overflow-hidden">
                 <Image
-                  src={post.image}
+                  src={imageErrors[post.id] ? post.fallbackImage : post.image}
                   alt={post.title}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  onError={() => handleImageError(post.id)}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
               </div>

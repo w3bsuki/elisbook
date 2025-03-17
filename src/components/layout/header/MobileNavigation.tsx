@@ -11,15 +11,12 @@ import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/LanguageContext";
 
 // Import types from local types file
-import { BookType, ServiceType } from "./types";
+import { NavigationProps } from "./types";
 
-interface MobileNavigationProps {
+interface MobileNavigationProps extends NavigationProps {
   isMenuOpen: boolean | string;
   setIsMenuOpen: (value: boolean | string) => void;
   headerHeight: number;
-  books: BookType[];
-  services: ServiceType[];
-  onBookClick: (book: BookType, e: React.MouseEvent) => void;
 }
 
 export function MobileNavigation({ 
@@ -28,7 +25,8 @@ export function MobileNavigation({
   headerHeight, 
   books, 
   services, 
-  onBookClick 
+  onBookClick,
+  onServiceClick
 }: MobileNavigationProps) {
   const { language, setLanguage } = useLanguage();
   const pathname = usePathname();
@@ -104,7 +102,7 @@ export function MobileNavigation({
             </button>
             <button
               type="button"
-              className="flex w-full items-center border-b border-white/20 px-8 py-4 text-left transition-colors hover:bg-green-700 text-white"
+              className="flex w-full items-center border-b border-white/20 px-8 py-4 text-left transition-colors hover:bg-purple-700 text-white"
               onClick={() => setIsMenuOpen("services")}
             >
               <span className="flex-1 text-lg">{navTranslations.services}</span>
@@ -188,7 +186,7 @@ export function MobileNavigation({
       {/* Mobile Menu > Books */}
       {isMenuOpen === "books" && (
         <div 
-          style={{...mobileMenuStyle, backgroundColor: 'rgb(22 163 74) !important'}}
+          style={mobileMenuStyle}
           className="fixed inset-x-0 bottom-0 flex flex-col overflow-y-auto max-h-[80vh] !bg-green-600 dark:!bg-green-800 backdrop-blur-md md:hidden animate-in slide-in-from-right"
         >
           <div className="flex items-center justify-between px-8 py-3.5 border-b border-white/20">
@@ -239,6 +237,15 @@ export function MobileNavigation({
                       : book.description
                     }
                   </div>
+                  <div className="mt-2">
+                    <Badge variant="secondary" className="text-xs bg-green-500 text-white">
+                      {language === "en" ? book.category : 
+                        book.category === "Fiction" ? "Художествена литература" :
+                        book.category === "Non-Fiction" ? "Нехудожествена литература" :
+                        book.category === "Poetry" ? "Поезия" : book.category
+                      }
+                    </Badge>
+                  </div>
                 </div>
               </div>
             ))}
@@ -257,8 +264,8 @@ export function MobileNavigation({
       {/* Mobile Menu > Services */}
       {isMenuOpen === "services" && (
         <div 
-          style={{...mobileMenuStyle, backgroundColor: 'rgb(22 163 74) !important'}}
-          className="fixed inset-x-0 bottom-0 flex flex-col overflow-y-auto max-h-[80vh] !bg-green-600 dark:!bg-green-800 backdrop-blur-md md:hidden animate-in slide-in-from-right"
+          style={mobileMenuStyle}
+          className="fixed inset-x-0 bottom-0 flex flex-col overflow-y-auto max-h-[80vh] !bg-purple-600 dark:!bg-purple-800 backdrop-blur-md md:hidden animate-in slide-in-from-right"
         >
           <div className="flex items-center justify-between px-8 py-3.5 border-b border-white/20">
             <div className="text-xs tracking-widest text-white uppercase font-semibold">
@@ -267,7 +274,7 @@ export function MobileNavigation({
             <Button 
               variant="ghost" 
               onClick={() => setIsMenuOpen(true)} 
-              className="flex items-center bg-transparent hover:bg-green-700 text-white border-none shadow-none focus:shadow-none focus-visible:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="flex items-center bg-transparent hover:bg-purple-700 text-white border-none shadow-none focus:shadow-none focus-visible:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
             >
               <ChevronLeft className="mr-2 size-4" />
               {language === "en" ? "Back" : "Назад"}
@@ -275,10 +282,10 @@ export function MobileNavigation({
           </div>
           <div>
             {services.map((service) => (
-              <Link
+              <div
                 key={service.id}
-                href={service.href}
-                className="group flex w-full items-start gap-x-4 border-b border-white/20 px-8 py-6 text-left hover:bg-green-700 transition-colors"
+                className="group flex w-full items-start gap-x-4 border-b border-white/20 px-8 py-6 text-left hover:bg-purple-700 transition-colors cursor-pointer"
+                onClick={(e) => onServiceClick(service, e)}
               >
                 <div className="shrink-0 relative w-16 h-12 overflow-hidden rounded">
                   <Image
@@ -299,7 +306,7 @@ export function MobileNavigation({
                         : service.title
                       }
                     </span>
-                    <Badge className="ml-2 bg-green-700 text-white text-xs">
+                    <Badge className="ml-2 bg-purple-500 text-white text-xs">
                       {service.price} лв
                     </Badge>
                   </div>
@@ -314,16 +321,16 @@ export function MobileNavigation({
                       : service.description
                     }
                   </div>
-                  <div className="mt-1">
+                  <div className="mt-2">
                     <Badge variant="outline" className="text-xs text-white border-white/40">
                       {service.duration}
                     </Badge>
                   </div>
                 </div>
-              </Link>
+              </div>
             ))}
             <div className="border-t border-white/20 px-8 py-7">
-              <Button className="w-full bg-white hover:bg-gray-100 text-green-700 rounded-md border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-200 flex items-center justify-center hover:translate-y-[-2px]" asChild>
+              <Button className="w-full bg-white hover:bg-gray-100 text-purple-700 rounded-md border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-200 flex items-center justify-center hover:translate-y-[-2px]" asChild>
                 <Link href="/services">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-shopping-bag mr-2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                   {language === "en" ? "View All Services" : "Разгледай Всички Услуги"}

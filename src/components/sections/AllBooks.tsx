@@ -10,7 +10,6 @@ import FlipCard from "@/components/animata/card/flip-card";
 import { BookPreviewDialog } from "@/components/ui/book-preview-dialog";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 // Define a Book type to replace 'any'
 interface Book {
@@ -120,7 +119,7 @@ export default function AllBooks() {
                     onClick={() => handleBookClick(book)} 
                     className="cursor-pointer transform transition-transform duration-300 group-hover:translate-y-[-5px] max-w-[200px] mx-auto"
                   >
-                    <AspectRatio ratio={3/5} className="bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden">
+                    <div className="bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden" style={{ aspectRatio: '3/5' }}>
                       <FlipCard
                         image={book.coverImage || "/images/books/vdahnovenia-kniga-1.png"}
                         title={book.title}
@@ -129,7 +128,7 @@ export default function AllBooks() {
                         category={book.category || 'default'}
                         className="mx-auto shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] w-full h-full"
                       />
-                    </AspectRatio>
+                    </div>
                   </div>
                   
                   {/* Quick action button */}
@@ -207,7 +206,11 @@ export default function AllBooks() {
       {selectedBook && (
         <BookPreviewDialog 
           book={{
-            ...selectedBook,
+            id: selectedBook.id,
+            title: selectedBook.title,
+            description: selectedBook.description,
+            category: selectedBook.category,
+            price: selectedBook.price,
             image: selectedBook.coverImage || "/images/books/vdahnovenia-kniga-1.png"
           }}
           open={isPreviewOpen}
@@ -216,4 +219,4 @@ export default function AllBooks() {
       )}
     </section>
   );
-} 
+}

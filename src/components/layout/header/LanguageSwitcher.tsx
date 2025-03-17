@@ -14,27 +14,35 @@ import { cn } from "@/lib/utils";
 export function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
   
-  const toggleLanguage = () => {
-    setLanguage(language === 'en' ? 'bg' : 'en');
-  };
-  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button 
           variant="ghost" 
           size="icon" 
-          className="bg-transparent hover:bg-green-700 text-white border-none shadow-none focus:shadow-none focus-visible:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="bg-transparent hover:bg-green-700/50 text-white border-none shadow-none focus:shadow-none focus-visible:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
         >
           <Globe className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="animate-in fade-in-50 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95">
-        <DropdownMenuItem onClick={toggleLanguage} className={cn(language === "en" && "bg-accent")}>
-          <span className="mr-2">🇬🇧</span> English
+      <DropdownMenuContent align="end" className="min-w-[8rem]">
+        <DropdownMenuItem 
+          onClick={() => setLanguage('en')} 
+          className={cn(
+            "cursor-pointer flex items-center",
+            language === "en" ? "bg-accent font-medium" : "hover:bg-accent/50"
+          )}
+        >
+          <span className="mr-2 text-base">🇬🇧</span> English
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={toggleLanguage} className={cn(language === "bg" && "bg-accent")}>
-          <span className="mr-2">🇧🇬</span> Български
+        <DropdownMenuItem 
+          onClick={() => setLanguage('bg')} 
+          className={cn(
+            "cursor-pointer flex items-center",
+            language === "bg" ? "bg-accent font-medium" : "hover:bg-accent/50"
+          )}
+        >
+          <span className="mr-2 text-base">🇧🇬</span> Български
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -6,7 +6,7 @@ import Link from "next/link";
 // Sample blog posts data
 const blogPosts = [
   {
-    id: 1,
+    id: "the-art-of-storytelling",
     title: "The Art of Storytelling: Crafting Compelling Narratives",
     excerpt: "Discover the essential elements that make a story captivating and how to weave them into your own writing.",
     date: "2023-10-15",
@@ -15,7 +15,7 @@ const blogPosts = [
     image: "/images/blog/storytelling.txt"
   },
   {
-    id: 2,
+    id: "finding-your-voice",
     title: "Finding Your Voice: Developing a Unique Writing Style",
     excerpt: "Learn how to develop and refine your distinctive writing voice to stand out in a crowded literary landscape.",
     date: "2023-09-28",
@@ -24,7 +24,7 @@ const blogPosts = [
     image: "/images/blog/writing-style.txt"
   },
   {
-    id: 3,
+    id: "publishing-journey",
     title: "The Publishing Journey: From Manuscript to Bookshelf",
     excerpt: "A comprehensive guide to navigating the complex world of publishing and getting your book into readers' hands.",
     date: "2023-08-12",
@@ -81,7 +81,7 @@ export default function BlogPage() {
                     <span>Digital Literature</span>
                   </div>
                 </div>
-                <Link href="/blog/featured-post" className="inline-flex items-center text-green-600 dark:text-green-400 font-medium hover:underline">
+                <Link href="/blog/digital-literature" className="inline-flex items-center text-green-600 dark:text-green-400 font-medium hover:underline">
                   Read Article
                   <ChevronRight className="h-4 w-4 ml-1" />
                 </Link>

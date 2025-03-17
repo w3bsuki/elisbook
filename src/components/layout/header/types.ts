@@ -16,4 +16,11 @@ export interface ServiceType {
   href: string;
   price: number;
   duration: string;
+}
+
+export interface NavigationProps {
+  books: BookType[];
+  services: ServiceType[];
+  onBookClick: (book: BookType, e: React.MouseEvent) => void;
+  onServiceClick: (service: ServiceType, e: React.MouseEvent) => void;
 } 

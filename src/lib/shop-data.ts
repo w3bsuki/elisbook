@@ -14,6 +14,7 @@ export const shopBooks: Book[] = [
     isbn: '9786199211205',
     pages: 86,
     publisher: 'Елис',
+    digital: true,
   },
   {
     id: '2',
@@ -27,6 +28,7 @@ export const shopBooks: Book[] = [
     isbn: '9786199211274',
     pages: 84,
     publisher: 'Елис',
+    digital: true,
   },
   {
     id: '3',
@@ -40,6 +42,7 @@ export const shopBooks: Book[] = [
     isbn: '9786199211267',
     pages: 82,
     publisher: 'Елис',
+    digital: true,
   },
   {
     id: '4',

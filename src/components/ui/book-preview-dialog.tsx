@@ -45,7 +45,7 @@ export function BookPreviewDialog({ book, open, onOpenChange }: BookPreviewDialo
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md border-2 border-black dark:border-gray-700 p-0 overflow-hidden">
+      <DialogContent className="sm:max-w-md border-2 border-green-600 dark:border-green-700 p-0 overflow-hidden rounded-lg shadow-lg">
         <div className="relative">
           <AspectRatio ratio={16/9} className="w-full">
             <div className="relative h-full w-full">
@@ -59,12 +59,13 @@ export function BookPreviewDialog({ book, open, onOpenChange }: BookPreviewDialo
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
               <button 
                 onClick={() => onOpenChange(false)}
-                className="absolute top-2 right-2 p-1 rounded-full bg-black/20 text-white hover:bg-black/40 transition-colors"
+                className="absolute top-3 right-3 p-1.5 rounded-full bg-black/30 text-white hover:bg-black/50 transition-colors"
+                aria-label="Close dialog"
               >
                 <X className="h-5 w-5" />
               </button>
               {book.category && (
-                <div className="absolute top-4 left-4 bg-green-600 text-white text-xs font-medium px-2 py-1 rounded-none">
+                <div className="absolute top-4 left-4 bg-green-600 text-white text-xs font-medium px-2.5 py-1.5 rounded-md shadow-md">
                   {getCategory()}
                 </div>
               )}
@@ -72,21 +73,21 @@ export function BookPreviewDialog({ book, open, onOpenChange }: BookPreviewDialo
           </AspectRatio>
         </div>
         
-        <div className="p-6">
+        <div className="p-6 bg-white dark:bg-gray-900">
           <DialogHeader>
-            <DialogTitle className="text-xl font-bold">{book.title}</DialogTitle>
-            <DialogDescription className="text-sm mt-2">
+            <DialogTitle className="text-xl font-bold text-gray-900 dark:text-white">{book.title}</DialogTitle>
+            <DialogDescription className="text-sm mt-2 text-gray-600 dark:text-gray-300">
               {book.description}
             </DialogDescription>
           </DialogHeader>
           
           <div className="mt-6 flex justify-between items-center">
             {book.price && (
-              <div className="font-bold text-lg">
+              <div className="font-bold text-lg text-green-700 dark:text-green-400">
                 {language === 'bg' ? `${book.price.toFixed(2)} лв.` : `$${book.price.toFixed(2)}`}
               </div>
             )}
-            <Button className="bg-green-600 hover:bg-green-700 text-white border-2 border-black dark:border-gray-700 shadow-md hover:shadow-lg transition-all duration-300 rounded-none">
+            <Button className="bg-green-600 hover:bg-green-700 text-white border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-200 rounded-md hover:translate-y-[-2px]">
               <BookOpen className="mr-2 h-4 w-4" />
               {language === 'bg' ? 'Прочетете повече' : 'Read More'}
             </Button>

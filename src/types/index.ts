@@ -11,6 +11,7 @@ export interface Book {
   isbn?: string;
   pages?: number;
   publisher?: string;
+  digital?: boolean;
 }
 
 // Service type

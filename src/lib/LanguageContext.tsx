@@ -3,9 +3,11 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { translations as translationsData } from './translations';
 
-// Define a more flexible type for translations that allows for nested objects
-type TranslationValue = string | Record<string, TranslationValue>;
-type TranslationsType = Record<string, Record<string, TranslationValue>>;
+// Define a more flexible type for translations that avoids circular references
+type TranslationValue = string | Record<string, any>;
+type TranslationsType = {
+  [language: string]: Record<string, TranslationValue>;
+};
 
 interface LanguageContextType {
   language: string;

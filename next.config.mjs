@@ -1,12 +1,9 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
   typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
+    // Allow production builds to successfully complete even if
     // your project has type errors.
-    // !! WARN !!
     ignoreBuildErrors: true,
   },
   eslint: {
@@ -18,7 +15,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com',
+        hostname: '*.unsplash.com',
         pathname: '/**',
       },
       {
@@ -28,6 +25,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  distDir: '.next',
+  trailingSlash: true,
 };
 
-export default nextConfig;
+export default nextConfig; 

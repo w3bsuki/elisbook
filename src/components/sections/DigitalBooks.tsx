@@ -127,7 +127,7 @@ export default function DigitalBooks() {
                     onClick={() => handleBookClick(book)} 
                     className="cursor-pointer transform transition-transform duration-300 group-hover:translate-y-[-5px] max-w-[200px] mx-auto"
                   >
-                    <AspectRatio ratio={3/5} className="bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden">
+                    <div className="bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden" style={{ aspectRatio: '3/5' }}>
                       <FlipCard
                         image={book.coverImage || "/images/books/vdahnovenia-kniga-1.png"}
                         title={book.title}
@@ -136,7 +136,7 @@ export default function DigitalBooks() {
                         category={book.category || 'default'}
                         className="mx-auto shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] w-full h-full"
                       />
-                    </AspectRatio>
+                    </div>
                   </div>
                   
                   {/* Quick action button */}
@@ -225,7 +225,11 @@ export default function DigitalBooks() {
       {selectedBook && (
         <BookPreviewDialog 
           book={{
-            ...selectedBook,
+            id: selectedBook.id,
+            title: selectedBook.title,
+            description: selectedBook.description,
+            category: selectedBook.category,
+            price: selectedBook.price,
             image: selectedBook.coverImage || "/images/books/vdahnovenia-kniga-1.png"
           }}
           open={isPreviewOpen}

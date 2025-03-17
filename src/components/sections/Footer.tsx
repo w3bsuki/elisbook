@@ -118,7 +118,7 @@ const Footer = () => {
                 <span className="text-2xl font-bold text-gray-900 dark:text-white">BookHaven</span>
               </div>
             </Link>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
+            <p className="text-gray-900 dark:text-gray-300 mb-6">
               {language === 'en' 
                 ? 'Discover a world of stories, knowledge, and inspiration through our carefully curated collection of books.'
                 : 'Открийте свят на истории, знания и вдъхновение чрез нашата внимателно подбрана колекция от книги.'}
@@ -138,7 +138,7 @@ const Footer = () => {
                     <li key={item.name}>
                       <Link 
                         href={item.href} 
-                        className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors duration-200"
+                        className="text-gray-900 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors duration-200"
                       >
                         {item.name}
                       </Link>
@@ -157,14 +157,14 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-green-600 dark:text-green-500 mt-0.5" />
-                <span className="text-gray-600 dark:text-gray-300">
+                <span className="text-gray-900 dark:text-gray-300">
                   123 Book Street, Literary District<br />
                   Sofia, Bulgaria
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-green-600 dark:text-green-500" />
-                <a href="mailto:contact@bookhaven.com" className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors duration-200">
+                <a href="mailto:contact@bookhaven.com" className="text-gray-900 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors duration-200">
                   contact@bookhaven.com
                 </a>
               </li>
@@ -205,7 +205,7 @@ const Footer = () => {
                 <Code className="h-5 w-5 text-gray-900 dark:text-white" />
               </Link>
             </div>
-            <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-1 text-gray-900 dark:text-gray-300">
               <span>©</span>
               <span>{new Date().getFullYear()}</span>
               <span>BookHaven. {ensureString(getTranslation("footer.allRightsReserved"))}</span>
@@ -214,7 +214,7 @@ const Footer = () => {
         </div>
 
         {/* Made with love */}
-        <div className="text-center mt-8 text-gray-500 dark:text-gray-400 text-sm flex items-center justify-center gap-1">
+        <div className="text-center mt-8 text-gray-900 dark:text-gray-300 text-sm flex items-center justify-center gap-1">
           <span>{language === 'en' ? 'Made with' : 'Направено с'}</span>
           <Heart className="h-4 w-4 text-red-500 inline" />
           <span>{language === 'en' ? 'for book lovers everywhere' : 'за любителите на книги навсякъде'}</span>

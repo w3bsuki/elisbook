@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useLanguage } from "@/lib/LanguageContext";
 import { cn } from "@/lib/utils";
 import { BookPreviewDialog } from "@/components/ui/book-preview-dialog";
+import { ServicePreviewDialog } from "@/components/ui/service-preview-dialog";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 // Import our new components
@@ -90,7 +91,11 @@ export default function Header() {
   
   // Book preview state
   const [selectedBook, setSelectedBook] = useState<BookType | null>(null);
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isBookPreviewOpen, setIsBookPreviewOpen] = useState(false);
+  
+  // Service preview state
+  const [selectedService, setSelectedService] = useState<ServiceType | null>(null);
+  const [isServicePreviewOpen, setIsServicePreviewOpen] = useState(false);
   
   // Handle scroll effect with debounce for better performance
   useEffect(() => {
@@ -138,24 +143,30 @@ export default function Header() {
   const handleBookClick = useCallback((book: BookType, e: React.MouseEvent) => {
     e.preventDefault();
     setSelectedBook(book);
-    setIsPreviewOpen(true);
+    setIsBookPreviewOpen(true);
+  }, []);
+  
+  // Handle service click for preview
+  const handleServiceClick = useCallback((service: ServiceType, e: React.MouseEvent) => {
+    e.preventDefault();
+    setSelectedService(service);
+    setIsServicePreviewOpen(true);
   }, []);
   
   return (
     <header 
       ref={headerRef}
-      className="sticky inset-x-0 top-0 z-20 w-full transition-none border-b shadow-sm !bg-green-600 dark:!bg-green-800 [background-color:rgb(22_163_74)!important]"
-      style={{ backgroundColor: 'rgb(22 163 74) !important' }}
+      className="sticky inset-x-0 top-0 z-20 w-full transition-none border-b border-green-700/30 shadow-sm !bg-green-600 dark:!bg-green-800"
     >
-      <div className="container mx-auto flex justify-center bg-green-600 dark:bg-green-800">
+      <div className="container mx-auto flex justify-center">
         <div className={cn(
-          "flex w-full items-center justify-between max-w-6xl transition-all duration-300 bg-green-600 dark:bg-green-800",
+          "flex w-full items-center justify-between max-w-6xl transition-all duration-200",
           isScrolled ? "py-2 md:py-3" : "py-3 md:py-4"
         )}>
           {/* Left section: Logo and theme/language toggles */}
           <div className="flex-1 flex items-center gap-3">
             <Logo isScrolled={isScrolled} />
-            <div className="flex items-center gap-2 ml-2">
+            <div className="flex items-center gap-1 ml-2">
               <ThemeToggle />
               <LanguageSwitcher />
             </div>
@@ -165,7 +176,8 @@ export default function Header() {
           <DesktopNavigation 
             books={books} 
             services={services} 
-            onBookClick={handleBookClick} 
+            onBookClick={handleBookClick}
+            onServiceClick={handleServiceClick}
           />
           
           {/* Right section: Social links and shop button */}
@@ -182,6 +194,7 @@ export default function Header() {
             books={books}
             services={services}
             onBookClick={handleBookClick}
+            onServiceClick={handleServiceClick}
           />
         </div>
       </div>
@@ -190,8 +203,17 @@ export default function Header() {
       {selectedBook && (
         <BookPreviewDialog 
           book={selectedBook}
-          open={isPreviewOpen}
-          onOpenChange={setIsPreviewOpen}
+          open={isBookPreviewOpen}
+          onOpenChange={setIsBookPreviewOpen}
+        />
+      )}
+      
+      {/* Service Preview Dialog */}
+      {selectedService && (
+        <ServicePreviewDialog 
+          service={selectedService}
+          open={isServicePreviewOpen}
+          onOpenChange={setIsServicePreviewOpen}
         />
       )}
     </header>
