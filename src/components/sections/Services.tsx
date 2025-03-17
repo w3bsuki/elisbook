@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Clock, Package, User, ChevronRight, Eye, BookText } from "lucide-react";
+import { ArrowRight, Calendar, Clock, Package, User, ChevronRight, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
 import { services, filterServicesByCategory } from "@/lib/services-data";

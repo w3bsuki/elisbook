@@ -40,6 +40,12 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
   
+  // Format price with currency symbol
+  const formattedPrice = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(service.price);
+  
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-24 pb-16">
       <div className="container mx-auto px-4">
@@ -78,7 +84,7 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
               <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 md:mb-0">{service.title}</h1>
                 <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                  {service.price.toFixed(0)}{language === 'en' ? ' BGN' : 'лв'}
+                  {formattedPrice}
                 </div>
               </div>
               

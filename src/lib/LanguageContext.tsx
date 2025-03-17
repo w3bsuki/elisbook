@@ -1,77 +1,30 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { useTranslations } from "./translations";
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { translations as translationsData } from './translations';
 
-type LanguageContextType = {
-  language: "en" | "bg";
-  setLanguage: (lang: "en" | "bg") => void;
-  t: (key: string) => string | Record<string, unknown>;
+interface LanguageContextType {
+  language: string;
+  setLanguage: (lang: string) => void;
+  translations: Record<string, Record<string, string>>;
+}
+
+const defaultValue: LanguageContextType = {
+  language: 'en',
+  setLanguage: () => {},
+  translations: translationsData,
 };
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType>(defaultValue);
 
-// Define translations
-const translations = {
-  en: {
-    nav: {
-      about: "About",
-      books: "Books",
-      blog: "Blog",
-      contact: "Contact",
-      services: "Services",
-    },
-    // ... other translations ...
-  },
-  bg: {
-    nav: {
-      about: "За Мен",
-      books: "Книги",
-      blog: "Блог",
-      contact: "Контакти",
-      services: "Услуги",
-    },
-    // ... other translations ...
-  },
-};
+export const useLanguage = () => useContext(LanguageContext);
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState<"en" | "bg">("bg");
-  const { t } = useTranslations(language);
-
-  // Store language preference in localStorage
-  useEffect(() => {
-    // Try to get language from localStorage
-    try {
-      const storedLanguage = localStorage.getItem("language") as "en" | "bg" | null;
-      if (storedLanguage && (storedLanguage === "en" || storedLanguage === "bg")) {
-        setLanguage(storedLanguage);
-      }
-    } catch (error) {
-      console.error("Error accessing localStorage:", error);
-    }
-  }, []);
-
-  // Update localStorage when language changes
-  useEffect(() => {
-    try {
-      localStorage.setItem("language", language);
-    } catch (error) {
-      console.error("Error setting localStorage:", error);
-    }
-  }, [language]);
+  const [language, setLanguage] = useState('en');
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, translations: translationsData }}>
       {children}
     </LanguageContext.Provider>
   );
-};
-
-export const useLanguage = () => {
-  const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error("useLanguage must be used within a LanguageProvider");
-  }
-  return context;
 }; 

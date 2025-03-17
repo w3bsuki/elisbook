@@ -131,7 +131,7 @@ const NavLink = ({
 };
 
 export default function Header() {
-  const { t, language, setLanguage } = useLanguage();
+  const { language, setLanguage, translations } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean | string>(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -196,6 +196,13 @@ export default function Header() {
     setIsPreviewOpen(true);
   };
   
+  const toggleLanguage = () => {
+    setLanguage(language === 'en' ? 'bg' : 'en');
+  };
+  
+  // Get translations for navigation items
+  const navTranslations = translations?.[language]?.nav || {};
+  
   return (
     <header 
       ref={headerRef}
@@ -227,10 +234,10 @@ export default function Header() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="animate-in fade-in-50 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95">
-                  <DropdownMenuItem onClick={() => setLanguage("en")} className={cn(language === "en" && "bg-accent")}>
+                  <DropdownMenuItem onClick={toggleLanguage} className={cn(language === "en" && "bg-accent")}>
                     <span className="mr-2">🇬🇧</span> English
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setLanguage("bg")} className={cn(language === "bg" && "bg-accent")}>
+                  <DropdownMenuItem onClick={toggleLanguage} className={cn(language === "bg" && "bg-accent")}>
                     <span className="mr-2">🇧🇬</span> Български
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -242,7 +249,7 @@ export default function Header() {
             <NavigationMenuList className="font-playfair hidden md:flex">
               <NavigationMenuItem>
                 <NavLink href="/about" className="text-white hover:text-gray-100 hover:bg-green-800">
-                  {language === 'en' ? 'About Me' : 'За мен'}
+                  {navTranslations.about || 'About'}
                 </NavLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
@@ -252,7 +259,7 @@ export default function Header() {
                     pathname.startsWith("/shop") && "!text-white font-semibold !bg-green-700"
                   )}
                 >
-                  {language === 'en' ? 'Books' : 'Книги'}
+                  {navTranslations.books || 'Books'}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent 
                   className="animate-in fade-in-50 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 !bg-white dark:!bg-gray-900"
@@ -327,7 +334,7 @@ export default function Header() {
                     pathname.startsWith("/services") && "!text-white font-semibold !bg-green-700"
                   )}
                 >
-                  {language === 'en' ? 'Services' : 'Услуги'}
+                  {navTranslations.services || 'Services'}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent 
                   className="animate-in fade-in-50 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 !bg-white dark:!bg-gray-900"
@@ -396,12 +403,12 @@ export default function Header() {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavLink href="/blog" className="text-white hover:text-gray-100 hover:bg-green-800">
-                  {language === 'en' ? 'Blog' : 'Блог'}
+                  {navTranslations.blog || 'Blog'}
                 </NavLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavLink href="/contact" className="text-white hover:text-gray-100 hover:bg-green-800">
-                  {language === 'en' ? 'Contact' : 'Контакти'}
+                  {navTranslations.contact || 'Contact'}
                 </NavLink>
               </NavigationMenuItem>
             </NavigationMenuList>
@@ -475,7 +482,7 @@ export default function Header() {
                   "flex-1 text-lg text-white",
                   pathname === "/about" && "font-medium"
                 )}>
-                  {language === 'en' ? 'About Me' : 'За мен'}
+                  {navTranslations.about || 'About'}
                 </span>
               </Link>
               <button
@@ -483,7 +490,7 @@ export default function Header() {
                 className="flex w-full items-center border-b border-white/20 px-8 py-4 text-left transition-colors hover:bg-green-700 text-white"
                 onClick={() => setIsMenuOpen("books")}
               >
-                <span className="flex-1 text-lg">{language === 'en' ? 'Books' : 'Книги'}</span>
+                <span className="flex-1 text-lg">{navTranslations.books || 'Books'}</span>
                 <ChevronRight className="size-4" />
               </button>
               <button
@@ -491,7 +498,7 @@ export default function Header() {
                 className="flex w-full items-center border-b border-white/20 px-8 py-4 text-left transition-colors hover:bg-green-700 text-white"
                 onClick={() => setIsMenuOpen("services")}
               >
-                <span className="flex-1 text-lg">{language === 'en' ? 'Services' : 'Услуги'}</span>
+                <span className="flex-1 text-lg">{navTranslations.services || 'Services'}</span>
                 <ChevronRight className="size-4" />
               </button>
               <Link 
@@ -505,7 +512,7 @@ export default function Header() {
                   "flex-1 text-lg text-white",
                   pathname === "/blog" && "font-medium"
                 )}>
-                  {language === 'en' ? 'Blog' : 'Блог'}
+                  {navTranslations.blog || 'Blog'}
                 </span>
               </Link>
               <Link 
@@ -519,7 +526,7 @@ export default function Header() {
                   "flex-1 text-lg text-white",
                   pathname === "/contact" && "font-medium"
                 )}>
-                  {language === 'en' ? 'Contact' : 'Контакти'}
+                  {navTranslations.contact || 'Contact'}
                 </span>
               </Link>
               <Link 
@@ -539,7 +546,7 @@ export default function Header() {
               <button
                 type="button"
                 className="flex w-full items-center border-b border-white/20 px-8 py-4 text-left transition-colors hover:bg-green-700 text-white"
-                onClick={() => setLanguage(language === "en" ? "bg" : "en")}
+                onClick={toggleLanguage}
               >
                 <span className="flex-1 text-lg flex items-center gap-2">
                   <Globe className="h-4 w-4" />

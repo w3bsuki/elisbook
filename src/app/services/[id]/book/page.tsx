@@ -3,13 +3,13 @@
 import { useState, useEffect } from 'react';
 import { notFound, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, Clock, Package, User, Check } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useLanguage } from '@/lib/LanguageContext';
-import { services } from '@/lib/services-data';
+import { services } from '@/data/services';
 import { Service } from '@/types';
 import { useToast } from '@/components/ui/use-toast';
 

@@ -1,18 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
+import { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Calendar, Clock, Package, User, Search, SlidersHorizontal, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useLanguage } from '@/lib/LanguageContext';
+import { ArrowRight } from 'lucide-react';
 import { services, filterServicesByCategory, searchServices, sortServices } from '@/lib/services-data';
 import { Service } from '@/types';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function ServicesPage() {
   const [activeTab, setActiveTab] = useState<string>("all");

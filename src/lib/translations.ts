@@ -9,6 +9,8 @@ export const translations = {
       books: "Books",
       blog: "Blog",
       shop: "Shop",
+      services: "Services",
+      contact: "Contact",
       language: "Български",
     },
     // Book categories
@@ -166,10 +168,12 @@ export const translations = {
   bg: {
     // Navigation
     nav: {
-      about: "За мен",
+      about: "За Мен",
       books: "Книги",
       blog: "Блог",
       shop: "Магазин",
+      services: "Услуги",
+      contact: "Контакти",
       language: "English",
     },
     // Book categories
@@ -177,9 +181,9 @@ export const translations = {
       fiction: "Художествена литература",
       nonFiction: "Нехудожествена литература",
       poetry: "Поезия",
-      health: "Здраве и Хранене",
+      health: "Здраве и хранене",
       selfHelp: "Самопомощ",
-      all: "Всички Книги"
+      all: "Всички книги"
     },
     // Book descriptions
     bookDescriptions: {
@@ -314,7 +318,7 @@ export const translations = {
       securePaymentDesc: "Вашата информация за плащане се обработва сигурно",
       returns: "30-Дневно Връщане",
       returnsDesc: "Лесно връщане до 30 дни от покупката",
-      youMayAlsoLike: "Може Също Да Харесате"
+      youMayAlsoLike: "Може Also Да Харесате"
     },
     // Blog section
     blog: {
@@ -326,21 +330,21 @@ export const translations = {
   },
 };
 
-// Helper function to get translations based on current language
-export const getTranslation = (language: "en" | "bg", key: string): string | Record<string, unknown> => {
-  const keys = key.split(".");
-  let result: Record<string, unknown> = translations[language];
+// Helper function to get translations
+export function getTranslation(language: string, key: string): string {
+  const keys = key.split('.');
+  let result: any = translations[language as keyof typeof translations];
   
   for (const k of keys) {
     if (result && typeof result === 'object' && k in result) {
-      result = result[k] as Record<string, unknown>;
+      result = result[k];
     } else {
       return key; // Return the key if translation not found
     }
   }
   
-  return result;
-};
+  return typeof result === 'string' ? result : key;
+}
 
 // Create a hook for using translations
 export const useTranslations = (language: "en" | "bg") => {
