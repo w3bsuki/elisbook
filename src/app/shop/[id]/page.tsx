@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { shopBooks } from '@/lib/shop-data';
 import BookDetailClient from './book-detail-client';
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }: { params: { id: string } }) {
   // Find the book with the matching ID
   const bookId = params.id;
   const book = shopBooks.find((book) => book.id === bookId);
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function BookDetailPage({ params }) {
+export default async function BookDetailPage({ params }: { params: { id: string } }) {
   // Find the book with the matching ID
   const bookId = params.id;
   const book = shopBooks.find((book) => book.id === bookId);
