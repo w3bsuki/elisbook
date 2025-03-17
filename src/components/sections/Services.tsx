@@ -83,7 +83,7 @@ export default function Services() {
             
             {/* Services grid */}
             <TabsContent value={activeTab} className="mt-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
                 {filteredServices.map((service) => (
                   <ServiceCard key={service.id} service={service} />
                 ))}
@@ -115,7 +115,7 @@ function ServiceCard({ service }: { service: Service }) {
   const { language } = useLanguage();
   
   return (
-    <div className="flex flex-col h-full group relative overflow-hidden border border-black dark:border-gray-700 bg-white dark:bg-gray-800/50 rounded-md transition-all duration-300 hover:shadow-[3px_3px_0px_0px_rgba(22,163,74,0.5)] dark:hover:shadow-[3px_3px_0px_0px_rgba(22,163,74,0.3)]">
+    <div className="flex flex-col h-full group relative overflow-hidden border border-black dark:border-gray-700 bg-white dark:bg-gray-800/50 rounded-md transition-all duration-300 hover:shadow-[3px_3px_0px_0px_rgba(22,163,74,0.5)] dark:hover:shadow-[3px_3px_0px_0px_rgba(22,163,74,0.3)] max-w-[220px] mx-auto w-full">
       {/* Category badge - top left */}
       <div className="absolute top-0 left-0 z-30">
         <div className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-0.5 rounded-br-md border-r border-b border-black dark:border-gray-700 shadow-sm transform rotate-0 font-medium text-[10px]">
