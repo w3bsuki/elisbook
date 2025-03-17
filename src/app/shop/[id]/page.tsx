@@ -2,7 +2,21 @@ import { notFound } from 'next/navigation';
 import { shopBooks } from '@/lib/shop-data';
 import BookDetailClient from './book-detail-client';
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+// Define the correct PageProps type to match Next.js 15 requirements
+type PageProps = {
+  params: Record<string, string>;
+  searchParams?: Record<string, string | string[]>;
+};
+
+// Update BookPageProps to match the PageProps constraint
+interface BookPageProps {
+  params: {
+    id: string;
+  };
+  searchParams?: Record<string, string | string[]>;
+}
+
+export async function generateMetadata({ params }: BookPageProps) {
   // Find the book with the matching ID
   const bookId = params.id;
   const book = shopBooks.find((book) => book.id === bookId);
@@ -19,7 +33,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   };
 }
 
-export default async function BookDetailPage({ params }: { params: { id: string } }) {
+export default function BookDetailPage({ params }: BookPageProps) {
   // Find the book with the matching ID
   const bookId = params.id;
   const book = shopBooks.find((book) => book.id === bookId);

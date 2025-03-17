@@ -333,11 +333,16 @@ export const translations = {
 // Helper function to get translations
 export function getTranslation(language: string, key: string): string {
   const keys = key.split('.');
-  let result: any = translations[language as keyof typeof translations];
+  let result: Record<string, unknown> = translations[language as keyof typeof translations];
   
   for (const k of keys) {
     if (result && typeof result === 'object' && k in result) {
-      result = result[k];
+      const value = result[k as keyof typeof result];
+      if (typeof value === 'object' && value !== null) {
+        result = value as Record<string, unknown>;
+      } else {
+        return value as string;
+      }
     } else {
       return key; // Return the key if translation not found
     }

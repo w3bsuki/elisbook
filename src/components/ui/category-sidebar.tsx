@@ -31,12 +31,28 @@ export function CategorySidebar({
   onCategoryChange,
   className,
 }: CategorySidebarProps) {
-  const { t } = useLanguage();
+  const { language, translations } = useLanguage();
   
+  // Create a local translation function if t is not provided
+  const getTranslation = (key: string): string => {
+    const keys = key.split('.');
+    let result: any = translations[language];
+    
+    for (const k of keys) {
+      if (result && typeof result === 'object' && k in result) {
+        result = result[k];
+      } else {
+        return key; // Fallback to the key if translation not found
+      }
+    }
+    
+    return typeof result === 'string' ? result : key;
+  };
+
   return (
     <div className={cn("w-full", className)}>
       <div className="space-y-1">
-        <h3 className="font-semibold text-sm mb-3">{ensureString(t("shop.categories"))}</h3>
+        <h3 className="font-semibold text-sm mb-3">{ensureString(getTranslation("shop.categories"))}</h3>
         <Separator className="my-4" />
         {categories.map((category) => {
           const Icon = category.icon;
@@ -51,10 +67,10 @@ export function CategorySidebar({
               onClick={() => onCategoryChange(category.id)}
             >
               <Icon className="h-4 w-4" />
-              {category.id === 'all' ? ensureString(t("categories.all")) :
-               category.id === 'health' ? ensureString(t("categories.health")) :
-               category.id === 'poetry' ? ensureString(t("categories.poetry")) :
-               category.id === 'selfHelp' ? ensureString(t("categories.selfHelp")) :
+              {category.id === 'all' ? ensureString(getTranslation("categories.all")) :
+               category.id === 'health' ? ensureString(getTranslation("categories.health")) :
+               category.id === 'poetry' ? ensureString(getTranslation("categories.poetry")) :
+               category.id === 'selfHelp' ? ensureString(getTranslation("categories.selfHelp")) :
                category.name}
             </Button>
           );
@@ -62,28 +78,28 @@ export function CategorySidebar({
       </div>
       
       <div className="mt-8">
-        <h3 className="font-semibold text-sm mb-3">{ensureString(t("shop.priceRange"))}</h3>
+        <h3 className="font-semibold text-sm mb-3">{ensureString(getTranslation("shop.priceRange"))}</h3>
         <Separator className="my-4" />
         <div className="space-y-2">
           <Button variant="ghost" className="w-full justify-start text-sm font-normal">
-            {ensureString(t("shop.under"))} 25 лв.
+            {ensureString(getTranslation("shop.under"))} 25 лв.
           </Button>
           <Button variant="ghost" className="w-full justify-start text-sm font-normal">
             25 - 30 лв.
           </Button>
           <Button variant="ghost" className="w-full justify-start text-sm font-normal">
-            {ensureString(t("shop.over"))} 30 лв.
+            {ensureString(getTranslation("shop.over"))} 30 лв.
           </Button>
         </div>
       </div>
       
       <div className="mt-8 rounded-lg bg-secondary p-4">
-        <h3 className="font-semibold">{ensureString(t("shop.specialOffer"))}</h3>
+        <h3 className="font-semibold">{ensureString(getTranslation("shop.specialOffer"))}</h3>
         <p className="mt-2 text-sm text-muted-foreground">
-          {ensureString(t("shop.offerDescription"))}
+          {ensureString(getTranslation("shop.offerDescription"))}
         </p>
         <Button className="mt-4 w-full bg-green-500 hover:bg-green-600 text-white" size="sm">
-          {ensureString(t("shop.viewOffer"))}
+          {ensureString(getTranslation("shop.viewOffer"))}
         </Button>
       </div>
     </div>

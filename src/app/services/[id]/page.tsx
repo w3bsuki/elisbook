@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, Calendar, Clock, Package, User, Check } from 'lucide-react';
@@ -10,16 +10,18 @@ import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/lib/LanguageContext';
 import { services } from '@/data/services';
 import { shopBooks } from '@/lib/shop-data';
-import { Service } from '@/types';
+import { Service, Book } from '@/types';
 
-export default function ServiceDetailPage({ params }: { params: { id: string } }) {
+export default function ServiceDetailPage() {
+  const params = useParams();
+  const id = params.id as string;
   const [service, setService] = useState<Service | null>(null);
-  const [relatedBook, setRelatedBook] = useState<any | null>(null);
+  const [relatedBook, setRelatedBook] = useState<Book | null>(null);
   const { language } = useLanguage();
   
   useEffect(() => {
     // Find the service by ID
-    const foundService = services.find(s => s.id === params.id);
+    const foundService = services.find(s => s.id === id);
     
     if (!foundService) {
       notFound();
@@ -34,7 +36,7 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
         setRelatedBook(book);
       }
     }
-  }, [params.id]);
+  }, [id]);
   
   if (!service) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;

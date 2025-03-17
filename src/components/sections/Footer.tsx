@@ -7,15 +7,35 @@ import { useLanguage } from "@/lib/LanguageContext";
 import { Button } from "@/components/ui/button";
 
 // Helper function to ensure translation returns a string
-const ensureString = (value: string | Record<string, unknown>): string => {
+const ensureString = (value: string | Record<string, unknown> | undefined): string => {
   if (typeof value === 'string') {
     return value;
   }
-  return String(value) || '';
+  return String(value || '') || '';
 };
 
 const Footer = () => {
-  const { t, language } = useLanguage();
+  const { language, translations } = useLanguage();
+  
+  // Helper function to get translations
+  const getTranslation = (key: string): string => {
+    if (!translations || !language || !translations[language]) {
+      return key; // Fallback to key if translations not available
+    }
+    
+    const keys = key.split('.');
+    let result: any = translations[language];
+    
+    for (const k of keys) {
+      if (result && typeof result === 'object' && k in result) {
+        result = result[k];
+      } else {
+        return key; // Fallback to the key if translation not found
+      }
+    }
+    
+    return String(result || key);
+  };
   
   const navigation = {
     categories: [
@@ -24,26 +44,26 @@ const Footer = () => {
         sections: [
           {
             id: "about",
-            name: ensureString(t("footer.about")),
+            name: ensureString(getTranslation("footer.about")),
             items: [
-              { name: ensureString(t("footer.aboutMe")), href: "/about" },
-              { name: ensureString(t("footer.blog")), href: "/blog" },
+              { name: ensureString(getTranslation("footer.aboutMe")), href: "/about" },
+              { name: ensureString(getTranslation("footer.blog")), href: "/blog" },
             ],
           },
           {
             id: "features",
-            name: ensureString(t("footer.features")),
+            name: ensureString(getTranslation("footer.features")),
             items: [
-              { name: ensureString(t("footer.books")), href: "/shop" },
-              { name: ensureString(t("footer.dashboard")), href: "/dashboard" },
+              { name: ensureString(getTranslation("footer.books")), href: "/shop" },
+              { name: ensureString(getTranslation("footer.dashboard")), href: "/dashboard" },
             ],
           },
           {
             id: "legal",
-            name: ensureString(t("footer.legal")),
+            name: ensureString(getTranslation("footer.legal")),
             items: [
-              { name: ensureString(t("footer.termsOfService")), href: "/terms" },
-              { name: ensureString(t("footer.privacyPolicy")), href: "/privacy" },
+              { name: ensureString(getTranslation("footer.termsOfService")), href: "/terms" },
+              { name: ensureString(getTranslation("footer.privacyPolicy")), href: "/privacy" },
             ],
           },
         ],
@@ -188,7 +208,7 @@ const Footer = () => {
             <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
               <span>©</span>
               <span>{new Date().getFullYear()}</span>
-              <span>BookHaven. {ensureString(t("footer.allRightsReserved"))}</span>
+              <span>BookHaven. {ensureString(getTranslation("footer.allRightsReserved"))}</span>
             </div>
           </div>
         </div>

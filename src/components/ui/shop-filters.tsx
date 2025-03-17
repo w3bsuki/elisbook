@@ -36,7 +36,24 @@ export function ShopFilters({
   activeSort,
   activeFilters,
 }: ShopFiltersProps) {
-  const { t } = useLanguage();
+  const { language, translations } = useLanguage();
+  
+  // Create a local translation function if t is not provided
+  const getTranslation = (key: string): string => {
+    const keys = key.split('.');
+    let result: any = translations[language];
+    
+    for (const k of keys) {
+      if (result && typeof result === 'object' && k in result) {
+        result = result[k];
+      } else {
+        return key; // Fallback to the key if translation not found
+      }
+    }
+    
+    return typeof result === 'string' ? result : key;
+  };
+
   const [searchTerm, setSearchTerm] = React.useState('');
 
   const handleSearch = (e: React.FormEvent) => {
@@ -50,7 +67,7 @@ export function ShopFilters({
         <form onSubmit={handleSearch} className="relative flex-1">
           <Input
             type="search"
-            placeholder={ensureString(t("shop.searchPlaceholder"))}
+            placeholder={ensureString(getTranslation("shop.searchPlaceholder"))}
             className="pr-10"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -61,7 +78,7 @@ export function ShopFilters({
             size="sm"
             className="absolute right-0 top-0 h-full px-3"
           >
-            <span className="sr-only">{ensureString(t("shop.search"))}</span>
+            <span className="sr-only">{ensureString(getTranslation("shop.search"))}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -85,29 +102,29 @@ export function ShopFilters({
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm" className="h-9 gap-1">
               <SlidersHorizontal className="h-3.5 w-3.5" />
-              <span>{ensureString(t("shop.filter"))}</span>
+              <span>{ensureString(getTranslation("shop.filter"))}</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuLabel>{ensureString(t("shop.filterBy"))}</DropdownMenuLabel>
+            <DropdownMenuLabel>{ensureString(getTranslation("shop.filterBy"))}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuCheckboxItem
               checked={activeFilters.featured}
               onCheckedChange={(checked) => onFilterChange('featured', checked)}
             >
-              {ensureString(t("shop.featured"))}
+              {ensureString(getTranslation("shop.featured"))}
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
               checked={activeFilters.newReleases}
               onCheckedChange={(checked) => onFilterChange('newReleases', checked)}
             >
-              {ensureString(t("shop.newReleases"))}
+              {ensureString(getTranslation("shop.newReleases"))}
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
               checked={activeFilters.bestsellers}
               onCheckedChange={(checked) => onFilterChange('bestsellers', checked)}
             >
-              {ensureString(t("shop.bestsellers"))}
+              {ensureString(getTranslation("shop.bestsellers"))}
             </DropdownMenuCheckboxItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -115,36 +132,36 @@ export function ShopFilters({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm" className="h-9 gap-1">
-              <span>{ensureString(t("shop.sort"))}</span>
+              <span>{ensureString(getTranslation("shop.sort"))}</span>
               <ChevronDown className="h-3.5 w-3.5" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuLabel>{ensureString(t("shop.sortBy"))}</DropdownMenuLabel>
+            <DropdownMenuLabel>{ensureString(getTranslation("shop.sortBy"))}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuCheckboxItem
               checked={activeSort === 'newest'}
               onCheckedChange={() => onSortChange('newest')}
             >
-              {ensureString(t("shop.newest"))}
+              {ensureString(getTranslation("shop.newest"))}
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
               checked={activeSort === 'oldest'}
               onCheckedChange={() => onSortChange('oldest')}
             >
-              {ensureString(t("shop.oldest"))}
+              {ensureString(getTranslation("shop.oldest"))}
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
               checked={activeSort === 'price-low'}
               onCheckedChange={() => onSortChange('price-low')}
             >
-              {ensureString(t("shop.priceLowToHigh"))}
+              {ensureString(getTranslation("shop.priceLowToHigh"))}
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
               checked={activeSort === 'price-high'}
               onCheckedChange={() => onSortChange('price-high')}
             >
-              {ensureString(t("shop.priceHighToLow"))}
+              {ensureString(getTranslation("shop.priceHighToLow"))}
             </DropdownMenuCheckboxItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -26,8 +26,24 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ book, className }: ProductCardProps) {
-  const { language, t } = useLanguage();
+  const { language, translations } = useLanguage();
   
+  // Create a local translation function if t is not provided
+  const getTranslation = (key: string): string => {
+    const keys = key.split('.');
+    let result: any = translations[language];
+    
+    for (const k of keys) {
+      if (result && typeof result === 'object' && k in result) {
+        result = result[k];
+      } else {
+        return key; // Fallback to the key if translation not found
+      }
+    }
+    
+    return typeof result === 'string' ? result : key;
+  };
+
   // Define spine color based on category
   const getSpineColor = () => {
     switch (book.category) {
@@ -54,14 +70,14 @@ export function ProductCard({ book, className }: ProductCardProps) {
               {book.featured && (
                 <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-200 text-xs px-2 py-0.5">
                   <Sparkles className="mr-1 h-3 w-3" />
-                  {ensureString(t("productCard.featured"))}
+                  {ensureString(getTranslation("productCard.featured"))}
                 </Badge>
               )}
               {book.category && (
                 <Badge variant="outline" className="bg-primary/10 text-primary hover:bg-primary/20 text-xs px-2 py-0.5">
-                  {book.category === 'health' ? ensureString(t("categories.health")) : 
-                   book.category === 'poetry' ? ensureString(t("categories.poetry")) : 
-                   book.category === 'selfHelp' ? ensureString(t("categories.selfHelp")) : 
+                  {book.category === 'health' ? ensureString(getTranslation("categories.health")) : 
+                   book.category === 'poetry' ? ensureString(getTranslation("categories.poetry")) : 
+                   book.category === 'selfHelp' ? ensureString(getTranslation("categories.selfHelp")) : 
                    book.category}
                 </Badge>
               )}
@@ -100,7 +116,7 @@ export function ProductCard({ book, className }: ProductCardProps) {
       <CardFooter className="flex gap-2 p-3 pt-0">
         <Button className="flex-1 h-8 text-xs bg-green-500 hover:bg-green-600 text-white border-2 border-black shadow-sm hover:shadow-md transition-all duration-200" size="sm">
           <ShoppingCart className="mr-1 h-3 w-3" />
-          {ensureString(t("productCard.buyNow"))}
+          {ensureString(getTranslation("productCard.buyNow"))}
         </Button>
         <Button variant="outline" size="icon" className="h-8 w-8 border-2 border-black">
           <Heart className="h-3 w-3" />

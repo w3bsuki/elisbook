@@ -1,26 +1,33 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Calendar, Clock, Package, User, ChevronRight, Eye } from "lucide-react";
+import { Calendar, Clock, Package, User, ChevronRight, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/LanguageContext";
-import { services, filterServicesByCategory } from "@/data/services";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Service } from "@/types";
 
+// Import services directly to avoid potential issues with dynamic imports
+import { services as allServices, filterServicesByCategory } from "@/data/services";
+
 export default function Services() {
   const [activeTab, setActiveTab] = useState<string>("all");
+  const [filteredServices, setFilteredServices] = useState<Service[]>([]);
   const { language } = useLanguage();
   
-  // Filter services based on active tab
-  const filteredServices = activeTab === "all" 
-    ? services 
-    : filterServicesByCategory(services, activeTab);
+  // Use useEffect to handle the filtering after component mount
+  useEffect(() => {
+    // Filter services based on active tab
+    const services = activeTab === "all" 
+      ? allServices 
+      : filterServicesByCategory(allServices, activeTab);
+    
+    setFilteredServices(services || []);
+  }, [activeTab]);
   
   return (
     <section className="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
@@ -85,9 +92,17 @@ export default function Services() {
             {/* Services grid */}
             <TabsContent value={activeTab} className="mt-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                {filteredServices.map((service) => (
-                  <ServiceCard key={service.id} service={service} />
-                ))}
+                {Array.isArray(filteredServices) && filteredServices.length > 0 ? (
+                  filteredServices.map((service) => (
+                    <ServiceCard key={service.id} service={service} />
+                  ))
+                ) : (
+                  <div className="col-span-3 text-center py-10">
+                    <p className="text-gray-500 dark:text-gray-400">
+                      {language === 'en' ? 'No services found.' : 'Не са намерени услуги.'}
+                    </p>
+                  </div>
+                )}
               </div>
             </TabsContent>
           </Tabs>

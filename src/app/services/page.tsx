@@ -1,15 +1,12 @@
 'use client';
 
-import { useState, Suspense } from 'react';
-import { Metadata } from 'next';
-import Image from 'next/image';
+import { useState } from 'react';
 import Link from 'next/link';
 import { Calendar, Clock, Package, User, Search, SlidersHorizontal, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowRight } from 'lucide-react';
 import { services, filterServicesByCategory, searchServices, sortServices } from '@/data/services';
 import { Service } from '@/types';
 import { AspectRatio } from '@/components/ui/aspect-ratio';

@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { notFound, useRouter } from 'next/navigation';
+import { notFound, useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,7 +13,9 @@ import { services } from '@/data/services';
 import { Service } from '@/types';
 import { useToast } from '@/components/ui/use-toast';
 
-export default function BookServicePage({ params }: { params: { id: string } }) {
+export default function BookServicePage() {
+  const params = useParams();
+  const id = params.id as string;
   const [service, setService] = useState<Service | null>(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -29,14 +31,14 @@ export default function BookServicePage({ params }: { params: { id: string } }) 
   
   useEffect(() => {
     // Find the service by ID
-    const foundService = services.find(s => s.id === params.id);
+    const foundService = services.find(s => s.id === id);
     
     if (!foundService) {
       notFound();
     }
     
     setService(foundService);
-  }, [params.id]);
+  }, [id]);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -59,7 +61,7 @@ export default function BookServicePage({ params }: { params: { id: string } }) 
       });
       
       // Redirect to success page or service detail page
-      router.push(`/services/${params.id}`);
+      router.push(`/services/${id}`);
     }, 1500);
   };
   
@@ -73,7 +75,7 @@ export default function BookServicePage({ params }: { params: { id: string } }) 
         {/* Breadcrumb */}
         <div className="mb-8">
           <Link 
-            href={`/services/${params.id}`} 
+            href={`/services/${id}`} 
             className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
           >
             <ArrowLeft className="h-4 w-4 mr-1" />

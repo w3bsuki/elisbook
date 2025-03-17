@@ -109,22 +109,22 @@ export default function ContactPage() {
                   </p>
                 </div>
               </div>
-            </div>
-            
-            <div className="mt-10">
-              <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-                {language === 'en' ? 'Office Hours' : 'Работно време'}
-              </h3>
-              <div className="space-y-2 text-gray-600 dark:text-gray-300">
-                <p>
-                  {language === 'en' ? 'Monday - Friday: 9:00 AM - 6:00 PM' : 'Понеделник - Петък: 9:00 - 18:00'}
-                </p>
-                <p>
-                  {language === 'en' ? 'Saturday: 10:00 AM - 4:00 PM' : 'Събота: 10:00 - 16:00'}
-                </p>
-                <p>
-                  {language === 'en' ? 'Sunday: Closed' : 'Неделя: Затворено'}
-                </p>
+              
+              <div className="mt-10">
+                <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+                  {language === 'en' ? 'Office Hours' : 'Работно време'}
+                </h3>
+                <div className="space-y-2 text-gray-600 dark:text-gray-300">
+                  <p>
+                    {language === 'en' ? 'Monday - Friday: 9:00 AM - 6:00 PM' : 'Понеделник - Петък: 9:00 - 18:00'}
+                  </p>
+                  <p>
+                    {language === 'en' ? 'Saturday: 10:00 AM - 4:00 PM' : 'Събота: 10:00 - 16:00'}
+                  </p>
+                  <p>
+                    {language === 'en' ? 'Sunday: Closed' : 'Неделя: Затворено'}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -150,8 +150,8 @@ export default function ContactPage() {
                     {language === 'en' ? 'Your Name' : 'Вашето име'}*
                   </label>
                   <Input
-                    id="name"
-                    name="name"
+                    id="name" 
+                    name="name" 
                     value={formData.name}
                     onChange={handleChange}
                     required
@@ -164,8 +164,8 @@ export default function ContactPage() {
                     {language === 'en' ? 'Email Address' : 'Имейл адрес'}*
                   </label>
                   <Input
-                    id="email"
-                    name="email"
+                    id="email" 
+                    name="email" 
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
@@ -179,8 +179,8 @@ export default function ContactPage() {
                     {language === 'en' ? 'Subject' : 'Тема'}
                   </label>
                   <Input
-                    id="subject"
-                    name="subject"
+                    id="subject" 
+                    name="subject" 
                     value={formData.subject}
                     onChange={handleChange}
                     className="border-gray-300 dark:border-gray-600 focus:border-green-500 dark:focus:border-green-500"
@@ -192,18 +192,18 @@ export default function ContactPage() {
                     {language === 'en' ? 'Message' : 'Съобщение'}*
                   </label>
                   <Textarea
-                    id="message"
-                    name="message"
+                    id="message" 
+                    name="message" 
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    rows={5}
+                    rows={5} 
                     className="border-gray-300 dark:border-gray-600 focus:border-green-500 dark:focus:border-green-500"
                   />
                 </div>
                 
                 <Button 
-                  type="submit"
+                  type="submit" 
                   disabled={isSubmitting}
                   className="w-full bg-green-600 hover:bg-green-700 text-white border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 h-12"
                 >

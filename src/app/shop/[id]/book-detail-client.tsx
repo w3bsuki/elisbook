@@ -26,8 +26,24 @@ interface BookDetailClientProps {
 }
 
 export default function BookDetailClient({ book, relatedBooks }: BookDetailClientProps) {
-  const { language, t } = useLanguage();
+  const { language, translations } = useLanguage();
   
+  // Create a local translation function if t is not provided
+  const getTranslation = (key: string): string => {
+    const keys = key.split('.');
+    let result: any = translations[language];
+    
+    for (const k of keys) {
+      if (result && typeof result === 'object' && k in result) {
+        result = result[k];
+      } else {
+        return key; // Fallback to the key if translation not found
+      }
+    }
+    
+    return typeof result === 'string' ? result : key;
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto py-8 px-4">
@@ -35,7 +51,7 @@ export default function BookDetailClient({ book, relatedBooks }: BookDetailClien
         <div className="mb-6">
           <Link href="/shop" className="flex items-center text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            {ensureString(t("bookDetail.backToShop"))}
+            {ensureString(getTranslation("bookDetail.backToShop"))}
           </Link>
         </div>
 
@@ -57,14 +73,14 @@ export default function BookDetailClient({ book, relatedBooks }: BookDetailClien
                 <div className="absolute right-4 top-4 flex gap-2">
                   {book.featured && (
                     <Badge variant="secondary" className="bg-green-100 text-green-700">
-                      {ensureString(t("bookDetail.featured"))}
+                      {ensureString(getTranslation("bookDetail.featured"))}
                     </Badge>
                   )}
                   {book.category && (
                     <Badge variant="outline" className="bg-primary/10 text-primary">
-                      {book.category === 'health' ? ensureString(t("categories.health")) : 
-                       book.category === 'poetry' ? ensureString(t("categories.poetry")) : 
-                       book.category === 'selfHelp' ? ensureString(t("categories.selfHelp")) : 
+                      {book.category === 'health' ? ensureString(getTranslation("categories.health")) : 
+                       book.category === 'poetry' ? ensureString(getTranslation("categories.poetry")) : 
+                       book.category === 'selfHelp' ? ensureString(getTranslation("categories.selfHelp")) : 
                        book.category}
                     </Badge>
                   )}
@@ -86,13 +102,13 @@ export default function BookDetailClient({ book, relatedBooks }: BookDetailClien
                   />
                 ))}
               </div>
-              <span className="text-sm text-muted-foreground">4.0 (24 {ensureString(t("bookDetail.reviews"))})</span>
+              <span className="text-sm text-muted-foreground">4.0 (24 {ensureString(getTranslation("bookDetail.reviews"))})</span>
             </div>
             
             <div className="mt-6">
               <p className="text-2xl font-semibold">{book.price.toFixed(2)} лв.</p>
               <p className="mt-1 text-sm text-muted-foreground">
-                {ensureString(t("bookDetail.published"))}: {new Date(book.publishDate).toLocaleDateString(language === 'en' ? 'en-US' : 'bg-BG', { 
+                {ensureString(getTranslation("bookDetail.published"))}: {new Date(book.publishDate).toLocaleDateString(language === 'en' ? 'en-US' : 'bg-BG', { 
                   year: 'numeric', 
                   month: 'long',
                   day: 'numeric'
@@ -103,7 +119,7 @@ export default function BookDetailClient({ book, relatedBooks }: BookDetailClien
             <Separator className="my-6" />
             
             <div className="space-y-4">
-              <h3 className="font-medium">{ensureString(t("bookDetail.description"))}</h3>
+              <h3 className="font-medium">{ensureString(getTranslation("bookDetail.description"))}</h3>
               <p className="text-muted-foreground">{book.description}</p>
             </div>
             
@@ -113,7 +129,7 @@ export default function BookDetailClient({ book, relatedBooks }: BookDetailClien
                 <div className="flex items-center gap-2">
                   <BookOpen className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm">
-                    <span className="font-medium">{ensureString(t("bookDetail.publisher"))}: </span>
+                    <span className="font-medium">{ensureString(getTranslation("bookDetail.publisher"))}: </span>
                     {book.publisher}
                   </span>
                 </div>
@@ -122,7 +138,7 @@ export default function BookDetailClient({ book, relatedBooks }: BookDetailClien
                 <div className="flex items-center gap-2">
                   <Bookmark className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm">
-                    <span className="font-medium">{ensureString(t("bookDetail.pages"))}: </span>
+                    <span className="font-medium">{ensureString(getTranslation("bookDetail.pages"))}: </span>
                     {book.pages}
                   </span>
                 </div>
@@ -140,7 +156,7 @@ export default function BookDetailClient({ book, relatedBooks }: BookDetailClien
             <div className="mt-8 flex gap-4">
               <Button size="lg" className="flex-1 bg-green-500 hover:bg-green-600 text-white border-2 border-black shadow-md hover:shadow-lg transition-all duration-200 font-medium">
                 <ShoppingCart className="mr-2 h-4 w-4" />
-                {ensureString(t("bookDetail.buyNow"))}
+                {ensureString(getTranslation("bookDetail.buyNow"))}
               </Button>
               <Button variant="outline" size="icon" className="h-11 w-11">
                 <Heart className="h-5 w-5" />
@@ -157,24 +173,24 @@ export default function BookDetailClient({ book, relatedBooks }: BookDetailClien
               <div className="flex items-start gap-3">
                 <Truck className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <h4 className="font-medium">{ensureString(t("bookDetail.freeShipping"))}</h4>
-                  <p className="text-sm text-muted-foreground">{ensureString(t("bookDetail.freeShippingDesc"))}</p>
+                  <h4 className="font-medium">{ensureString(getTranslation("bookDetail.freeShipping"))}</h4>
+                  <p className="text-sm text-muted-foreground">{ensureString(getTranslation("bookDetail.freeShippingDesc"))}</p>
                 </div>
               </div>
               
               <div className="flex items-start gap-3">
                 <Shield className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <h4 className="font-medium">{ensureString(t("bookDetail.securePayment"))}</h4>
-                  <p className="text-sm text-muted-foreground">{ensureString(t("bookDetail.securePaymentDesc"))}</p>
+                  <h4 className="font-medium">{ensureString(getTranslation("bookDetail.securePayment"))}</h4>
+                  <p className="text-sm text-muted-foreground">{ensureString(getTranslation("bookDetail.securePaymentDesc"))}</p>
                 </div>
               </div>
               
               <div className="flex items-start gap-3">
                 <RotateCcw className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <h4 className="font-medium">{ensureString(t("bookDetail.returns"))}</h4>
-                  <p className="text-sm text-muted-foreground">{ensureString(t("bookDetail.returnsDesc"))}</p>
+                  <h4 className="font-medium">{ensureString(getTranslation("bookDetail.returns"))}</h4>
+                  <p className="text-sm text-muted-foreground">{ensureString(getTranslation("bookDetail.returnsDesc"))}</p>
                 </div>
               </div>
             </div>
@@ -183,7 +199,7 @@ export default function BookDetailClient({ book, relatedBooks }: BookDetailClien
 
         {/* Related Books */}
         <div className="mt-16">
-          <h2 className="text-2xl font-bold tracking-tight">{ensureString(t("bookDetail.youMayAlsoLike"))}</h2>
+          <h2 className="text-2xl font-bold tracking-tight">{ensureString(getTranslation("bookDetail.youMayAlsoLike"))}</h2>
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {relatedBooks.map((relatedBook) => (
               <ProductCard key={relatedBook.id} book={relatedBook} />

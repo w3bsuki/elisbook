@@ -138,6 +138,19 @@ export default function Header() {
   const headerRef = React.useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   
+  // Initialize navTranslations from the translations object
+  const navTranslations = translations && translations[language] && translations[language].nav 
+    ? translations[language].nav as Record<string, string>
+    : {
+        about: 'About',
+        books: 'Books',
+        blog: 'Blog',
+        shop: 'Shop',
+        services: 'Services',
+        contact: 'Contact',
+        language: language === 'en' ? 'Български' : 'English'
+      };
+  
   // Book preview state
   const [selectedBook, setSelectedBook] = useState<typeof books[0] | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -199,9 +212,6 @@ export default function Header() {
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'bg' : 'en');
   };
-  
-  // Get translations for navigation items
-  const navTranslations = translations?.[language]?.nav || {};
   
   return (
     <header 
