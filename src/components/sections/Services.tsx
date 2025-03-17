@@ -83,7 +83,7 @@ export default function Services() {
             
             {/* Services grid */}
             <TabsContent value={activeTab} className="mt-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
                 {filteredServices.map((service) => (
                   <ServiceCard key={service.id} service={service} />
                 ))}
@@ -115,40 +115,40 @@ function ServiceCard({ service }: { service: Service }) {
   const { language } = useLanguage();
   
   return (
-    <div className="flex flex-col h-full group relative overflow-hidden border border-black dark:border-gray-700 bg-white dark:bg-gray-800/50 rounded-md transition-all duration-300 hover:shadow-[3px_3px_0px_0px_rgba(22,163,74,0.5)] dark:hover:shadow-[3px_3px_0px_0px_rgba(22,163,74,0.3)] max-w-[220px] mx-auto w-full">
-      {/* Category badge - top left */}
-      <div className="absolute top-0 left-0 z-30">
-        <div className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-0.5 rounded-br-md border-r border-b border-black dark:border-gray-700 shadow-sm transform rotate-0 font-medium text-[10px]">
-          {service.category === 'individual' 
-            ? (language === 'en' ? 'Individual' : 'Индивидуална') 
-            : (language === 'en' ? 'Package' : 'Пакет')}
+    <div className="flex flex-col h-full group relative overflow-hidden border border-black dark:border-gray-700 bg-white dark:bg-gray-800/50 rounded-md transition-all duration-300 hover:shadow-[3px_3px_0px_0px_rgba(22,163,74,0.5)] dark:hover:shadow-[3px_3px_0px_0px_rgba(22,163,74,0.3)] w-full">
+      {/* Service image with proper positioning */}
+      <div className="relative">
+        <AspectRatio ratio={16/9} className="bg-gradient-to-br from-green-400 to-green-600">
+          <div className="w-full h-full flex items-center justify-center">
+            {service.category === 'individual' 
+              ? <User className="h-12 w-12 text-white" /> 
+              : <Package className="h-12 w-12 text-white" />}
+          </div>
+        </AspectRatio>
+        
+        {/* Category badge - positioned on top of image */}
+        <div className="absolute top-2 left-2 z-30">
+          <div className="bg-green-100 dark:bg-green-900/70 text-green-800 dark:text-green-300 px-2 py-0.5 rounded-md border border-black dark:border-gray-700 shadow-sm font-medium text-[10px]">
+            {service.category === 'individual' 
+              ? (language === 'en' ? 'Individual' : 'Индивидуална') 
+              : (language === 'en' ? 'Package' : 'Пакет')}
+          </div>
         </div>
       </div>
       
-      {/* Service image */}
-      <div className="p-2 pb-1">
-        <AspectRatio ratio={16/9} className="bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden mb-2 border border-black dark:border-gray-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)]">
-          <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
-            {service.category === 'individual' 
-              ? <User className="h-10 w-10 text-white" /> 
-              : <Package className="h-10 w-10 text-white" />}
-          </div>
-        </AspectRatio>
-      </div>
-      
       {/* Service details */}
-      <div className="p-2 flex flex-col flex-grow">
-        <div className="flex items-start justify-between mb-1">
+      <div className="p-3 flex flex-col flex-grow">
+        <div className="flex items-start justify-between mb-2">
           <h3 className="font-bold text-gray-900 dark:text-white text-sm line-clamp-1">{service.title}</h3>
           <span className="font-bold text-sm text-green-600 dark:text-green-400 ml-1 whitespace-nowrap">{service.price.toFixed(0)}{language === 'en' ? ' BGN' : 'лв'}</span>
         </div>
         
-        <div className="flex items-center text-gray-500 dark:text-gray-400 text-xs mb-1">
-          <Clock className="h-3 w-3 mr-1 flex-shrink-0" />
+        <div className="flex items-center text-gray-500 dark:text-gray-400 text-xs mb-2">
+          <Clock className="h-4 w-4 mr-1 flex-shrink-0" />
           <span>{service.duration}</span>
         </div>
         
-        <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 flex-grow line-clamp-2">
+        <p className="text-xs text-gray-600 dark:text-gray-400 mb-3 flex-grow line-clamp-3">
           {service.description}
         </p>
         
@@ -175,15 +175,15 @@ function ServiceCard({ service }: { service: Service }) {
         )}
         
         {/* Action buttons */}
-        <div className="flex gap-1 mt-auto">
+        <div className="flex gap-2 mt-auto">
           <Button 
             variant="outline"
             size="sm"
-            className="border-green-600 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-950/30 flex-1 h-7 text-[10px] border border-black dark:border-gray-700 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1px_1px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 rounded-sm"
+            className="border-green-600 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-950/30 flex-1 h-8 text-xs border border-black dark:border-gray-700 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1px_1px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 rounded-sm"
             asChild
           >
             <Link href={`/services/${service.id}`}>
-              <Eye className="h-3 w-3 mr-1" />
+              <Eye className="h-4 w-4 mr-1" />
               {language === 'en' ? 'Details' : 'Детайли'}
             </Link>
           </Button>
@@ -191,13 +191,13 @@ function ServiceCard({ service }: { service: Service }) {
           <Button 
             size="sm"
             className={cn(
-              "bg-green-600 hover:bg-green-700 text-white flex-1 h-7 text-[10px] border border-black dark:border-gray-700 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1px_1px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 rounded-sm",
+              "bg-green-600 hover:bg-green-700 text-white flex-1 h-8 text-xs border border-black dark:border-gray-700 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1px_1px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 rounded-sm",
               "transition-transform duration-200 hover:scale-105"
             )}
             asChild
           >
             <Link href={`/services/${service.id}/book`}>
-              <Calendar className="h-3 w-3 mr-1" />
+              <Calendar className="h-4 w-4 mr-1" />
               {language === 'en' ? 'Book Now' : 'Запази'}
             </Link>
           </Button>
