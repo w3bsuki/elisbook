@@ -216,12 +216,12 @@ export default function Header() {
   return (
     <header 
       ref={headerRef}
-      style={{ backgroundColor: '#16a34a !important' }} 
-      className="sticky inset-x-0 top-0 z-20 w-full transition-all duration-300 border-b shadow-sm bg-green-600"
+      className="sticky inset-x-0 top-0 z-20 w-full transition-none border-b shadow-sm !bg-green-600 dark:!bg-green-800 [background-color:rgb(22_163_74)!important]"
+      style={{ backgroundColor: 'rgb(22 163 74) !important' }}
     >
-      <div className="container mx-auto flex justify-center">
+      <div className="container mx-auto flex justify-center bg-green-600 dark:bg-green-800">
         <div className={cn(
-          "flex w-full items-center justify-between max-w-6xl transition-all duration-300",
+          "flex w-full items-center justify-between max-w-6xl transition-all duration-300 bg-green-600 dark:bg-green-800",
           isScrolled ? "py-2 md:py-3" : "py-3 md:py-4"
         )}>
           <div className="flex-1 flex items-center gap-3">
@@ -477,8 +477,8 @@ export default function Header() {
         {/* Mobile Menu (Root) */}
         {isMenuOpen && (
           <div 
-            style={{...mobileMenuStyle, backgroundColor: '#16a34a'}}
-            className="fixed inset-x-0 bottom-0 flex flex-col overflow-y-auto max-h-[80vh] border-t border-white/20 bg-green-600/95 backdrop-blur-md md:hidden animate-in slide-in-from-right"
+            style={{...mobileMenuStyle, backgroundColor: 'rgb(22 163 74) !important'}}
+            className="fixed inset-x-0 bottom-0 flex flex-col overflow-y-auto max-h-[80vh] border-t border-white/20 !bg-green-600 dark:!bg-green-800 backdrop-blur-md md:hidden animate-in slide-in-from-right"
           >
             <div className="font-playfair">
               <Link 
@@ -589,8 +589,8 @@ export default function Header() {
         {/* Mobile Menu > Books */}
         {isMenuOpen === "books" && (
           <div 
-            style={{...mobileMenuStyle, backgroundColor: '#16a34a'}}
-            className="fixed inset-x-0 bottom-0 flex flex-col overflow-y-auto max-h-[80vh] bg-green-600/95 backdrop-blur-md md:hidden animate-in slide-in-from-right"
+            style={{...mobileMenuStyle, backgroundColor: 'rgb(22 163 74) !important'}}
+            className="fixed inset-x-0 bottom-0 flex flex-col overflow-y-auto max-h-[80vh] !bg-green-600 dark:!bg-green-800 backdrop-blur-md md:hidden animate-in slide-in-from-right"
           >
             <div className="flex items-center justify-between px-8 py-3.5 border-b border-white/20">
               <div className="text-xs tracking-widest text-white uppercase font-semibold">
@@ -658,8 +658,8 @@ export default function Header() {
         {/* Mobile Menu > Services */}
         {isMenuOpen === "services" && (
           <div 
-            style={{...mobileMenuStyle, backgroundColor: '#16a34a'}}
-            className="fixed inset-x-0 bottom-0 flex flex-col overflow-y-auto max-h-[80vh] bg-green-600/95 backdrop-blur-md md:hidden animate-in slide-in-from-right"
+            style={{...mobileMenuStyle, backgroundColor: 'rgb(22 163 74) !important'}}
+            className="fixed inset-x-0 bottom-0 flex flex-col overflow-y-auto max-h-[80vh] !bg-green-600 dark:!bg-green-800 backdrop-blur-md md:hidden animate-in slide-in-from-right"
           >
             <div className="flex items-center justify-between px-8 py-3.5 border-b border-white/20">
               <div className="text-xs tracking-widest text-white uppercase font-semibold">

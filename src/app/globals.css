@@ -46,6 +46,23 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* Force header to always be green */
+header {
+  background-color: rgb(22 163 74) !important;
+}
+
+header * {
+  --tw-bg-opacity: 1 !important;
+}
+
+header .bg-transparent {
+  background-color: transparent !important;
+}
+
+header .hover\:bg-green-700:hover {
+  background-color: rgb(21 128 61) !important;
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -146,9 +163,4 @@ section {
 /* Fix for footer */
 footer {
   @apply bg-white dark:bg-gray-900 text-black dark:text-white;
-}
-
-/* Fix for header */
-header {
-  @apply bg-white dark:bg-gray-900;
 }
