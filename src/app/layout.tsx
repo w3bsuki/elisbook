@@ -6,6 +6,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/sections/Footer";
 import { LanguageProvider } from "@/lib/LanguageContext";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,6 +48,7 @@ export default function RootLayout({
               <main className="flex-grow">{children}</main>
               <Footer />
             </div>
+            <Toaster />
           </LanguageProvider>
         </ThemeProvider>
       </body>
