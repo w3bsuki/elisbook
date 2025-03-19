@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/LanguageContext";
 import { cn } from "@/lib/utils";
-import { BookPreviewDialog } from "@/components/ui/book-preview-dialog";
 import { ServicePreviewDialog } from "@/components/ui/service-preview-dialog";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
@@ -88,10 +87,9 @@ export default function Header() {
   const [headerHeight, setHeaderHeight] = useState(0);
   const headerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const router = useRouter();
   
-  // Book and service preview states
-  const [selectedBook, setSelectedBook] = useState<BookType | null>(null);
-  const [isBookPreviewOpen, setIsBookPreviewOpen] = useState(false);
+  // Service preview states
   const [selectedService, setSelectedService] = useState<ServiceType | null>(null);
   const [isServicePreviewOpen, setIsServicePreviewOpen] = useState(false);
   
@@ -142,12 +140,12 @@ export default function Header() {
     setIsMenuOpen(false);
   }, [pathname]); // Only when pathname changes
   
-  // Handle book click for preview
+  // Handle book click to navigate to book page
   const handleBookClick = useCallback((book: BookType, e: React.MouseEvent) => {
     e.preventDefault();
-    setSelectedBook(book);
-    setIsBookPreviewOpen(true);
-  }, []);
+    // Navigate to the book's page instead of opening a preview dialog
+    router.push(book.href);
+  }, [router]);
   
   // Handle service click for preview
   const handleServiceClick = useCallback((service: ServiceType, e: React.MouseEvent) => {
@@ -206,15 +204,6 @@ export default function Header() {
           />
         </div>
       </div>
-      
-      {/* Book Preview Dialog */}
-      {selectedBook && (
-        <BookPreviewDialog 
-          book={selectedBook}
-          open={isBookPreviewOpen}
-          onOpenChange={setIsBookPreviewOpen}
-        />
-      )}
       
       {/* Service Preview Dialog */}
       {selectedService && (
