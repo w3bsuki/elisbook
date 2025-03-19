@@ -178,26 +178,16 @@ export function CartDrawer() {
               </Button>
             }
           >
-            <PaymentButton
-              amount={subtotal || 0}
-              currency="bgn"
-              onSuccess={() => {
+            <Button
+              onClick={() => {
                 handleSetIsCartOpen(false);
-                alert(language === "en" ? "Payment successful!" : "Плащането е успешно!");
-                router.push("/payment-success");
+                router.push("/checkout");
               }}
-              onError={(error) => {
-                console.error("Payment error:", error);
-                setPaymentError(
-                  language === 'en' 
-                  ? `Payment failed: ${error.message || 'Unknown error'}` 
-                  : `Плащането е неуспешно: ${error.message || 'Неизвестна грешка'}`
-                );
-              }}
+              disabled={cartItems.length === 0}
               className="w-full"
             >
-              {language === "en" ? "Checkout" : "Плащане"}
-            </PaymentButton>
+              {language === "en" ? "Proceed to Checkout" : "Продължи към плащане"}
+            </Button>
           </SafeComponent>
         </div>
       </SheetContent>
