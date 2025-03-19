@@ -5,8 +5,8 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/sections/Footer";
 import { Providers } from "./providers";
-import { CartDrawer } from "@/components/ui/cart-drawer";
 import { cn } from "@/lib/utils";
+import { CartDrawer } from "@/components/ui/cart-drawer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +35,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="light">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased bg-white dark:bg-gray-900 text-black dark:text-white`}>
+      <body className={cn(
+        geistSans.variable, 
+        geistMono.variable, 
+        playfair.variable, 
+        "antialiased bg-white dark:bg-gray-900 text-black dark:text-white"
+      )}>
         <Providers>
           <div className="min-h-screen flex flex-col">
             <Header />

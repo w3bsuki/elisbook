@@ -7,15 +7,34 @@ import { useCart } from "@/lib/CartContext";
 import { ShoppingCart, Trash2, Plus, Minus, X } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { PaymentButton } from "@/components/ui/payment-button";
 import { useRouter } from "next/navigation";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { SafeComponent } from "./error-fallback";
+import { PaymentButton } from "./payment-button";
 
 export function CartDrawer() {
   const [mounted, setMounted] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const { language } = useLanguage();
-  const { cartItems, removeFromCart, updateQuantity, totalPrice, isCartOpen, setIsCartOpen } = useCart();
+  const { cartItems = [], removeFromCart, updateQuantity, subtotal = 0, isCartOpen = false, setIsCartOpen } = useCart() || {};
   const router = useRouter();
+
+  // Safely handle setIsCartOpen which might be undefined
+  const handleSetIsCartOpen = (open: boolean) => {
+    if (typeof setIsCartOpen === 'function') {
+      setIsCartOpen(open);
+    }
+  };
+
+  // Prevent backdrop click propagation
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      handleSetIsCartOpen(false);
+    }
+  };
+
+  // Guard against undefined items
+  const hasItems = cartItems && cartItems.length > 0;
 
   useEffect(() => {
     setMounted(true);
@@ -26,140 +45,141 @@ export function CartDrawer() {
   }
 
   return (
-    <>
-      {/* Backdrop */}
-      {isCartOpen && (
+    <Sheet open={!!isCartOpen} onOpenChange={handleSetIsCartOpen}>
+      <SheetContent className="flex flex-col h-full p-0 w-full max-w-md sm:max-w-lg">
         <div 
-          className="fixed inset-0 bg-black/50 z-40"
-          onClick={() => setIsCartOpen(false)}
+          className="fixed inset-0 bg-black/40 z-[-1]"
+          onClick={handleBackdropClick}
         />
-      )}
-      
-      {/* Cart Drawer */}
-      <div className={cn(
-        "fixed inset-y-0 right-0 w-full max-w-sm bg-white dark:bg-gray-900 shadow-xl z-50 transform transition-transform duration-300 ease-in-out",
-        isCartOpen ? "translate-x-0" : "translate-x-full"
-      )}>
-        <div className="flex flex-col h-full">
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b">
-            <h2 className="text-lg font-semibold">
-              {language === 'en' ? 'Shopping Cart' : 'Количка'}
-            </h2>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-500">
-                {cartItems.length} {language === 'en' ? 'items' : 'продукта'}
-              </span>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => setIsCartOpen(false)}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
+        <div className="p-4 border-b flex justify-between items-center">
+          <h2 className="text-xl font-semibold">
+            {language === "en" ? "Your Cart" : "Вашата Количка"}
+          </h2>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => handleSetIsCartOpen(false)}
+            aria-label={language === "en" ? "Close cart" : "Затвори количката"}
+          >
+            <X className="h-5 w-5" />
+          </Button>
+        </div>
 
-          {/* Cart Items */}
-          <div className="flex-1 overflow-y-auto p-4">
-            {cartItems.length > 0 ? (
-              <div className="space-y-4">
-                {cartItems.map((item) => (
-                  <div key={item.id} className="flex items-center space-x-4">
-                    <div className="relative w-20 h-20">
+        <div className="flex-1 overflow-y-auto p-4">
+          {!hasItems ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">
+                {language === "en"
+                  ? "Your cart is empty"
+                  : "Вашата количка е празна"}
+              </p>
+            </div>
+          ) : (
+            <ul className="space-y-4">
+              {cartItems.map((item) => (
+                <li
+                  key={item.id}
+                  className="flex items-start space-x-4 border-b pb-4"
+                >
+                  <div className="relative w-16 h-20 overflow-hidden rounded">
+                    {(item.coverImage || item.image) && (
                       <Image
-                        src={item.coverImage || "/images/books/vdahnovenia-kniga-1.png"}
-                        alt={item.title}
+                        src={item.coverImage || item.image || "/placeholder.jpg"}
+                        alt={item.title || "Product image"}
                         fill
-                        className="object-cover rounded-md"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "/placeholder.jpg";
+                        }}
                       />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium">{item.title}</h3>
-                      <p className="text-sm text-gray-500">
-                        {item.price.toFixed(2)} {language === 'en' ? 'BGN' : 'лв'}
-                      </p>
-                    </div>
-                    <div className="flex items-center space-x-2">
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-medium">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {item.price?.toFixed(2)} BGN
+                    </p>
+                    <div className="flex items-center mt-2">
                       <Button
                         variant="outline"
-                        size="icon"
-                        className="h-8 w-8"
-                        onClick={() => updateQuantity(item.id, Math.max(0, item.quantity - 1))}
+                        size="sm"
+                        className="h-7 w-7 p-0"
+                        onClick={() => item.quantity > 1 && item.updateQuantity?.(item.quantity - 1)}
+                        disabled={!item.updateQuantity || item.quantity <= 1}
                       >
-                        <Minus className="h-4 w-4" />
+                        -
                       </Button>
                       <span className="w-8 text-center">{item.quantity}</span>
                       <Button
                         variant="outline"
-                        size="icon"
-                        className="h-8 w-8"
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        size="sm"
+                        className="h-7 w-7 p-0"
+                        onClick={() => item.updateQuantity?.(item.quantity + 1)}
+                        disabled={!item.updateQuantity}
                       >
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-red-500 hover:text-red-600"
-                        onClick={() => removeFromCart(item.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
+                        +
                       </Button>
                     </div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <ShoppingCart className="h-12 w-12 text-gray-400 mb-4" />
-                <p className="text-gray-500">
-                  {language === 'en'
-                    ? "Your cart is empty"
-                    : "Количката ви е празна"}
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Footer */}
-          {cartItems.length > 0 && (
-            <div className="border-t p-4 space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="font-medium">
-                  {language === 'en' ? 'Total' : 'Обща сума'}
-                </span>
-                <span className="font-semibold text-green-600 dark:text-green-400">
-                  {totalPrice.toFixed(2)} {language === 'en' ? 'BGN' : 'лв'}
-                </span>
-              </div>
-              
-              {paymentError && (
-                <div className="bg-red-100 text-red-700 p-2 rounded text-sm mb-2">
-                  {paymentError}
-                </div>
-              )}
-              
-              <PaymentButton 
-                amount={totalPrice} 
-                currency="bgn"
-                onSuccess={() => {
-                  setIsCartOpen(false);
-                  router.push("/payment-success");
-                }}
-                onError={(error) => {
-                  console.error("Payment error:", error);
-                  setPaymentError(language === 'en' ? 'Payment failed. Please try again.' : 'Плащането е неуспешно. Моля, опитайте отново.');
-                }}
-                className="w-full"
-              >
-                {language === 'en' ? 'Checkout' : 'Плащане'}
-              </PaymentButton>
-            </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                    onClick={() => item.removeFromCart?.()}
+                    disabled={!item.removeFromCart}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </li>
+              ))}
+            </ul>
           )}
         </div>
-      </div>
-    </>
+
+        <div className="border-t p-4">
+          <div className="flex justify-between mb-4">
+            <span className="font-medium">
+              {language === "en" ? "Subtotal" : "Междинна сума"}
+            </span>
+            <span className="font-medium">{subtotal.toFixed(2)} BGN</span>
+          </div>
+          {paymentError && (
+            <div className="bg-red-100 text-red-700 p-2 rounded text-sm mb-2">
+              {paymentError}
+            </div>
+          )}
+          <SafeComponent
+            fallback={
+              <Button variant="outline" className="w-full" disabled>
+                {language === "en" ? "Payment Error" : "Грешка в плащането"}
+              </Button>
+            }
+          >
+            <PaymentButton
+              amount={subtotal || 0}
+              currency="bgn"
+              onSuccess={() => {
+                handleSetIsCartOpen(false);
+                alert(language === "en" ? "Payment successful!" : "Плащането е успешно!");
+                router.push("/payment-success");
+              }}
+              onError={(error) => {
+                console.error("Payment error:", error);
+                setPaymentError(
+                  language === 'en' 
+                  ? `Payment failed: ${error.message || 'Unknown error'}` 
+                  : `Плащането е неуспешно: ${error.message || 'Неизвестна грешка'}`
+                );
+              }}
+              className="w-full"
+            >
+              {language === "en" ? "Checkout" : "Плащане"}
+            </PaymentButton>
+          </SafeComponent>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 } 

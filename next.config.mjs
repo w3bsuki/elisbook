@@ -28,16 +28,20 @@ const nextConfig = {
   distDir: '.next',
   trailingSlash: true,
   // This webpack configuration helps fix common module resolution issues
-  webpack: (config, { isServer }) => {
-    // Fix "Can't resolve AboutUs" errors by providing a fallback
+  webpack: (config, { dev, isServer }) => {
+    // Fix module resolution issues
     config.resolve.fallback = { 
       ...config.resolve.fallback,
       fs: false,
-      // Add this to fix the "Cannot read properties of undefined (reading 'call')" error
-      AboutUs: false 
+      path: false,
+      os: false,
     };
     
-    // Return modified config
+    // This helps fix "Cannot read properties of undefined (reading 'call')" errors
+    if (!isServer && !dev) {
+      config.optimization.minimize = false;
+    }
+    
     return config;
   },
 };

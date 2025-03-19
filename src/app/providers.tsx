@@ -5,16 +5,7 @@ import { LanguageProvider } from "@/lib/LanguageContext";
 import { CartProvider } from "@/lib/CartContext";
 import { Toaster } from "@/components/ui/toaster";
 import { useEffect, useState } from "react";
-import { ErrorBoundary } from "react-error-boundary";
-
-function ErrorFallback({ error }: { error: Error }) {
-  return (
-    <div role="alert" className="p-4">
-      <p>Something went wrong:</p>
-      <pre className="text-sm">{error.message}</pre>
-    </div>
-  );
-}
+import { SafeComponent } from "@/components/ui/error-fallback";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
@@ -28,7 +19,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
+    <SafeComponent>
       <ThemeProvider
         attribute="class"
         defaultTheme="light"
@@ -36,13 +27,17 @@ export function Providers({ children }: { children: React.ReactNode }) {
         forcedTheme="light"
         disableTransitionOnChange
       >
-        <LanguageProvider>
-          <CartProvider>
-            {children}
-            <Toaster />
-          </CartProvider>
-        </LanguageProvider>
+        <SafeComponent>
+          <LanguageProvider>
+            <SafeComponent>
+              <CartProvider>
+                {children}
+                <Toaster />
+              </CartProvider>
+            </SafeComponent>
+          </LanguageProvider>
+        </SafeComponent>
       </ThemeProvider>
-    </ErrorBoundary>
+    </SafeComponent>
   );
 } 

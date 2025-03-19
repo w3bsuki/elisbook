@@ -1,12 +1,10 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/lib/LanguageContext';
-import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Loader2 } from 'lucide-react';
-import { stripePromise } from '@/lib/stripe';
 
 interface PaymentButtonProps {
   amount: number;
@@ -18,65 +16,9 @@ interface PaymentButtonProps {
   className?: string;
 }
 
-function PaymentForm({ onSuccess, onError }: { onSuccess?: () => void; onError?: (error: Error) => void }) {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [isProcessing, setIsProcessing] = useState(false);
-  const { language } = useLanguage();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    setIsProcessing(true);
-
-    try {
-      const { error } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/payment-success`,
-        },
-      });
-
-      if (error) {
-        onError?.(error);
-      } else {
-        onSuccess?.();
-      }
-    } catch (error) {
-      onError?.(error as Error);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <PaymentElement />
-      <Button
-        type="submit"
-        disabled={isProcessing || !stripe || !elements}
-        className="w-full"
-      >
-        {isProcessing ? (
-          <span className="flex items-center">
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            {language === 'en' ? 'Processing...' : 'Обработка...'}
-          </span>
-        ) : (
-          language === 'en' ? 'Pay Now' : 'Плати Сега'
-        )}
-      </Button>
-    </form>
-  );
-}
-
 export function PaymentButton({
   amount,
-  currency = 'usd',
+  currency = 'bgn',
   metadata = {},
   onSuccess,
   onError,
@@ -84,72 +26,106 @@ export function PaymentButton({
   className,
 }: PaymentButtonProps) {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { language } = useLanguage();
 
-  const handlePaymentClick = async () => {
+  // Safe amount value
+  const safeAmount = amount || 0;
+  
+  const handleOpenModal = () => {
+    setShowPaymentModal(true);
+  };
+  
+  const handleCompletePayment = () => {
     setIsLoading(true);
-    try {
-      const response = await fetch('/api/create-payment-intent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount,
-          currency,
-          metadata,
-        }),
-      });
-
-      const data = await response.json();
-      if (data.error) {
-        throw new Error(data.error);
-      }
-      setClientSecret(data.clientSecret);
-      setShowPaymentModal(true);
-    } catch (error) {
-      onError?.(error as Error);
-    } finally {
+    
+    // Simulate payment process with a timeout
+    setTimeout(() => {
       setIsLoading(false);
-    }
+      setShowPaymentModal(false);
+      
+      // Simulate successful payment
+      if (onSuccess) {
+        onSuccess();
+      }
+      
+      // Show success message
+      alert(language === 'en' 
+        ? 'Payment successful! Thank you for your purchase.' 
+        : 'Плащането е успешно! Благодарим ви за покупката.');
+    }, 1500);
   };
 
   return (
     <>
       <Button
-        onClick={handlePaymentClick}
-        disabled={isLoading}
+        onClick={handleOpenModal}
         className={className}
       >
-        {isLoading ? (
-          <span className="flex items-center">
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Loading...
-          </span>
-        ) : (
-          children
-        )}
+        {children}
       </Button>
 
       <Dialog open={showPaymentModal} onOpenChange={setShowPaymentModal}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Complete Payment</DialogTitle>
+            <DialogTitle>
+              {language === 'en' ? 'Complete Your Purchase' : 'Завършете Вашата Покупка'}
+            </DialogTitle>
           </DialogHeader>
-          {clientSecret && (
-            <Elements
-              stripe={stripePromise}
-              options={{
-                clientSecret,
-                appearance: {
-                  theme: 'stripe',
-                },
-              }}
+          
+          <div className="py-4">
+            <div className="space-y-4">
+              <div className="bg-muted/50 p-4 rounded-md">
+                <h3 className="font-medium mb-2">
+                  {language === 'en' ? 'Order Summary' : 'Детайли на Поръчката'}
+                </h3>
+                
+                <div className="flex justify-between text-sm">
+                  <span>{language === 'en' ? 'Subtotal' : 'Междинна сума'}</span>
+                  <span>{safeAmount.toFixed(2)} {currency.toUpperCase()}</span>
+                </div>
+                
+                <div className="flex justify-between text-sm mt-1">
+                  <span>{language === 'en' ? 'Tax' : 'Данъци'}</span>
+                  <span>0.00 {currency.toUpperCase()}</span>
+                </div>
+                
+                <div className="border-t mt-2 pt-2 flex justify-between font-medium">
+                  <span>{language === 'en' ? 'Total' : 'Обща сума'}</span>
+                  <span>{safeAmount.toFixed(2)} {currency.toUpperCase()}</span>
+                </div>
+              </div>
+              
+              <p className="text-sm text-muted-foreground">
+                {language === 'en' 
+                  ? 'This is a demo version. No actual payment will be processed.' 
+                  : 'Това е демо версия. Няма да бъде извършено реално плащане.'}
+              </p>
+            </div>
+          </div>
+          
+          <DialogFooter className="flex space-x-2 sm:space-x-0">
+            <DialogClose asChild>
+              <Button variant="outline" type="button" className="flex-1">
+                {language === 'en' ? 'Cancel' : 'Отказ'}
+              </Button>
+            </DialogClose>
+            
+            <Button 
+              onClick={handleCompletePayment} 
+              disabled={isLoading}
+              className="flex-1"
             >
-              <PaymentForm onSuccess={onSuccess} onError={onError} />
-            </Elements>
-          )}
+              {isLoading ? (
+                <span className="flex items-center justify-center">
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {language === 'en' ? 'Processing...' : 'Обработка...'}
+                </span>
+              ) : (
+                language === 'en' ? 'Pay Now' : 'Плати Сега'
+              )}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>

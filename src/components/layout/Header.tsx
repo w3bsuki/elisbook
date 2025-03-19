@@ -109,28 +109,38 @@ export default function Header() {
       }
     };
     
+    // Initial check
+    handleScroll();
+    
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, []); // Empty dependency array is correct here
   
-  // Update header height for mobile menu positioning
+  // Update header height for mobile menu positioning - only when component mounts
   useEffect(() => {
     if (!headerRef.current) return;
     
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        setHeaderHeight(entry.contentRect.height);
+    const updateHeight = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.getBoundingClientRect().height);
       }
+    };
+    
+    // Initial measurement
+    updateHeight();
+    
+    const resizeObserver = new ResizeObserver(() => {
+      updateHeight();
     });
     
     resizeObserver.observe(headerRef.current);
     return () => resizeObserver.disconnect();
-  }, []);
+  }, []); // Empty dependency array is correct here
   
   // Close mobile menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
-  }, [pathname]);
+  }, [pathname]); // Only when pathname changes
   
   // Handle book click for preview
   const handleBookClick = useCallback((book: BookType, e: React.MouseEvent) => {
