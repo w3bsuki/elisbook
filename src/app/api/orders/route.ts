@@ -15,7 +15,11 @@ const transporter = nodemailer.createTransport({
 
 export async function POST(request: Request) {
   try {
+    console.log('Order API called');
+    
     const body = await request.json();
+    console.log('Order request body:', JSON.stringify(body, null, 2));
+    
     const { 
       customer, 
       shipping, 
@@ -30,6 +34,7 @@ export async function POST(request: Request) {
 
     // Validate required fields
     if (!customer || !shipping || !items || !items.length) {
+      console.error('Missing required order information', { customer, shipping, items });
       return NextResponse.json(
         { error: 'Missing required order information' },
         { status: 400 }
@@ -38,6 +43,7 @@ export async function POST(request: Request) {
 
     // Simple validation for customer info
     if (!customer.firstName || !customer.lastName || !customer.email) {
+      console.error('Missing required customer information', { customer });
       return NextResponse.json(
         { error: 'Missing required customer information' },
         { status: 400 }
@@ -47,6 +53,7 @@ export async function POST(request: Request) {
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(customer.email)) {
+      console.error('Invalid email format', { email: customer.email });
       return NextResponse.json(
         { error: 'Invalid email format' },
         { status: 400 }
@@ -78,6 +85,8 @@ export async function POST(request: Request) {
       status: 'pending'
     };
 
+    console.log('Saving order to Supabase:', orderData);
+
     // Save order to database
     const { data: orderResult, error: orderError } = await supabase
       .from('orders')
@@ -87,12 +96,14 @@ export async function POST(request: Request) {
     if (orderError) {
       console.error('Error saving order to Supabase:', orderError);
       return NextResponse.json(
-        { error: 'Failed to store order in database', details: orderError.message },
+        { error: 'Failed to store order in database', details: orderError.message, code: orderError.code },
         { status: 500 }
       );
     }
 
+    console.log('Order saved successfully:', orderResult);
     const dbOrderId = orderResult && orderResult.length > 0 ? orderResult[0].id : null;
+    console.log('Database order ID:', dbOrderId);
 
     // Save order items
     if (dbOrderId) {
@@ -105,6 +116,8 @@ export async function POST(request: Request) {
         type: item.type
       }));
 
+      console.log('Saving order items to Supabase:', orderItems);
+
       const { error: itemsError } = await supabase
         .from('order_items')
         .insert(orderItems);
@@ -112,6 +125,8 @@ export async function POST(request: Request) {
       if (itemsError) {
         console.error('Error saving order items to Supabase:', itemsError);
         // Continue even if item saving fails, at least we have the main order
+      } else {
+        console.log('Order items saved successfully');
       }
     }
 

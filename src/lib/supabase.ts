@@ -11,7 +11,19 @@ if (!supabaseUrl || !supabaseAnonKey) {
 // Create a single supabase client for the entire app
 export const supabase = createClient(
   supabaseUrl || '',
-  supabaseAnonKey || ''
+  supabaseAnonKey || '',
+  {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+    global: {
+      fetch: (...args) => {
+        console.log(`Supabase API Request: ${args[0]}`);
+        return fetch(...args);
+      },
+    },
+  }
 );
 
 // Type definitions for our database tables

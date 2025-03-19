@@ -15,11 +15,16 @@ const transporter = nodemailer.createTransport({
 
 export async function POST(request: Request) {
   try {
+    console.log('Contact form API called');
+    
     const body = await request.json();
+    console.log('Contact form request body:', body);
+    
     const { name, email, subject, message } = body;
 
     // Validate required fields
     if (!name || !email || !message) {
+      console.error('Missing required fields', { name, email, message });
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -29,6 +34,7 @@ export async function POST(request: Request) {
     // Simple email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
+      console.error('Invalid email format', { email });
       return NextResponse.json(
         { error: 'Invalid email format' },
         { status: 400 }
@@ -44,6 +50,8 @@ export async function POST(request: Request) {
       status: 'new'
     };
 
+    console.log('Saving contact form to Supabase:', contactFormEntry);
+
     // Store in Supabase
     const { data, error } = await supabase
       .from('contact_forms')
@@ -52,8 +60,13 @@ export async function POST(request: Request) {
 
     if (error) {
       console.error('Error saving to Supabase:', error);
-      // Continue with email even if DB save fails
+      return NextResponse.json(
+        { error: 'Failed to store message in database', details: error.message, code: error.code },
+        { status: 500 }
+      );
     }
+
+    console.log('Contact form saved successfully:', data);
 
     // For development/demo purposes, we'll still log the submission
     console.log('Contact form submission:', { name, email, subject, message, dbResult: data });

@@ -66,7 +66,21 @@ ALTER TABLE service_bookings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE order_items ENABLE ROW LEVEL SECURITY;
 
--- Policy to allow only authenticated users to select data
+-- Allow public access for insertions (this is critical for our website forms)
+-- These policies allow any visitor to submit a contact form, book a service, or place an order
+CREATE POLICY "Allow public access to insert contact forms" ON contact_forms
+  FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Allow public access to insert service bookings" ON service_bookings
+  FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Allow public access to insert orders" ON orders
+  FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Allow public access to insert order items" ON order_items
+  FOR INSERT WITH CHECK (true);
+
+-- Policy to allow only authenticated users to select, update, delete data
 CREATE POLICY "Allow authenticated users to select contact forms" ON contact_forms
   FOR SELECT USING (auth.role() = 'authenticated');
 
@@ -78,19 +92,6 @@ CREATE POLICY "Allow authenticated users to select orders" ON orders
 
 CREATE POLICY "Allow authenticated users to select order items" ON order_items
   FOR SELECT USING (auth.role() = 'authenticated');
-
--- Policy to allow anyone to insert data
-CREATE POLICY "Allow anyone to insert contact forms" ON contact_forms
-  FOR INSERT WITH CHECK (true);
-
-CREATE POLICY "Allow anyone to insert service bookings" ON service_bookings
-  FOR INSERT WITH CHECK (true);
-
-CREATE POLICY "Allow anyone to insert orders" ON orders
-  FOR INSERT WITH CHECK (true);
-
-CREATE POLICY "Allow anyone to insert order items" ON order_items
-  FOR INSERT WITH CHECK (true);
 
 -- Create indexes for better performance
 CREATE INDEX contact_forms_created_at_idx ON contact_forms(created_at DESC);
