@@ -207,10 +207,10 @@ export function MobileNavigation({
           </div>
           <div>
             {books.map((book) => (
-              <div
+              <Link
                 key={book.id}
-                className="group flex w-full items-start gap-x-4 border-b border-white/20 px-8 py-6 text-left hover:bg-green-700 transition-colors cursor-pointer"
-                onClick={(e) => onBookClick(book, e)}
+                href={book.href}
+                className="group flex w-full items-start gap-x-4 border-b border-white/20 px-8 py-6 text-left hover:bg-green-700 transition-colors"
               >
                 <div className="shrink-0 text-green-600 relative w-12 h-16 overflow-hidden rounded">
                   <Image
@@ -245,7 +245,7 @@ export function MobileNavigation({
                     </Badge>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
           <div className="p-8 mt-auto border-t border-white/20">

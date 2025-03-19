@@ -21,31 +21,31 @@ import { BookType, ServiceType } from "./header/types";
 // Books data
 const books: BookType[] = [
   {
-    id: "inspirations",
+    id: "1",
+    title: "Осъзнато хранене",
+    description: "Яж и отслабвай с удоволствие - здравословно хранене",
+    image: "/images/books/osaznato-hranene.jpg",
+    category: "Health",
+    href: "/shop/1",
+    price: 30.00,
+  },
+  {
+    id: "2",
     title: "Вдъхновения",
-    description: "Сборник от поетични творби, които ще докоснат душата ви",
-    image: "/images/books/vdahnovenia-kniga-1.png",
+    description: "Когато не знаеш как да продължиш напред - книга 2",
+    image: "/images/books/vdahnovenia-kniga-2.png",
     category: "Poetry",
-    href: "/shop/inspirations",
-    price: 19.99,
+    href: "/shop/2",
+    price: 26.00,
   },
   {
-    id: "soul-paths",
-    title: "Душевни Пътеки",
-    description: "Поетично пътешествие през емоциите и преживяванията",
+    id: "3",
+    title: "Вдъхновения",
+    description: "Когато не знаеш как да продължиш напред - книга 1",
     image: "/images/books/vdahnovenia-kniga-1.png",
     category: "Poetry",
-    href: "/shop/soul-paths",
-    price: 22.99,
-  },
-  {
-    id: "clarity",
-    title: "Моменти на Яснота",
-    description: "Стихове, които улавят мигове на прозрение и яснота",
-    image: "/images/books/vdahnovenia-kniga-1.png",
-    category: "Poetry",
-    href: "/shop/clarity",
-    price: 18.99,
+    href: "/shop/3",
+    price: 26.00,
   },
 ];
 
@@ -142,8 +142,7 @@ export default function Header() {
   
   // Handle book click to navigate to book page
   const handleBookClick = useCallback((book: BookType, e: React.MouseEvent) => {
-    e.preventDefault();
-    // Navigate to the book's page instead of opening a preview dialog
+    // Don't prevent default - allow normal link navigation
     router.push(book.href);
   }, [router]);
   

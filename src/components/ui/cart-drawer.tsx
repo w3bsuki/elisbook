@@ -16,7 +16,13 @@ export function CartDrawer() {
   const [mounted, setMounted] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const { language } = useLanguage();
-  const { cartItems = [], removeFromCart, updateQuantity, subtotal = 0, isCartOpen = false, setIsCartOpen } = useCart() || {};
+  const cartContext = useCart();
+  
+  // Safely destructure cart context with default values
+  const cartItems = cartContext?.cartItems || [];
+  const subtotal = cartContext?.subtotal || 0;
+  const isCartOpen = cartContext?.isCartOpen || false;
+  const setIsCartOpen = cartContext?.setIsCartOpen;
   const router = useRouter();
 
   // Safely handle setIsCartOpen which might be undefined
@@ -30,6 +36,23 @@ export function CartDrawer() {
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       handleSetIsCartOpen(false);
+    }
+  };
+
+  // Safely handle item operations
+  const handleUpdateQuantity = (item: any, newQuantity: number) => {
+    if (typeof item.updateQuantity === 'function') {
+      item.updateQuantity(newQuantity);
+    } else if (cartContext?.updateQuantity) {
+      cartContext.updateQuantity(item.id, newQuantity);
+    }
+  };
+
+  const handleRemoveItem = (item: any) => {
+    if (typeof item.removeFromCart === 'function') {
+      item.removeFromCart();
+    } else if (cartContext?.removeFromCart) {
+      cartContext.removeFromCart(item.id);
     }
   };
 
@@ -99,15 +122,15 @@ export function CartDrawer() {
                   <div className="flex-1">
                     <h3 className="font-medium">{item.title}</h3>
                     <p className="text-sm text-muted-foreground">
-                      {item.price?.toFixed(2)} BGN
+                      {(item.price || 0).toFixed(2)} BGN
                     </p>
                     <div className="flex items-center mt-2">
                       <Button
                         variant="outline"
                         size="sm"
                         className="h-7 w-7 p-0"
-                        onClick={() => item.quantity > 1 && item.updateQuantity?.(item.quantity - 1)}
-                        disabled={!item.updateQuantity || item.quantity <= 1}
+                        onClick={() => item.quantity > 1 && handleUpdateQuantity(item, item.quantity - 1)}
+                        disabled={item.quantity <= 1}
                       >
                         -
                       </Button>
@@ -116,8 +139,7 @@ export function CartDrawer() {
                         variant="outline"
                         size="sm"
                         className="h-7 w-7 p-0"
-                        onClick={() => item.updateQuantity?.(item.quantity + 1)}
-                        disabled={!item.updateQuantity}
+                        onClick={() => handleUpdateQuantity(item, item.quantity + 1)}
                       >
                         +
                       </Button>
@@ -127,8 +149,7 @@ export function CartDrawer() {
                     variant="ghost"
                     size="sm"
                     className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                    onClick={() => item.removeFromCart?.()}
-                    disabled={!item.removeFromCart}
+                    onClick={() => handleRemoveItem(item)}
                   >
                     <X className="h-4 w-4" />
                   </Button>

@@ -71,9 +71,9 @@ export function DesktopNavigation({ books, services, onBookClick, onServiceClick
               </div>
               <div className="grid grid-cols-3 gap-6">
                 {books.map((book) => (
-                  <div
+                  <Link
                     key={book.href}
-                    onClick={(e) => onBookClick(book, e)}
+                    href={book.href}
                     className="group relative flex flex-col rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:translate-y-[-4px] cursor-pointer"
                   >
                     <div className="overflow-hidden h-[240px] relative">
@@ -113,14 +113,12 @@ export function DesktopNavigation({ books, services, onBookClick, onServiceClick
                            book.category === "Poetry" ? translate("Поезия", "Poetry") : 
                            book.category}
                         </Badge>
-                        <Button variant="ghost" size="sm" className="p-0 h-auto text-green-600 hover:text-green-700 hover:bg-transparent">
-                          <span className="text-xs underline underline-offset-2">
-                            {translate("Детайли", "Details")}
-                          </span>
-                        </Button>
+                        <span className="text-xs underline underline-offset-2 text-green-600 hover:text-green-700">
+                          {translate("Детайли", "Details")}
+                        </span>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
               <div className="mt-8 flex justify-center border-t border-green-100 dark:border-green-800/30 pt-6">
