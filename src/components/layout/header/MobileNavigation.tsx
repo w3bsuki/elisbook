@@ -50,6 +50,9 @@ export function MobileNavigation({
     setLanguage(language === 'en' ? 'bg' : 'en');
   };
   
+  // Helper function for translations
+  const translate = (bgText: string, enText: string) => language === 'en' ? enText : bgText;
+  
   return (
     <>
       <div className="flex items-center gap-4 md:hidden flex-1 justify-end">
@@ -102,7 +105,7 @@ export function MobileNavigation({
             </button>
             <button
               type="button"
-              className="flex w-full items-center border-b border-white/20 px-8 py-4 text-left transition-colors hover:bg-purple-700 text-white"
+              className="flex w-full items-center border-b border-white/20 px-8 py-4 text-left transition-colors hover:bg-green-700 text-white"
               onClick={() => setIsMenuOpen("services")}
             >
               <span className="flex-1 text-lg">{navTranslations.services}</span>
@@ -219,44 +222,38 @@ export function MobileNavigation({
                 </div>
                 <div>
                   <div className="mb-1.5 text-base font-medium text-white">
-                    {language === "en" ? 
-                      (book.title === "Вдъхновения" ? "Inspirations" : 
-                      book.title === "Душевни Пътеки" ? "Soul Paths" : 
-                      book.title === "Моменти на Яснота" ? "Moments of Clarity" : book.title) 
-                      : book.title
-                    }
+                    {book.title === "Вдъхновения" ? translate("Вдъхновения", "Inspirations") : 
+                     book.title === "Душевни Пътеки" ? translate("Душевни Пътеки", "Soul Paths") : 
+                     book.title === "Моменти на Яснота" ? translate("Моменти на Яснота", "Moments of Clarity") : 
+                     book.title}
                   </div>
                   <div className="text-sm font-normal text-white/80">
-                    {language === "en" ? 
-                      (book.description === "Сборник от поетични творби, които ще докоснат душата ви" ? 
-                      "A collection of poetic works that will touch your soul" : 
-                      book.description === "Поетично пътешествие през емоциите и преживяванията" ? 
-                      "A poetic journey through emotions and experiences" : 
-                      book.description === "Стихове, които улавят мигове на прозрение и яснота" ? 
-                      "Verses that capture moments of insight and clarity" : book.description) 
-                      : book.description
-                    }
+                    {book.description === "Сборник от поетични творби, които ще докоснат душата ви" ? 
+                      translate("Сборник от поетични творби, които ще докоснат душата ви", "A collection of poetic works that will touch your soul") : 
+                     book.description === "Поетично пътешествие през емоциите и преживяванията" ? 
+                      translate("Поетично пътешествие през емоциите и преживяванията", "A poetic journey through emotions and experiences") : 
+                     book.description === "Стихове, които улавят мигове на прозрение и яснота" ? 
+                      translate("Стихове, които улавят мигове на прозрение и яснота", "Verses that capture moments of insight and clarity") : 
+                     book.description}
                   </div>
                   <div className="mt-2">
                     <Badge variant="secondary" className="text-xs bg-green-500 text-white">
-                      {language === "en" ? book.category : 
-                        book.category === "Fiction" ? "Художествена литература" :
-                        book.category === "Non-Fiction" ? "Нехудожествена литература" :
-                        book.category === "Poetry" ? "Поезия" : book.category
-                      }
+                      {book.category === "Fiction" ? translate("Художествена литература", "Fiction") :
+                       book.category === "Non-Fiction" ? translate("Нехудожествена литература", "Non-Fiction") :
+                       book.category === "Poetry" ? translate("Поезия", "Poetry") : 
+                       book.category}
                     </Badge>
                   </div>
                 </div>
               </div>
             ))}
-            <div className="border-t border-white/20 px-8 py-7">
-              <Button className="w-full bg-white hover:bg-gray-100 text-green-700 rounded-md border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-200 flex items-center justify-center hover:translate-y-[-2px]" asChild>
-                <Link href="/shop">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-shopping-bag mr-2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                  {language === "en" ? "Explore All Books" : "Разгледай Всички Книги"}
-                </Link>
+          </div>
+          <div className="p-8 mt-auto border-t border-white/20">
+            <Link href="/shop" className="w-full">
+              <Button className="w-full bg-white text-green-700 hover:bg-gray-100">
+                {translate("Разгледай Всички Книги", "Explore All Books")}
               </Button>
-            </div>
+            </Link>
           </div>
         </div>
       )}
@@ -265,7 +262,7 @@ export function MobileNavigation({
       {isMenuOpen === "services" && (
         <div 
           style={mobileMenuStyle}
-          className="fixed inset-x-0 bottom-0 flex flex-col overflow-y-auto max-h-[80vh] !bg-purple-600 dark:!bg-purple-800 backdrop-blur-md md:hidden animate-in slide-in-from-right"
+          className="fixed inset-x-0 bottom-0 flex flex-col overflow-y-auto max-h-[80vh] !bg-green-600 dark:!bg-green-800 backdrop-blur-md md:hidden animate-in slide-in-from-right"
         >
           <div className="flex items-center justify-between px-8 py-3.5 border-b border-white/20">
             <div className="text-xs tracking-widest text-white uppercase font-semibold">
@@ -274,7 +271,7 @@ export function MobileNavigation({
             <Button 
               variant="ghost" 
               onClick={() => setIsMenuOpen(true)} 
-              className="flex items-center bg-transparent hover:bg-purple-700 text-white border-none shadow-none focus:shadow-none focus-visible:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="flex items-center bg-transparent hover:bg-green-700 text-white border-none shadow-none focus:shadow-none focus-visible:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
             >
               <ChevronLeft className="mr-2 size-4" />
               {language === "en" ? "Back" : "Назад"}
@@ -284,59 +281,51 @@ export function MobileNavigation({
             {services.map((service) => (
               <div
                 key={service.id}
-                className="group flex w-full items-start gap-x-4 border-b border-white/20 px-8 py-6 text-left hover:bg-purple-700 transition-colors cursor-pointer"
+                className="group flex w-full items-start gap-x-4 border-b border-white/20 px-8 py-6 text-left hover:bg-green-700 transition-colors cursor-pointer"
                 onClick={(e) => onServiceClick(service, e)}
               >
-                <div className="shrink-0 relative w-16 h-12 overflow-hidden rounded">
+                <div className="shrink-0 relative w-12 h-12 overflow-hidden rounded">
                   <Image
                     src={service.image}
                     alt={service.title}
                     fill
                     className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                 </div>
                 <div>
-                  <div className="mb-1.5 text-base font-medium text-white flex items-center justify-between">
-                    <span>
-                      {language === "en" ? 
-                        (service.title === "Личен Коучинг" ? "Personal Coaching" : 
-                        service.title === "Терапевтични Сесии" ? "Therapy Sessions" : 
-                        service.title === "Групови Уъркшопи" ? "Group Workshops" : service.title) 
-                        : service.title
-                      }
-                    </span>
-                    <Badge className="ml-2 bg-purple-500 text-white text-xs">
-                      {service.price} лв
-                    </Badge>
+                  <div className="mb-1.5 text-base font-medium text-white">
+                    {service.title === "Личен Коучинг" ? translate("Личен Коучинг", "Personal Coaching") : 
+                     service.title === "Терапевтични Сесии" ? translate("Терапевтични Сесии", "Therapy Sessions") : 
+                     service.title === "Групови Уъркшопи" ? translate("Групови Уъркшопи", "Group Workshops") : 
+                     service.title}
                   </div>
                   <div className="text-sm font-normal text-white/80">
-                    {language === "en" ? 
-                      (service.description === "Индивидуални сесии за личностно развитие и постигане на цели" ? 
-                      "Individual sessions for personal development and goal achievement" : 
-                      service.description === "Професионална подкрепа за емоционално благополучие" ? 
-                      "Professional support for emotional well-being" : 
-                      service.description === "Интерактивни семинари за развитие на умения и самопознание" ? 
-                      "Interactive seminars for skill development and self-knowledge" : service.description) 
-                      : service.description
-                    }
+                    {service.description === "Индивидуални сесии за личностно развитие и постигане на цели" ? 
+                      translate("Индивидуални сесии за личностно развитие и постигане на цели", "Individual sessions for personal development and goal achievement") : 
+                     service.description === "Професионална подкрепа за емоционално благополучие" ? 
+                      translate("Професионална подкрепа за емоционално благополучие", "Professional support for emotional well-being") : 
+                     service.description === "Интерактивни семинари за развитие на умения и самопознание" ? 
+                      translate("Интерактивни семинари за развитие на умения и самопознание", "Interactive seminars for skill development and self-knowledge") : 
+                     service.description}
                   </div>
-                  <div className="mt-2">
-                    <Badge variant="outline" className="text-xs text-white border-white/40">
+                  <div className="mt-2 flex justify-between">
+                    <Badge variant="secondary" className="text-xs bg-green-500 text-white">
+                      {service.price} лв
+                    </Badge>
+                    <Badge variant="outline" className="text-xs border-white text-white ml-2">
                       {service.duration}
                     </Badge>
                   </div>
                 </div>
               </div>
             ))}
-            <div className="border-t border-white/20 px-8 py-7">
-              <Button className="w-full bg-white hover:bg-gray-100 text-purple-700 rounded-md border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-200 flex items-center justify-center hover:translate-y-[-2px]" asChild>
-                <Link href="/services">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-shopping-bag mr-2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                  {language === "en" ? "View All Services" : "Разгледай Всички Услуги"}
-                </Link>
+          </div>
+          <div className="p-8 mt-auto border-t border-white/20">
+            <Link href="/services" className="w-full">
+              <Button className="w-full bg-white text-green-700 hover:bg-gray-100">
+                {translate("Разгледай Всички Услуги", "View All Services")}
               </Button>
-            </div>
+            </Link>
           </div>
         </div>
       )}

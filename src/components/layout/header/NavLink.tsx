@@ -24,7 +24,7 @@ export function NavLink({ href, children, className }: NavLinkProps) {
         className={cn(
           navigationMenuTriggerStyle(), 
           "text-lg font-medium transition-colors text-white !bg-transparent",
-          isActive ? "font-semibold !bg-green-700" : "hover:!bg-green-700",
+          isActive ? "font-semibold !bg-green-700" : "hover:!bg-green-700 hover:text-gray-100",
           className
         )}
       >

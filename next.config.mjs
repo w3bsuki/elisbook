@@ -27,6 +27,19 @@ const nextConfig = {
   },
   distDir: '.next',
   trailingSlash: true,
+  // This webpack configuration helps fix common module resolution issues
+  webpack: (config, { isServer }) => {
+    // Fix "Can't resolve AboutUs" errors by providing a fallback
+    config.resolve.fallback = { 
+      ...config.resolve.fallback,
+      fs: false,
+      // Add this to fix the "Cannot read properties of undefined (reading 'call')" error
+      AboutUs: false 
+    };
+    
+    // Return modified config
+    return config;
+  },
 };
 
 export default nextConfig; 

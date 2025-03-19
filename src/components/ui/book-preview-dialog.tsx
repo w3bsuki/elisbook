@@ -21,6 +21,7 @@ interface BookPreviewDialogProps {
     category?: string;
     price?: number;
     image?: string;
+    coverImage?: string;
   };
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -29,18 +30,33 @@ interface BookPreviewDialogProps {
 export function BookPreviewDialog({ book, open, onOpenChange }: BookPreviewDialogProps) {
   const { language } = useLanguage();
   
+  if (!book) {
+    return null;
+  }
+  
+  // Ensure all book properties have fallbacks
+  const safeBook = {
+    id: book.id || '',
+    title: book.title || 'Book Title',
+    description: book.description || 'No description available',
+    category: book.category || '',
+    price: book.price || 0,
+    // Use coverImage as fallback for image, or default to fallback image
+    image: book.image || book.coverImage || "/images/books/vdahnovenia-kniga-1.png",
+  };
+  
   // Translate category if needed
   const getCategory = () => {
-    if (!book.category) return "";
+    if (!safeBook.category) return "";
     
     if (language === 'bg') {
-      return book.category === 'health' ? 'Здраве' 
-        : book.category === 'poetry' ? 'Поезия' 
-        : book.category === 'selfHelp' ? 'Самопомощ'
-        : book.category;
+      return safeBook.category === 'health' ? 'Здраве' 
+        : safeBook.category === 'poetry' ? 'Поезия' 
+        : safeBook.category === 'selfHelp' ? 'Самопомощ'
+        : safeBook.category;
     }
     
-    return book.category.charAt(0).toUpperCase() + book.category.slice(1);
+    return safeBook.category.charAt(0).toUpperCase() + safeBook.category.slice(1);
   };
   
   return (
@@ -50,8 +66,8 @@ export function BookPreviewDialog({ book, open, onOpenChange }: BookPreviewDialo
           <AspectRatio ratio={16/9} className="w-full">
             <div className="relative h-full w-full">
               <Image
-                src={book.image || "/images/books/vdahnovenia-kniga-1.png"}
-                alt={book.title}
+                src={safeBook.image}
+                alt={safeBook.title}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -64,7 +80,7 @@ export function BookPreviewDialog({ book, open, onOpenChange }: BookPreviewDialo
               >
                 <X className="h-5 w-5" />
               </button>
-              {book.category && (
+              {safeBook.category && (
                 <div className="absolute top-4 left-4 bg-green-600 text-white text-xs font-medium px-2.5 py-1.5 rounded-md shadow-md">
                   {getCategory()}
                 </div>
@@ -75,16 +91,16 @@ export function BookPreviewDialog({ book, open, onOpenChange }: BookPreviewDialo
         
         <div className="p-6 bg-white dark:bg-gray-900">
           <DialogHeader>
-            <DialogTitle className="text-xl font-bold text-gray-900 dark:text-white">{book.title}</DialogTitle>
+            <DialogTitle className="text-xl font-bold text-gray-900 dark:text-white">{safeBook.title}</DialogTitle>
             <DialogDescription className="text-sm mt-2 text-gray-600 dark:text-gray-300">
-              {book.description}
+              {safeBook.description}
             </DialogDescription>
           </DialogHeader>
           
           <div className="mt-6 flex justify-between items-center">
-            {book.price && (
+            {safeBook.price > 0 && (
               <div className="font-bold text-lg text-green-700 dark:text-green-400">
-                {language === 'bg' ? `${book.price.toFixed(2)} лв.` : `$${book.price.toFixed(2)}`}
+                {language === 'bg' ? `${safeBook.price.toFixed(2)} лв.` : `$${safeBook.price.toFixed(2)}`}
               </div>
             )}
             <Button className="bg-green-600 hover:bg-green-700 text-white border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-200 rounded-md hover:translate-y-[-2px]">

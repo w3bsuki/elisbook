@@ -8,7 +8,7 @@ import { BookPreviewDialog } from "@/components/ui/book-preview-dialog";
 import { ServicePreviewDialog } from "@/components/ui/service-preview-dialog";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
-// Import our new components
+// Import our components
 import { Logo } from "./header/Logo";
 import { LanguageSwitcher } from "./header/LanguageSwitcher";
 import { DesktopNavigation } from "./header/DesktopNavigation";
@@ -19,7 +19,7 @@ import { ShopButton } from "./header/ShopButton";
 // Import types from local types file
 import { BookType, ServiceType } from "./header/types";
 
-// Updated books to use the same images as bestsellers
+// Books data
 const books: BookType[] = [
   {
     id: "inspirations",
@@ -83,56 +83,49 @@ const services: ServiceType[] = [
 
 export default function Header() {
   const { language } = useLanguage();
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean | string>(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [headerHeight, setHeaderHeight] = useState(0);
   const headerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   
-  // Book preview state
+  // Book and service preview states
   const [selectedBook, setSelectedBook] = useState<BookType | null>(null);
   const [isBookPreviewOpen, setIsBookPreviewOpen] = useState(false);
-  
-  // Service preview state
   const [selectedService, setSelectedService] = useState<ServiceType | null>(null);
   const [isServicePreviewOpen, setIsServicePreviewOpen] = useState(false);
   
-  // Handle scroll effect with debounce for better performance
+  // Handle scroll effect with throttling for performance
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    let ticking = false;
     
     const handleScroll = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        setIsScrolled(window.scrollY > 10);
-      }, 10);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 10);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(timeoutId);
-    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   
   // Update header height for mobile menu positioning
   useEffect(() => {
-    const updateHeaderHeight = () => {
-      if (headerRef.current) {
-        setHeaderHeight(headerRef.current.offsetHeight);
+    if (!headerRef.current) return;
+    
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setHeaderHeight(entry.contentRect.height);
       }
-    };
+    });
     
-    updateHeaderHeight();
-    window.addEventListener('resize', updateHeaderHeight);
-    
-    // Also update when scroll state changes
-    if (isScrolled !== undefined) {
-      updateHeaderHeight();
-    }
-    
-    return () => window.removeEventListener('resize', updateHeaderHeight);
-  }, [isScrolled]);
+    resizeObserver.observe(headerRef.current);
+    return () => resizeObserver.disconnect();
+  }, []);
   
   // Close mobile menu when route changes
   useEffect(() => {
@@ -156,12 +149,17 @@ export default function Header() {
   return (
     <header 
       ref={headerRef}
-      className="sticky inset-x-0 top-0 z-20 w-full transition-none border-b border-green-700/30 shadow-sm !bg-green-600 dark:!bg-green-800"
+      className={cn(
+        "sticky inset-x-0 top-0 z-20 w-full transition-colors duration-300 border-b shadow-sm",
+        isScrolled 
+          ? "border-green-700/30 bg-green-600/95 backdrop-blur-sm dark:bg-green-800/95" 
+          : "border-transparent bg-green-600 dark:bg-green-800"
+      )}
     >
       <div className="container mx-auto flex justify-center">
         <div className={cn(
           "flex w-full items-center justify-between max-w-6xl transition-all duration-200",
-          isScrolled ? "py-2 md:py-3" : "py-3 md:py-4"
+          isScrolled ? "py-2 md:py-2" : "py-3 md:py-4"
         )}>
           {/* Left section: Logo and theme/language toggles */}
           <div className="flex-1 flex items-center gap-3">

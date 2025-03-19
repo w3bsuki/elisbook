@@ -6,11 +6,13 @@ import BlogPreview from "@/components/sections/BlogPreview";
 import Testimonials from "@/components/sections/Testimonials";
 import FAQ from "@/components/sections/FAQ";
 import Services from "@/components/sections/Services";
+import AboutAuthor from "@/components/sections/AboutAuthor";
 
 export default function Home() {
   return (
     <main>
       <Hero />
+      <AboutAuthor />
       <Bestsellers />
       <AllBooks />
       <Services />

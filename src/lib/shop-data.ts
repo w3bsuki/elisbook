@@ -141,14 +141,16 @@ export const searchBooks = (books: Book[], searchTerm: string): Book[] => {
 export const applyFilters = (books: Book[], filters: Record<string, boolean>): Book[] => {
   if (!filters || Object.keys(filters).length === 0) return books;
   
+  // Check if any filter is active
+  const hasActiveFilters = Object.values(filters).some(value => value);
+  if (!hasActiveFilters) return books;
+  
   return books.filter(book => {
-    // If no filters are active, return all books
-    if (Object.values(filters).every(value => !value)) return true;
-    
     // Apply active filters
     if (filters.featured && book.featured) return true;
     if (filters.newReleases && new Date(book.publishDate) > new Date('2022-06-01')) return true;
     if (filters.bestsellers && book.price >= 28) return true; // Books priced 28 or higher are considered bestsellers
+    if (filters.digital && book.digital) return true; // Filter by digital books
     
     // If filters are active but this book doesn't match any, exclude it
     return false;

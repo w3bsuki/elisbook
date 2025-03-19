@@ -14,6 +14,55 @@ import { Service } from "@/types";
 // Import services directly to avoid potential issues with dynamic imports
 import { services as allServices, filterServicesByCategory } from "@/data/services";
 
+// Helper functions for package tiers
+const getPackageTier = (title: string): { mainTitle: string, tier: string | null } => {
+  // Check for typical package tier indicators
+  const tierWords = ["Основен", "Среден", "Премиум", "Basic", "Standard", "Premium"];
+  
+  // Clean up the title
+  let mainTitle = title;
+  let tier: string | null = null;
+  
+  for (const word of tierWords) {
+    if (title.includes(word)) {
+      tier = word;
+      // Remove the tier word and any colons or "пакет" word from the title
+      mainTitle = title.replace(`${word} пакет:`, '')
+                       .replace(`${word} пакет`, '')
+                       .replace(`${word}:`, '')
+                       .replace(`${word} `, '')
+                       .replace(`:`, '')
+                       .replace(`Пакет "`, '"')
+                       .replace(`Пакет:`, '')
+                       .replace(`Пакет `, '')
+                       .replace(`Пакет`, '')
+                       .trim();
+      break;
+    }
+  }
+  
+  return { mainTitle, tier };
+};
+
+// Get tier badge color
+const getTierBadgeColor = (tier: string | null): string => {
+  if (!tier) return "";
+  
+  switch(tier) {
+    case "Основен":
+    case "Basic":
+      return "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 border-blue-200 dark:border-blue-800/30";
+    case "Среден":
+    case "Standard":
+      return "bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300 border-purple-200 dark:border-purple-800/30";
+    case "Премиум":
+    case "Premium":
+      return "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border-amber-200 dark:border-amber-800/30";
+    default:
+      return "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:border-green-800/30";
+  }
+};
+
 export default function Services() {
   const [activeTab, setActiveTab] = useState<string>("all");
   const [filteredServices, setFilteredServices] = useState<Service[]>([]);
@@ -33,14 +82,12 @@ export default function Services() {
   const featuredServices = allServices.filter(service => service.featured).slice(0, 1);
   
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[url('/images/pattern-light.svg')] dark:bg-[url('/images/pattern-dark.svg')] opacity-5 bg-repeat bg-[length:20px_20px]"></div>
-        
-        {/* Enhanced background elements */}
-        <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/20 rounded-br-full opacity-30 blur-3xl"></div>
-        <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-to-tl from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/20 rounded-tl-full opacity-30 blur-3xl"></div>
+    <section id="services" className="py-24 bg-gradient-to-b from-green-50 to-white dark:from-green-900/20 dark:to-gray-800 relative overflow-hidden">
+      {/* Background gradient elements - enhanced for more subtle effect */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-green-200/20 dark:bg-green-900/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-[20%] -right-[5%] w-[30%] h-[30%] bg-green-200/20 dark:bg-green-900/20 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-[10%] left-[30%] w-[40%] h-[40%] bg-green-100/10 dark:bg-green-900/10 rounded-full blur-3xl"></div>
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
@@ -53,7 +100,7 @@ export default function Services() {
           <h2 className="text-4xl md:text-5xl font-bold font-playfair mb-4 text-gray-900 dark:text-white">
             <span className="relative inline-block">
               {language === 'en' ? 'All' : 'Всички'}
-              <span className="absolute -bottom-2 left-0 w-full h-3 bg-green-200 dark:bg-green-700/50 -z-10 transform -rotate-1"></span>
+              <span className="absolute -bottom-2 left-0 w-full h-4 bg-green-300 dark:bg-green-600/60 -z-10 transform -rotate-1 rounded-sm"></span>
             </span>{" "}
             {language === 'en' ? 'Services' : 'Услуги'}
           </h2>
@@ -66,19 +113,35 @@ export default function Services() {
 
         {/* Featured Service Hero Section */}
         {featuredServices.length > 0 && (
-          <div className="mb-16 max-w-6xl mx-auto">
+          <div className="mb-12 max-w-6xl mx-auto">
             <div className="relative overflow-hidden rounded-2xl border-2 border-black dark:border-gray-700 shadow-[8px_8px_0px_0px_rgba(22,163,74,0.5)] dark:shadow-[8px_8px_0px_0px_rgba(22,163,74,0.3)] bg-white dark:bg-gray-800/50">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
                 {/* Image Section */}
-                <div className="relative h-64 md:h-full">
+                <div className="relative h-64 md:h-auto">
                   <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
                     <div className="relative z-10 p-8 text-center">
-                      <div className="w-24 h-24 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-4">
-                        {featuredServices[0].category === 'individual' 
-                          ? <User className="h-12 w-12 text-white" /> 
-                          : <Package className="h-12 w-12 text-white" />}
+                      <div className="w-20 h-20 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-4">
+                        {featuredServices[0]?.category === 'individual' 
+                          ? <User className="h-10 w-10 text-white" /> 
+                          : <Package className="h-10 w-10 text-white" />}
                       </div>
-                      <h3 className="text-2xl font-bold text-white mb-2">{featuredServices[0].title}</h3>
+                      
+                      {/* Process the title for the image section */}
+                      {(() => {
+                        if (!featuredServices[0]) return null;
+                        const { mainTitle, tier } = getPackageTier(featuredServices[0].title);
+                        return (
+                          <>
+                            <h3 className="text-xl font-bold text-white mb-2">{mainTitle}</h3>
+                            {tier && featuredServices[0].category === 'package' && (
+                              <Badge className="bg-white/30 text-white border-0 mb-2">
+                                {tier}
+                              </Badge>
+                            )}
+                          </>
+                        );
+                      })()}
+                      
                       <Badge className="bg-yellow-400 text-black border-0">
                         <Star className="h-3 w-3 mr-1" />
                         {language === 'en' ? 'Featured Service' : 'Препоръчана Услуга'}
@@ -88,37 +151,59 @@ export default function Services() {
                 </div>
                 
                 {/* Content Section */}
-                <div className="p-8 flex flex-col">
-                  <div className="mb-4 flex items-center">
+                <div className="p-6 flex flex-col">
+                  <div className="mb-3 flex items-center">
                     <Badge className="mr-2 bg-green-100 dark:bg-green-900/70 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800">
-                      {featuredServices[0].category === 'individual' 
+                      {featuredServices[0]?.category === 'individual' 
                         ? (language === 'en' ? 'Individual' : 'Индивидуална') 
-                        : (language === 'en' ? 'Package' : 'Пакет')}
+                        : (language === 'en' ? '' : '')}
                     </Badge>
                     <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
                       <Clock className="h-4 w-4 mr-1" />
-                      <span>{featuredServices[0].duration}</span>
+                      <span>{featuredServices[0]?.duration}</span>
                     </div>
                   </div>
                   
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{featuredServices[0].title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">{featuredServices[0].description}</p>
+                  {/* Improved title styling for featured service */}
+                  {(() => {
+                    if (!featuredServices[0]) return null;
+                    const { mainTitle, tier } = getPackageTier(featuredServices[0].title);
+                    return (
+                      <div className="mb-3">
+                        {tier && featuredServices[0].category === 'package' && (
+                          <Badge 
+                            variant="outline" 
+                            className={`mb-2 px-2.5 py-0.5 text-sm font-medium ${getTierBadgeColor(tier)}`}
+                          >
+                            {tier}
+                          </Badge>
+                        )}
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                          {mainTitle}
+                        </h3>
+                      </div>
+                    );
+                  })()}
                   
-                  {featuredServices[0].category === 'package' && featuredServices[0].includes && (
-                    <div className="mb-4">
-                      <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                        {language === 'en' ? 'What\'s Included:' : 'Какво включва:'}
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+                    {featuredServices[0]?.description}
+                  </p>
+                  
+                  {featuredServices[0]?.category === 'package' && featuredServices[0]?.includes && (
+                    <div className="mb-4 bg-gradient-to-r from-green-50 to-green-100/50 dark:from-green-900/20 dark:to-green-900/10 p-3 rounded-lg border border-green-100 dark:border-green-800/30">
+                      <h4 className="font-medium text-sm text-green-800 dark:text-green-300 mb-2">
+                        {language === 'en' ? 'Includes:' : 'Включва:'}
                       </h4>
-                      <ul className="space-y-2">
+                      <ul className="space-y-1.5 text-xs">
                         {featuredServices[0].includes.slice(0, 3).map((item, index) => (
-                          <li key={index} className="flex items-start text-sm">
+                          <li key={index} className="flex items-start">
                             <span className="text-green-500 mr-2 flex-shrink-0">✓</span>
                             <span>{item}</span>
                           </li>
                         ))}
                         {featuredServices[0].includes.length > 3 && (
-                          <li className="text-green-600 dark:text-green-400 italic text-sm">
-                            +{featuredServices[0].includes.length - 3} {language === 'en' ? 'more benefits' : 'още ползи'}
+                          <li className="text-green-600 dark:text-green-400 italic text-xs pt-1 pl-4">
+                            +{featuredServices[0].includes.length - 3} {language === 'en' ? 'more' : 'още'}
                           </li>
                         )}
                       </ul>
@@ -126,26 +211,26 @@ export default function Services() {
                   )}
                   
                   <div className="mt-auto flex items-center justify-between">
-                    <span className="text-2xl font-bold text-green-600 dark:text-green-400">
-                      {featuredServices[0].price.toFixed(0)}{language === 'en' ? ' BGN' : 'лв'}
+                    <span className="text-xl font-bold text-green-600 dark:text-green-400">
+                      {featuredServices[0]?.price.toFixed(0)}{language === 'en' ? ' BGN' : 'лв'}
                     </span>
                     <div className="flex gap-3">
                       <Button 
                         variant="outline"
-                        className="border-green-600 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-950/30 border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300"
+                        className="border-green-600 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-950/30 border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300"
                         asChild
                       >
-                        <Link href={`/services/${featuredServices[0].id}`}>
+                        <Link href={`/services/${featuredServices[0]?.id}`}>
                           <Eye className="h-4 w-4 mr-1" />
                           {language === 'en' ? 'Details' : 'Детайли'}
                         </Link>
                       </Button>
                       
                       <Button 
-                        className="bg-green-600 hover:bg-green-700 text-white border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300"
+                        className="bg-green-600 hover:bg-green-700 text-white border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300"
                         asChild
                       >
-                        <Link href={`/services/${featuredServices[0].id}/book`}>
+                        <Link href={`/services/${featuredServices[0]?.id}/book`}>
                           <Calendar className="h-4 w-4 mr-1" />
                           {language === 'en' ? 'Book Now' : 'Запази'}
                         </Link>
@@ -158,11 +243,11 @@ export default function Services() {
           </div>
         )}
 
-        {/* Service Benefits */}
+        {/* Service Benefits - more modern style */}
         <div className="mb-16 max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white dark:bg-gray-800/50 p-6 rounded-xl border-2 border-black dark:border-gray-700 shadow-[5px_5px_0px_0px_rgba(22,163,74,0.3)] dark:shadow-[5px_5px_0px_0px_rgba(22,163,74,0.2)] text-center">
-              <div className="w-16 h-16 mx-auto bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white dark:bg-gray-800/50 p-6 rounded-xl border-2 border-black dark:border-gray-700 shadow-[5px_5px_0px_0px_rgba(22,163,74,0.3)] dark:shadow-[5px_5px_0px_0px_rgba(22,163,74,0.2)] text-center transform transition-transform duration-300 hover:-translate-y-1">
+              <div className="w-16 h-16 mx-auto bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-full flex items-center justify-center mb-4">
                 <Shield className="h-8 w-8 text-green-600 dark:text-green-400" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
@@ -175,8 +260,8 @@ export default function Services() {
               </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-800/50 p-6 rounded-xl border-2 border-black dark:border-gray-700 shadow-[5px_5px_0px_0px_rgba(22,163,74,0.3)] dark:shadow-[5px_5px_0px_0px_rgba(22,163,74,0.2)] text-center">
-              <div className="w-16 h-16 mx-auto bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
+            <div className="bg-white dark:bg-gray-800/50 p-6 rounded-xl border-2 border-black dark:border-gray-700 shadow-[5px_5px_0px_0px_rgba(22,163,74,0.3)] dark:shadow-[5px_5px_0px_0px_rgba(22,163,74,0.2)] text-center transform transition-transform duration-300 hover:-translate-y-1">
+              <div className="w-16 h-16 mx-auto bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-full flex items-center justify-center mb-4">
                 <Sparkles className="h-8 w-8 text-green-600 dark:text-green-400" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
@@ -189,8 +274,8 @@ export default function Services() {
               </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-800/50 p-6 rounded-xl border-2 border-black dark:border-gray-700 shadow-[5px_5px_0px_0px_rgba(22,163,74,0.3)] dark:shadow-[5px_5px_0px_0px_rgba(22,163,74,0.2)] text-center">
-              <div className="w-16 h-16 mx-auto bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
+            <div className="bg-white dark:bg-gray-800/50 p-6 rounded-xl border-2 border-black dark:border-gray-700 shadow-[5px_5px_0px_0px_rgba(22,163,74,0.3)] dark:shadow-[5px_5px_0px_0px_rgba(22,163,74,0.2)] text-center transform transition-transform duration-300 hover:-translate-y-1">
+              <div className="w-16 h-16 mx-auto bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-full flex items-center justify-center mb-4">
                 <Gift className="h-8 w-8 text-green-600 dark:text-green-400" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
@@ -205,8 +290,8 @@ export default function Services() {
           </div>
         </div>
         
-        {/* Tabs for filtering */}
-        <div className="mb-10">
+        {/* Tabs for filtering - more visually appealing */}
+        <div className="mb-12">
           <Tabs defaultValue="all" className="w-full" onValueChange={setActiveTab}>
             <div className="flex justify-center mb-8">
               <TabsList className="bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 p-1.5 rounded-full border-2 border-black dark:border-gray-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)]">
@@ -233,17 +318,18 @@ export default function Services() {
               </TabsList>
             </div>
             
-            {/* Services grid */}
+            {/* Services grid - improved layout */}
             <TabsContent value={activeTab} className="mt-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                 {Array.isArray(filteredServices) && filteredServices.length > 0 ? (
                   filteredServices.map((service, index) => (
                     <ServiceCard key={service.id} service={service} index={index} />
                   ))
                 ) : (
-                  <div className="col-span-3 text-center py-10">
-                    <p className="text-gray-500 dark:text-gray-400">
-                      {language === 'en' ? 'No services found.' : 'Не са намерени услуги.'}
+                  <div className="col-span-3 text-center py-12 px-4 bg-gray-50 dark:bg-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <Package className="h-12 w-12 mx-auto text-gray-400 dark:text-gray-500 mb-4" />
+                    <p className="text-gray-600 dark:text-gray-400 font-medium">
+                      {language === 'en' ? 'No services found in this category.' : 'Не са намерени услуги в тази категория.'}
                     </p>
                   </div>
                 )}
@@ -252,11 +338,11 @@ export default function Services() {
           </Tabs>
         </div>
         
-        {/* Call to action */}
+        {/* Call to action - enhanced style */}
         <div className="text-center mt-16">
           <Button 
             size="lg"
-            className="bg-green-600 hover:bg-green-700 text-white border-2 border-black dark:border-gray-700 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 px-8 py-6 h-auto rounded-xl"
+            className="group bg-green-600 hover:bg-green-700 text-white border-2 border-black dark:border-gray-700 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 px-8 py-6 h-auto rounded-xl"
             asChild
           >
             <Link href="/services" className="flex items-center text-lg">
@@ -274,96 +360,183 @@ export default function Services() {
 function ServiceCard({ service, index }: { service: Service; index: number }) {
   const { language } = useLanguage();
   
+  // Function to determine which image to use based on service type
+  const getServiceImage = (service: Service) => {
+    // Return appropriate image based on service type or use default icons
+    if (service.category === 'individual') {
+      // Try to find matching image based on service type
+      if (service.title.toLowerCase().includes('coaching')) {
+        return "/images/services/coaching.jpg";
+      } else if (service.title.toLowerCase().includes('therapy')) {
+        return "/images/services/therapy.jpg";
+      } else if (service.title.toLowerCase().includes('workshop')) {
+        return "/images/services/workshop.jpg";
+      }
+    }
+    return null; // If no match, we'll fallback to icon display
+  };
+  
+  // Get image if available
+  const serviceImage = getServiceImage(service);
+  
+  // Get badge color based on service category
+  const getCategoryColor = (category: string) => {
+    switch(category) {
+      case 'individual':
+        return "bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 text-blue-800 dark:text-blue-300";
+      case 'package':
+        return "bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 text-green-800 dark:text-green-300";
+      default:
+        return "bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 text-green-800 dark:text-green-300";
+    }
+  };
+  
+  // Process the title
+  const { mainTitle, tier } = service.category === 'package' ? getPackageTier(service.title) : { mainTitle: service.title, tier: null };
+  
   return (
-    <div className="flex flex-col h-full group relative overflow-hidden border-2 border-black dark:border-gray-700 bg-white dark:bg-gray-800/50 rounded-xl transition-all duration-300 hover:shadow-[8px_8px_0px_0px_rgba(22,163,74,0.5)] dark:hover:shadow-[8px_8px_0px_0px_rgba(22,163,74,0.3)] w-full transform hover:-translate-y-1">
-      {/* Service image with proper positioning */}
-      <div className="relative">
-        <AspectRatio ratio={16/9} className="bg-gradient-to-br from-green-400 to-green-600">
-          <div className="w-full h-full flex items-center justify-center">
-            {service.category === 'individual' 
-              ? <User className="h-16 w-16 text-white" /> 
-              : <Package className="h-16 w-16 text-white" />}
-          </div>
-        </AspectRatio>
-        
-        {/* Category badge - positioned on top of image */}
-        <div className="absolute top-3 left-3 z-30">
-          <div className="bg-white dark:bg-gray-800 text-green-600 dark:text-green-400 px-3 py-1 rounded-full border-2 border-black dark:border-gray-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] font-medium text-xs flex items-center">
-            {service.category === 'individual' 
-              ? (
-                <>
-                  <User className="h-3 w-3 mr-1" />
-                  {language === 'en' ? 'Individual' : 'Индивидуална'}
-                </>
-              ) 
-              : (
-                <>
-                  <Package className="h-3 w-3 mr-1" />
-                  {language === 'en' ? 'Package' : 'Пакет'}
-                </>
-              )}
+    <div 
+      className="flex flex-col h-full group relative overflow-hidden rounded-xl transition-all duration-300 bg-white dark:bg-gray-800/50 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1)] hover:shadow-[0px_4px_16px_rgba(22,163,74,0.15),_0px_8px_24px_rgba(22,163,74,0.15)] dark:shadow-[0px_4px_16px_rgba(0,0,0,0.2)] border-l-4 border-green-500 dark:border-green-600"
+    >
+      {/* Featured badge if applicable */}
+      {service.featured && (
+        <div className="absolute top-4 right-4 z-30">
+          <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-3 py-1.5 rounded-full shadow-lg font-medium text-xs flex items-center gap-1.5">
+            <Star className="h-3 w-3" />
+            {language === 'en' ? 'Featured' : 'Препоръчана'}
           </div>
         </div>
-        
-        {/* Featured badge if applicable */}
-        {service.featured && (
-          <div className="absolute top-3 right-3 z-30">
-            <div className="bg-yellow-400 text-black px-3 py-1 rounded-full border-2 border-black dark:border-gray-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] font-medium text-xs flex items-center">
-              <Star className="h-3 w-3 mr-1" />
-              {language === 'en' ? 'Featured' : 'Препоръчана'}
-            </div>
-          </div>
-        )}
+      )}
+      
+      {/* Category badge - top left */}
+      <div className="absolute top-4 left-4 z-30">
+        <div className={`${getCategoryColor(service.category)} px-3 py-1.5 rounded-full shadow-lg font-medium text-xs flex items-center gap-1.5`}>
+          {service.category === 'individual' 
+            ? <User className="h-3 w-3 mr-1" />
+            : <Package className="h-3 w-3 mr-1" />
+          }
+          {service.category === 'individual' 
+            ? (language === 'en' ? 'Individual' : 'Индивидуална')
+            : (language === 'en' ? '' : '')
+          }
+        </div>
       </div>
       
-      {/* Service details */}
-      <div className="p-5 flex flex-col flex-grow">
-        <div className="flex items-start justify-between mb-3">
-          <h3 className="font-bold text-gray-900 dark:text-white text-lg line-clamp-2">{service.title}</h3>
-          <span className="font-bold text-lg text-green-600 dark:text-green-400 ml-2 whitespace-nowrap">{service.price.toFixed(0)}{language === 'en' ? ' BGN' : 'лв'}</span>
+      {/* Service image area - reduced height to standardize all cards */}
+      <div className="relative p-6 pt-14 pb-2 h-[180px] flex items-center justify-center bg-gradient-to-br from-gray-50/50 to-gray-100/50 dark:from-gray-800/30 dark:to-gray-900/30">
+        <div className="absolute inset-0 opacity-50 pointer-events-none"></div>
+        
+        {/* Image or icon container with fixed dimensions */}
+        <div className="w-[140px] h-[110px] relative rounded-lg overflow-hidden shadow-[5px_5px_0px_0px_rgba(0,0,0,0.8)] dark:shadow-[5px_5px_0px_0px_rgba(255,255,255,0.2)]">
+          {serviceImage ? (
+            // If we have an image, display it
+            <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600 relative overflow-hidden">
+              <img 
+                src={serviceImage} 
+                alt={mainTitle} 
+                className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity duration-300"
+              />
+            </div>
+          ) : (
+            // Fallback to colored background with icon
+            <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+              {service.category === 'individual' 
+                ? <User className="h-12 w-12 text-white/90" /> 
+                : <Package className="h-12 w-12 text-white/90" />
+              }
+            </div>
+          )}
         </div>
         
-        <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm mb-3">
-          <Clock className="h-4 w-4 mr-1 flex-shrink-0" />
-          <span>{service.duration}</span>
+        {/* Quick action button */}
+        <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+          <Button 
+            size="icon" 
+            variant="secondary" 
+            className="h-8 w-8 rounded-full bg-white/95 dark:bg-gray-800/95 shadow-[0px_8px_16px_rgba(0,0,0,0.1)] hover:bg-white dark:hover:bg-gray-800 backdrop-blur-sm text-gray-700 dark:text-gray-300"
+            asChild
+          >
+            <Link href={`/services/${service.id}`} title={language === 'en' ? 'View details' : 'Виж детайли'}>
+              <Eye className="h-3.5 w-3.5" />
+            </Link>
+          </Button>
+        </div>
+      </div>
+      
+      {/* Service details - standardized layout for all card types */}
+      <div className="flex flex-col flex-grow p-4 backdrop-blur-sm rounded-b-xl bg-gradient-to-b from-white to-gray-50 dark:from-gray-800/80 dark:to-gray-900/80">
+        {/* Title section with consistent height */}
+        <div className="mb-2 min-h-[50px]">
+          {/* Package tier badge */}
+          {tier && service.category === 'package' && (
+            <Badge 
+              variant="outline" 
+              className={`mb-1 px-2 py-0.5 text-xs font-medium ${getTierBadgeColor(tier)}`}
+            >
+              {tier}
+            </Badge>
+          )}
+          
+          {/* Title for all services */}
+          <h3 className="font-bold text-gray-900 dark:text-white text-base mt-1 line-clamp-2">
+            {mainTitle}
+          </h3>
         </div>
         
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 flex-grow line-clamp-3">
+        {/* Info section - price and duration */}
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <Clock className="h-3.5 w-3.5 text-gray-500" />
+            <span className="text-xs text-gray-600 dark:text-gray-300">{service.duration}</span>
+          </div>
+          <span className="font-bold text-base text-green-600 dark:text-green-400">{service.price.toFixed(0)}{language === 'en' ? ' BGN' : 'лв'}</span>
+        </div>
+        
+        {/* Description with fixed height */}
+        <p className="text-xs text-gray-600 dark:text-gray-300 mb-2 line-clamp-2 h-[32px]">
           {service.description}
         </p>
         
-        {/* Includes list for packages - show up to 3 items */}
+        {/* Includes list - more compact for packages */}
         {service.category === 'package' && service.includes && (
-          <div className="mb-4 bg-green-50 dark:bg-green-900/10 p-3 rounded-lg">
-            <h4 className="font-semibold text-sm text-gray-700 dark:text-gray-300 mb-2">
+          <div className="mb-3 bg-gradient-to-r from-green-50 to-green-100/50 dark:from-green-900/20 dark:to-green-900/10 p-2 rounded-lg border border-green-100 dark:border-green-800/30">
+            <p className="text-xs font-medium text-green-800 dark:text-green-300 mb-1">
               {language === 'en' ? 'Includes:' : 'Включва:'}
-            </h4>
-            <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1.5">
-              {service.includes.slice(0, 3).map((item, index) => (
+            </p>
+            <ul className="text-[11px] text-gray-700 dark:text-gray-300 space-y-0.5">
+              {service.includes.slice(0, 2).map((item, index) => (
                 <li key={index} className="flex items-start">
-                  <span className="text-green-500 mr-1.5 flex-shrink-0">✓</span>
+                  <span className="text-green-500 mr-1 flex-shrink-0">✓</span>
                   <span className="line-clamp-1">{item}</span>
                 </li>
               ))}
-              {service.includes.length > 3 && (
-                <li className="text-green-600 dark:text-green-400 italic text-xs">
-                  +{service.includes.length - 3} {language === 'en' ? 'more' : 'още'}
+              {service.includes.length > 2 && (
+                <li className="text-green-600 dark:text-green-400 italic text-[11px] pt-0.5 pl-4">
+                  +{service.includes.length - 2} {language === 'en' ? 'more items' : 'още услуги'}
                 </li>
               )}
             </ul>
           </div>
         )}
         
-        {/* Action buttons */}
+        {/* Ensure consistent spacing at the bottom with a spacer if not a package */}
+        {service.category !== 'package' && (
+          <div className="mb-3 h-[65px]"></div>
+        )}
+        
+        {/* Action buttons at the bottom */}
         <div className="flex gap-2 mt-auto">
           <Button 
             variant="outline"
             size="sm"
-            className="border-green-600 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-950/30 flex-1 h-10 text-xs border-2 border-black dark:border-gray-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 rounded-lg"
+            className={cn(
+              "flex-1 h-8 text-xs border border-black dark:border-gray-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 rounded-md",
+              "border-green-600 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-950/30"
+            )}
             asChild
           >
             <Link href={`/services/${service.id}`}>
-              <Eye className="h-4 w-4 mr-1" />
+              <Eye className="h-3 w-3 mr-1" />
               {language === 'en' ? 'Details' : 'Детайли'}
             </Link>
           </Button>
@@ -371,13 +544,13 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
           <Button 
             size="sm"
             className={cn(
-              "bg-green-600 hover:bg-green-700 text-white flex-1 h-10 text-xs border-2 border-black dark:border-gray-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 rounded-lg",
-              "transition-transform duration-200 hover:scale-105"
+              "flex-1 h-8 text-xs border border-black dark:border-gray-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] transition-all duration-300 rounded-md text-white",
+              "bg-green-600 hover:bg-green-700"
             )}
             asChild
           >
-            <Link href={`/services/${service.id}/book`}>
-              <Calendar className="h-4 w-4 mr-1" />
+            <Link href={`/services/${service.id}/book`} className="flex items-center justify-center">
+              <Calendar className="h-3 w-3 mr-1" />
               {language === 'en' ? 'Book Now' : 'Запази'}
             </Link>
           </Button>

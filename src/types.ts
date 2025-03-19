@@ -30,7 +30,7 @@ export interface Book {
   isbn: string;
   pages: number;
   publisher: string;
-  image?: string;
+  digital?: boolean;
 }
 
 export interface Service {

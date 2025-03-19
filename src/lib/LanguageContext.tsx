@@ -1,9 +1,9 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { translations as translationsData } from './translations';
 
-// Define a more flexible type for translations that avoids circular references
+// Define a more flexible type for translations
 type TranslationValue = string | Record<string, any>;
 type TranslationsType = {
   [language: string]: Record<string, TranslationValue>;
@@ -13,40 +13,43 @@ interface LanguageContextType {
   language: string;
   setLanguage: (lang: string) => void;
   translations: TranslationsType;
-  t?: (key: string) => string; // Optional translation function
 }
 
+// Make sure we have a valid default value with type-safe translations
 const defaultValue: LanguageContextType = {
   language: 'bg',
   setLanguage: () => {},
-  translations: translationsData,
+  translations: translationsData as TranslationsType,
 };
 
-const LanguageContext = createContext<LanguageContextType>(defaultValue);
+const LanguageContext = createContext<LanguageContextType | null>(null);
 
-export const useLanguage = () => useContext(LanguageContext);
+export const useLanguage = () => {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
+};
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState('bg');
+  const [mounted, setMounted] = useState(false);
 
-  // Helper function to get translations
-  const t = (key: string): string => {
-    const keys = key.split('.');
-    let result: any = translationsData[language];
-    
-    for (const k of keys) {
-      if (result && typeof result === 'object' && k in result) {
-        result = result[k];
-      } else {
-        return key; // Fallback to the key if translation not found
-      }
-    }
-    
-    return typeof result === 'string' ? result : key;
-  };
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, translations: translationsData, t }}>
+    <LanguageContext.Provider value={{ 
+      language, 
+      setLanguage, 
+      translations: translationsData as TranslationsType
+    }}>
       {children}
     </LanguageContext.Provider>
   );

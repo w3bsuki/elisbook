@@ -1,5 +1,3 @@
-"use client";
-
 // Define all translations for the website
 export const translations = {
   en: {
@@ -88,6 +86,24 @@ export const translations = {
       searchResults: "Search results for:",
       noBooks: "No books found",
       tryAdjusting: "Try adjusting your search or filter criteria",
+      categories: "Categories",
+      filterBy: "Filter by",
+      searchPlaceholder: "Search books...",
+      search: "Search",
+      priceRange: "Price Range",
+      under: "Under",
+      over: "Over",
+      specialOffer: "Special Offer",
+      offerDescription: "Free shipping on orders over 50 лв.",
+      viewOffer: "View Offer",
+      backToShop: "Back to Shop",
+      filtersAndCategories: "Filters & Categories",
+      filterDescription: "Browse by category or apply filters to refine your search",
+      clearAll: "Clear All",
+      activeFilters: "Active Filters",
+      loading: "Loading...",
+      resetFilters: "Reset Filters",
+      applyFilters: "Apply Filters",
     },
     // FAQ section
     faq: {
@@ -137,7 +153,9 @@ export const translations = {
     // Product card
     productCard: {
       buyNow: "Buy Now",
-      featured: "Featured"
+      featured: "Featured",
+      addToCart: "Add to Cart",
+      viewDetails: "View Details",
     },
     // Book detail page
     bookDetail: {
@@ -163,7 +181,23 @@ export const translations = {
       subtitle: "Explore articles on health, wellness, mindfulness, and personal growth written by Elis",
       viewAll: "View all articles",
       readMore: "Read more"
-    }
+    },
+    productDetail: {
+      featured: "Featured",
+      digital: "Digital Version Available",
+      price: "Price",
+      addToCart: "Add to Cart",
+      isbn: "ISBN",
+      publisher: "Publisher",
+      publishDate: "Publish Date",
+      pages: "Pages",
+      pagesUnit: "pages",
+      description: "Description",
+      details: "Details",
+      share: "Share",
+      wishlist: "Wishlist",
+      relatedBooks: "You May Also Like",
+    },
   },
   bg: {
     // Navigation
@@ -251,6 +285,24 @@ export const translations = {
       searchResults: "Резултати от търсенето за:",
       noBooks: "Не са намерени книги",
       tryAdjusting: "Опитайте да коригирате критериите си за търсене или филтриране",
+      categories: "Категории",
+      filterBy: "Филтрирай по",
+      searchPlaceholder: "Търси книги...",
+      search: "Търси",
+      priceRange: "Цена Диапазон",
+      under: "Под",
+      over: "Над",
+      specialOffer: "Специална Оферта",
+      offerDescription: "Безплатна доставка за поръчки над 50 лв.",
+      viewOffer: "Виж Офертата",
+      backToShop: "Обратно към Магазина",
+      filtersAndCategories: "Филтри и Категории",
+      filterDescription: "Преглеждай по категория или прилагай филтри за преглед на търсенето",
+      clearAll: "Изчисти всичко",
+      activeFilters: "Активни Филтри",
+      loading: "Зареждане...",
+      resetFilters: "Възстановяване на филтри",
+      applyFilters: "Приложи филтрите",
     },
     // FAQ section
     faq: {
@@ -300,7 +352,9 @@ export const translations = {
     // Product card
     productCard: {
       buyNow: "Купете Сега",
-      featured: "Препоръчано"
+      featured: "Препоръчано",
+      addToCart: "Добави в Количката",
+      viewDetails: "Преглед на Детайли",
     },
     // Book detail page
     bookDetail: {
@@ -326,7 +380,23 @@ export const translations = {
       subtitle: "Разгледайте статии за здраве, благосъстояние, осъзнатост и личностно развитие, написани от Елис",
       viewAll: "Вижте всички статии",
       readMore: "Прочетете повече"
-    }
+    },
+    productDetail: {
+      featured: "Препоръчано",
+      digital: "Налична Дигитална Версия",
+      price: "Цена",
+      addToCart: "Добави в Количката",
+      isbn: "ISBN",
+      publisher: "Издател",
+      publishDate: "Дата на Издаване",
+      pages: "Страници",
+      pagesUnit: "страници",
+      description: "Описание",
+      details: "Детайли",
+      share: "Сподели",
+      wishlist: "Любими",
+      relatedBooks: "Може също да харесате",
+    },
   },
 };
 

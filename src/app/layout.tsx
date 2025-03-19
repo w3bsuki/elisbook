@@ -5,6 +5,8 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/sections/Footer";
 import { Providers } from "./providers";
+import { CartDrawer } from "@/components/ui/cart-drawer";
+import { cn } from "@/lib/utils";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +41,7 @@ export default function RootLayout({
             <Header />
             <main className="flex-grow">{children}</main>
             <Footer />
+            <CartDrawer />
           </div>
         </Providers>
       </body>

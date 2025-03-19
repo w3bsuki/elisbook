@@ -132,7 +132,7 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2 grid grid-cols-3 gap-8">
             {navigation.categories[0].sections.map((section) => (
               <div key={section.id}>
-                <h4 className="text-lg font-bold mb-4 text-green-600 dark:text-green-500">{section.name}</h4>
+                <h4 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">{section.name}</h4>
                 <ul className="space-y-3">
                   {section.items.map((item) => (
                     <li key={item.name}>
@@ -151,7 +151,7 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div className="col-span-1 md:col-span-1">
-            <h4 className="text-lg font-bold mb-4 text-green-600 dark:text-green-500">
+            <h4 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">
               {language === 'en' ? 'Contact Us' : 'Свържете се с нас'}
             </h4>
             <ul className="space-y-4">

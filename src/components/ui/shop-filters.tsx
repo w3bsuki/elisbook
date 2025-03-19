@@ -1,5 +1,5 @@
-import React from 'react';
-import { ChevronDown, SlidersHorizontal } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { ChevronDown, SlidersHorizontal, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/lib/LanguageContext';
+import { Badge } from './badge';
 
 // Helper function to ensure translation returns a string
 const ensureString = (value: string | Record<string, unknown>): string => {
@@ -27,6 +28,7 @@ interface ShopFiltersProps {
   onFilterChange: (filter: string, value: boolean) => void;
   activeSort: string;
   activeFilters: Record<string, boolean>;
+  searchTerm?: string;
 }
 
 export function ShopFilters({
@@ -35,6 +37,7 @@ export function ShopFilters({
   onFilterChange,
   activeSort,
   activeFilters,
+  searchTerm = '',
 }: ShopFiltersProps) {
   const { language, translations } = useLanguage();
   
@@ -54,12 +57,25 @@ export function ShopFilters({
     return typeof result === 'string' ? result : key;
   };
 
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const [localSearchTerm, setLocalSearchTerm] = React.useState(searchTerm);
+  
+  // Update local search term when prop changes
+  useEffect(() => {
+    setLocalSearchTerm(searchTerm);
+  }, [searchTerm]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(searchTerm);
+    onSearch(localSearchTerm);
   };
+  
+  const clearSearch = () => {
+    setLocalSearchTerm('');
+    onSearch('');
+  };
+
+  // Count active filters
+  const activeFilterCount = Object.values(activeFilters).filter(Boolean).length;
 
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -69,9 +85,21 @@ export function ShopFilters({
             type="search"
             placeholder={ensureString(getTranslation("shop.searchPlaceholder"))}
             className="pr-10"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={localSearchTerm}
+            onChange={(e) => setLocalSearchTerm(e.target.value)}
           />
+          {localSearchTerm ? (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={clearSearch}
+              className="absolute right-8 top-0 h-full px-2"
+            >
+              <X className="h-4 w-4" />
+              <span className="sr-only">Clear</span>
+            </Button>
+          ) : null}
           <Button
             type="submit"
             variant="ghost"
@@ -79,21 +107,7 @@ export function ShopFilters({
             className="absolute right-0 top-0 h-full px-3"
           >
             <span className="sr-only">{ensureString(getTranslation("shop.search"))}</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-4 w-4"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
+            <Search className="h-4 w-4" />
           </Button>
         </form>
       </div>
@@ -103,6 +117,11 @@ export function ShopFilters({
             <Button variant="outline" size="sm" className="h-9 gap-1">
               <SlidersHorizontal className="h-3.5 w-3.5" />
               <span>{ensureString(getTranslation("shop.filter"))}</span>
+              {activeFilterCount > 0 && (
+                <Badge variant="secondary" className="ml-1 h-5 w-5 p-0 flex items-center justify-center">
+                  {activeFilterCount}
+                </Badge>
+              )}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
@@ -126,13 +145,25 @@ export function ShopFilters({
             >
               {ensureString(getTranslation("shop.bestsellers"))}
             </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={activeFilters.digital}
+              onCheckedChange={(checked) => onFilterChange('digital', checked)}
+            >
+              {ensureString(getTranslation("productDetail.digital"))}
+            </DropdownMenuCheckboxItem>
           </DropdownMenuContent>
         </DropdownMenu>
         <Separator orientation="vertical" className="h-6" />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm" className="h-9 gap-1">
-              <span>{ensureString(getTranslation("shop.sort"))}</span>
+              <span>
+                {activeSort === 'newest' ? ensureString(getTranslation("shop.newest")) :
+                 activeSort === 'oldest' ? ensureString(getTranslation("shop.oldest")) :
+                 activeSort === 'price-low' ? ensureString(getTranslation("shop.priceLowToHigh")) :
+                 activeSort === 'price-high' ? ensureString(getTranslation("shop.priceHighToLow")) :
+                 ensureString(getTranslation("shop.sort"))}
+              </span>
               <ChevronDown className="h-3.5 w-3.5" />
             </Button>
           </DropdownMenuTrigger>
