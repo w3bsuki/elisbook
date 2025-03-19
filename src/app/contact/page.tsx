@@ -61,18 +61,20 @@ export default function ContactPage() {
   };
   
   return (
-    <main className="container py-12 mx-auto px-4 md:px-6">
+    <div className="container py-12 mx-auto px-4 md:px-6">
       <div className="max-w-3xl mx-auto text-center mb-12">
-        <Badge variant="outline" className="mb-4 px-6 py-2 text-sm font-medium rounded-full">
-          <MessageSquare className="mr-2 h-4 w-4" />
-          {language === 'en' ? 'Get in Touch' : 'Свържете се с нас'}
-        </Badge>
+        <div className="inline-flex mb-4">
+          <Badge variant="outline" className="px-6 py-2 text-sm font-medium rounded-full">
+            <MessageSquare className="mr-2 h-4 w-4" />
+            {language === 'en' ? 'Get in Touch' : 'Свържете се с нас'}
+          </Badge>
+        </div>
         <h1 className="text-4xl font-bold tracking-tight mb-4 font-playfair">
           {language === 'en' ? 'Contact Us' : 'Контакти'}
         </h1>
         <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
           {language === 'en' 
-            ? 'Have questions about our books or services? We're here to help. Reach out to us using the information below or fill out the contact form.'
+            ? 'Have questions about our books or services? We\'re here to help. Reach out to us using the information below or fill out the contact form.'
             : 'Имате въпроси относно нашите книги или услуги? Ние сме тук, за да помогнем. Свържете се с нас, използвайки информацията по-долу или попълнете формата за контакт.'}
         </p>
       </div>
@@ -274,6 +276,6 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 } 
